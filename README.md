@@ -14,25 +14,14 @@ So many solutions are available online however they are hosted on the cloud, and
 
 ## Initial Release 0.0.1
 
-  - Integration with Keycloak for authentication and authorization
+  - Integration with a popular IAM something like Auth0 or Microsoft Azure
   - Setting up database type configuration as a startup option (support will initially begins with mongo as a database)
-  - Integrating Swagger for the api documentation
-  - Building public queues and private queues.
+  - Building public queues.
   - Building the template engine.
 
 ### References
 
 Mail Spaghetti uses a number of open source projects to work properly:
 
-* [Keycloak] - Identity Management System Open Source 
-* [AngularJS] - HTML enhanced for web apps!
+* [ReactJS] - HTML enhanced for web apps!
 * [Ace Editor] - awesome web-based text editor
-* [markdown-it] - Markdown parser done right. Fast and easy to extend.
-* [jQuery] - duh
-
-[Keycloak]: <https://www.keycloak.org>
-[df1]: <http://daringfireball.net/projects/markdown/>
-[markdown-it]: <https://github.com/markdown-it/markdown-it>
-[Ace Editor]: <http://ace.ajax.org>
-[jQuery]: <http://jquery.com>
-[AngularJS]: <http://angularjs.org>
