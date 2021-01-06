@@ -1,0 +1,23 @@
+.home {
+  width: 100%;
+  display: block;
+  &__left {
+    position: relative;
+    width: 26%;
+    display: inline-block;
+  }
+
+  &__right {
+    width: 74%;
+    display: inline-block;
+  }
+
+  &__choice {
+    top: 5.9rem;
+    left: 0;
+    background: $color-grey-light-2;
+    position: fixed;
+    width: 26%;
+    height: 100%;
+  }
+}
