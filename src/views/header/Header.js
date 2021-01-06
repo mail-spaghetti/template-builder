@@ -11,7 +11,7 @@ const Header = (props) => (
     </div>
     <div className="header__cta">
       {ButtonData.map((d, idx) => (
-        <Button key={idx} variant="secondary" text={d.text} />
+        <Button key={idx} variant="secondary" {...d} />
       ))}
     </div>
     <div className="header__auth">
