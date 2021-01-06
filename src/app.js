@@ -1,11 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import AppRoutes from "./routes/AppRoutes";
 
 import "./styles/main.scss";
 
 const connectedComponents = (
   <div>
-    <h1>Mail Spaghetti</h1>
+    <AppRoutes />
   </div>
 );
 
