@@ -12,5 +12,30 @@
     background: $color-tertiary;
     color: #dddddd;
     font-size: 1.4rem;
+    transition: 0.3s;
+    &:hover {
+      background: $color-grey-light;
+      color: $color-tertiary;
+      font-weight: bold;
+    }
+  }
+
+  &__secondary:hover &__contents {
+    > span > svg > path {
+      fill: $color-tertiary;
+    }
+
+    > span > svg > g > path {
+      fill: $color-tertiary;
+    }
+  }
+
+  &__contents {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    > * {
+      margin-right: 0.6rem;
+    }
   }
 }
