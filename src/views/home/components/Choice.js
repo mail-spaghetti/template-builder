@@ -1,12 +1,19 @@
-import React from "react";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import Options from "./options/Options";
 
-const Choice = () => (
-  <div className="home__choice">
-    <div className="home__options">
-      <Options />
-    </div>
-  </div>
-);
+class Choice extends Component {
+  render() {
+    return (
+      <div className="home__choice">
+        <div className="home__options">
+          <Options selection={this.props.selection} />
+        </div>
+      </div>
+    );
+  }
+}
 
-export default Choice;
+const mapStateToProps = (state) => ({ selection: state.option.selection });
+
+export default connect(mapStateToProps)(Choice);

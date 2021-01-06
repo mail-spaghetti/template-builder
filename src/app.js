@@ -1,13 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import AppRoutes from "./routes/AppRoutes";
+import { Provider } from "react-redux";
 
+import AppRoutes from "./routes/AppRoutes";
+import configureStore from "./stores/configureStore";
 import "./styles/main.scss";
 
+const store = configureStore();
+
 const connectedComponents = (
-  <div>
+  <Provider store={store}>
     <AppRoutes />
-  </div>
+  </Provider>
 );
 
 ReactDOM.render(connectedComponents, document.getElementById("app"));
