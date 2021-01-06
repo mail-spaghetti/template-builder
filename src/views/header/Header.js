@@ -4,7 +4,7 @@ import { ButtonData } from "./data";
 
 import Logo from "../../utils/icons/Logo";
 
-const Header = (props) => (
+export const Header = (props) => (
   <div className="header">
     <div className="header__logo">
       <Logo />
