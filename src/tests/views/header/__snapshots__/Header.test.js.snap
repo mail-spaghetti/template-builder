@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should render Header correctly 1`] = `
+<div
+  className="header"
+>
+  <div
+    className="header__logo"
+  >
+    <Logo />
+  </div>
+  <div
+    className="header__cta"
+  >
+    <Button
+      icon="Replay"
+      key="0"
+      text="Undo"
+      variant="secondary"
+    />
+    <Button
+      icon="Floppy"
+      key="1"
+      text="Save"
+      variant="secondary"
+    />
+    <Button
+      icon="History"
+      key="2"
+      text="History"
+      variant="secondary"
+    />
+    <Button
+      icon="Preview"
+      key="3"
+      text="Preview"
+      variant="secondary"
+    />
+  </div>
+  <div
+    className="header__auth"
+  >
+    <span
+      className="header__caption"
+    >
+      User Name
+    </span>
+    <span>
+      <figure
+        className="header__shape"
+      />
+    </span>
+  </div>
+</div>
+`;
