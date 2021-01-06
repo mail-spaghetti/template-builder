@@ -17,4 +17,35 @@
       margin-right: 2rem;
     }
   }
+
+  &__auth {
+    display: flex;
+    align-items: center;
+    > * {
+      margin-right: 1.5rem;
+    }
+  }
+
+  &__shape {
+    position: relative;
+    width: 3.7rem;
+    height: 3.7rem;
+    -webkit-shape-outside: circle(50% at 50% 50%);
+    shape-outside: circle(50% at 50% 50%);
+    -webkit-clip-path: circle(50% at 50% 50%);
+    clip-path: circle(50% at 50% 50%);
+    backface-visibility: hidden;
+    background: #c4c4c4;
+  }
+
+  &__caption {
+    color: $color-white;
+    font-size: 1.4rem;
+  }
+
+  &__img {
+    height: 100%;
+    backface-visibility: hidden;
+    transition: all 0.5s;
+  }
 }
