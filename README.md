@@ -5,7 +5,7 @@
 # Solution Architecture
 
 - React Js
-- Mongo db
+- Redux 
 
 # Getting Started
 
