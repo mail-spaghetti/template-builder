@@ -1,10 +1,13 @@
 import React from "react";
 import { OPTIONS } from "../../data";
 
-const Options = () => (
-  <div className="row">
+const Options = ({ selection }) => (
+  <div className="home__options--row">
     {OPTIONS.map((option, idx) => (
-      <div className="col-1-of-3" key={idx}>
+      <div
+        className={`${selection === option && "home__selected"}`}
+        key={idx}
+      >
         {option}
       </div>
     ))}
