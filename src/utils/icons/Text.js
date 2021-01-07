@@ -8,7 +8,7 @@ const Text = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clipPath="url(#clip0)">
+    <g clipPath="url(#clip10)">
       <path
         d="M10.818 1.803H18.03V5.409H19.83V0H0V5.409H1.8V1.803H9.015V23.439H5.409V25.239H14.424V23.439H10.818V1.803Z"
         fill="#141414"
@@ -19,7 +19,7 @@ const Text = () => (
       />
     </g>
     <defs>
-      <clipPath id="clip0">
+      <clipPath id="clip10">
         <rect width="28.848" height="25.242" fill="white" />
       </clipPath>
     </defs>

@@ -2,7 +2,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import { changeSelection } from "../../../actions/options.action";
+import { OPTIONS } from "../data";
+import Block from "./blocks/Block";
 import Options from "./options/Options";
+import Structure from "./structure/Structure";
+import Settings from './settings/Settings';
 
 class Choice extends Component {
   onHandleSelection = (selection) =>
@@ -16,6 +20,9 @@ class Choice extends Component {
             selection={this.props.selection}
             onHandleSelection={this.onHandleSelection}
           />
+          {this.props.selection === OPTIONS[0] && <Block />}
+          {this.props.selection === OPTIONS[1] && <Structure />}
+          {this.props.selection === OPTIONS[2] && <Settings />}
         </div>
       </div>
     );
