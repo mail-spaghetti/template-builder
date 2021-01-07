@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-const path = require("path");
 
 const Button = (props) => {
   const [component, setComponent] = useState(null);
