@@ -1,5 +1,5 @@
 {
-  "name": "template-builder",
+  "name": "mailspaghetti-dev-01",
   "version": "0.1.0",
   "description": "Dynamic mail template builder",
   "main": "app.js",
