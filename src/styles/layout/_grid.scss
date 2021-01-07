@@ -51,9 +51,8 @@
 .a-row {
   max-width: $grid-width;
   margin: 0 auto;
-  border: 1px solid $color-grey-light-2;
   &:not(:last-child) {
-    border-bottom: none;
+    margin-bottom: $gutter-vertical-2;
   }
 
   @include clearfix;
@@ -61,12 +60,12 @@
   [class^="a-col-"] {
     float: left;
     &:not(:last-child) {
-      border-right: 1px solid $color-grey-light-2;
+      margin-right: $gutter-horizontal-2;
     }
   }
 
   .a-col-1-of-3 {
-    width: calc(100% / 3);
+    width: calc((100% - 2 *#{$gutter-horizontal-2}) / 3);
   }
 
   .a-col-2-of-3 {

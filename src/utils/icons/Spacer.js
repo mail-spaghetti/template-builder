@@ -8,7 +8,7 @@ const Spacer = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clipPath="url(#clip0)">
+    <g clipPath="url(#clip15)">
       <path
         d="M17.7249 0L14.325 3.36L15.252 4.297L17.062 2.507V7.422H18.3799V2.522L20.1539 4.29601L21.086 3.364L17.7249 0Z"
         fill="#141414"
@@ -23,7 +23,7 @@ const Spacer = () => (
       />
     </g>
     <defs>
-      <clipPath id="clip0">
+      <clipPath id="clip15">
         <rect width="35" height="25.993" fill="white" />
       </clipPath>
     </defs>

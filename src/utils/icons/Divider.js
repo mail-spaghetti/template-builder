@@ -8,7 +8,7 @@ const Divider = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clipPath="url(#clip0)">
+    <g clipPath="url(#clip14)">
       <path
         d="M15.863 -3.05176e-05L11.288 4.52297L12.535 5.78497L14.972 3.37597V9.99297H16.75V3.39297L19.139 5.78197L20.394 4.52697L15.863 -3.05176e-05Z"
         fill="#141414"
@@ -20,7 +20,7 @@ const Divider = () => (
       <path d="M32 11.597H0V12.597H32V11.597Z" fill="#141414" />
     </g>
     <defs>
-      <clipPath id="clip0">
+      <clipPath id="clip14">
         <rect width="32" height="23.993" fill="white" />
       </clipPath>
     </defs>
