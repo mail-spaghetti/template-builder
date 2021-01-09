@@ -7,4 +7,9 @@
   cursor: move;
   text-align: center;
   padding: 2rem;
+
+  &__blockWrapper {
+    display: inline-block;
+    width: 100%;
+  }
 }
