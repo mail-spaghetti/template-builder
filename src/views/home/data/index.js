@@ -38,3 +38,7 @@ export const CARDS = [
     icon: "Code",
   },
 ];
+
+export const ITEMS = {
+  BLOCK: "block",
+};

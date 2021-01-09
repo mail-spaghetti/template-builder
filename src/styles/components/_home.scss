@@ -1,15 +1,18 @@
 .home {
   width: 100%;
   display: block;
+  overflow-x: hidden;
+  padding-top: 4rem;
   &__left {
     position: relative;
-    width: 26%;
+    width: 373px;
     display: inline-block;
   }
 
   &__right {
-    width: 74%;
+    width: 100%;
     display: inline-block;
+    padding-left: 373px;
   }
 
   &__choice {
@@ -17,7 +20,6 @@
     left: 0;
     background: $color-grey-light-2;
     position: fixed;
-    width: 26%;
     height: 100%;
   }
 

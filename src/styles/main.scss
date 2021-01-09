@@ -19,7 +19,12 @@
 
 @import "./components/button";
 @import "./components/card";
+@import "./components/draft";
 @import "./components/home";
 
 @import "./layout/header";
 @import "./layout/grid";
+
+@import "./pages/draft";
+
+@import "./vendors/scroll";
