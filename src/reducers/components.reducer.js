@@ -23,11 +23,16 @@ const componentsReducerDefaultState = {
   },
 };
 
-const componentsReducer = (state = componentsReducerDefaultState, { type }) => {
+const componentsReducer = (
+  state = componentsReducerDefaultState,
+  { type, activeContent }
+) => {
   switch (type) {
+    case "SET_ACTIVE_CONTENT":
+      return { ...state, activeContent };
     default:
       return state;
   }
 };
 
-export default componentsReducer
+export default componentsReducer;

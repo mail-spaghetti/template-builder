@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { setActiveContent } from "../../../../actions/components.action";
 
 import Add from "../../../../utils/icons/Add";
 import Copy from "../../../../utils/icons/Copy";
@@ -7,12 +8,15 @@ import Delete from "../../../../utils/icons/Delete";
 import Drop from "../../../../utils/icons/Drop";
 import Move from "../../../../utils/icons/Move";
 
-const Layout = ({ height, component }) => {
+const Layout = ({ height, component, dispatch }) => {
   useEffect(() => {
     setInitLayout();
-  }, []);
+  }, [component]);
 
   const [contents, setContents] = useState([]);
+
+  const onChangeActiveContent = (activeContent) =>
+    dispatch(setActiveContent({ activeContent }));
 
   const setInitLayout = () => {
     let layout = [];
@@ -34,11 +38,7 @@ const Layout = ({ height, component }) => {
         );
       } else {
         content = (
-          <div
-            key={i}
-            className="draft__blocks"
-            style={{ height: "14rem" }}
-          ></div>
+          <div className="draft__blocks" style={{ height: "14rem" }}></div>
         );
       }
 
@@ -89,7 +89,15 @@ const Layout = ({ height, component }) => {
     <section className="section-draft" style={{ height }}>
       <div>
         {contents &&
-          contents.map((content, idx) => Object.values(content)[0].content)}
+          contents.map((content, idx) => (
+            <span
+              key={idx}
+              className="draft__blockEvent"
+              onClick={() => onChangeActiveContent(idx + 1)}
+            >
+              {Object.values(content)[0].content}
+            </span>
+          ))}
       </div>
     </section>
   );
