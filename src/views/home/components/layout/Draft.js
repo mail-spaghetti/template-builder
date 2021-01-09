@@ -1,5 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { useDrop } from "react-dnd";
+
 import { setActiveContent } from "../../../../actions/components.action";
 
 import Add from "../../../../utils/icons/Add";
@@ -7,6 +9,7 @@ import Copy from "../../../../utils/icons/Copy";
 import Delete from "../../../../utils/icons/Delete";
 import Drop from "../../../../utils/icons/Drop";
 import Move from "../../../../utils/icons/Move";
+import { ITEMS } from "../../data";
 
 const Layout = ({ height, component, dispatch }) => {
   useEffect(() => {
@@ -14,6 +17,14 @@ const Layout = ({ height, component, dispatch }) => {
   }, [component]);
 
   const [contents, setContents] = useState([]);
+
+  const [{ isOver }, dropRef] = useDrop({
+    accept: ITEMS.BLOCK,
+    drop: (item, monitor) => console.log("dropped"),
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
+  });
 
   const onChangeActiveContent = (activeContent) =>
     dispatch(setActiveContent({ activeContent }));
@@ -77,7 +88,7 @@ const Layout = ({ height, component, dispatch }) => {
           <Copy />
         </span>
       </div>
-      <div className="draft__contents">
+      <div ref={dropRef} className="draft__contents">
         <div>
           <Drop />
         </div>
