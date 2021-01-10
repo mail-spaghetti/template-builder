@@ -1,6 +1,6 @@
 import React from "react";
 import Structs from "./Structs";
-import { STRUCTURE_INDICES } from "../../data";
+import { STRUCTURE_INDICES, STRUCT_HEADER } from "../../data";
 
 const Structure = () => {
   const generateStructure = () => {
@@ -19,7 +19,14 @@ const Structure = () => {
     ));
     return structs;
   };
-  return <div className="card__structWrapper">{generateStructure()}</div>;
+  return (
+    <div className="card__structWrapper">
+      <div>
+        <div className="card__structHeader">{STRUCT_HEADER}</div>
+        <div className="u-margin-top-light">{generateStructure()}</div>
+      </div>
+    </div>
+  );
 };
 
 export default Structure;
