@@ -4,7 +4,7 @@ import { useDrop } from "react-dnd";
 
 import { setActiveContent } from "../../../../actions/components.action";
 
-import SnapLeaflet from './SnapLeaflet';
+import SnapLeaflet from "./SnapLeaflet";
 import Drop from "../../../../utils/icons/Drop";
 import { DEFAULT_LEAF_VALUE, ITEMS } from "../../data";
 
@@ -23,8 +23,10 @@ const Layout = ({ height, component, dispatch }) => {
     }),
   });
 
-  const onChangeActiveContent = (activeContent) =>
+  const onChangeActiveContent = (e, activeContent) => {
+    e.stopPropagation();
     dispatch(setActiveContent({ activeContent }));
+  };
 
   const setNewLayout = (layoutContent) => {
     const blocklayout = require("../../../../components/molecules/BlockLayout");
@@ -90,8 +92,6 @@ const Layout = ({ height, component, dispatch }) => {
     setContents(layout);
   };
 
-  
-
   const addActiveSnap = (Component = null, content) => {
     return (
       <Fragment>
@@ -99,7 +99,9 @@ const Layout = ({ height, component, dispatch }) => {
         {Component ? (
           <div ref={dropRef} className="draft__dragContent">
             <SnapLeaflet _leaflet="inner" />
-            <div>{Component.default(content.text)}</div>
+            <div onChange={onHandleTextChange}>
+              {Component.default(content.component)}
+            </div>
           </div>
         ) : (
           <div ref={dropRef} className="draft__contents">
@@ -113,19 +115,25 @@ const Layout = ({ height, component, dispatch }) => {
     );
   };
 
+  const onHandleTextChange = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log(e.target.value);
+  }
+
   return (
     <section className="section-draft" style={{ height }}>
       <div>
         {contents &&
           contents.map((content, idx) => {
             return (
-              <span
+              <div
                 key={idx}
                 className="draft__blockEvent"
-                onClick={() => onChangeActiveContent(idx + 1)}
+                onDoubleClick={(e) => onChangeActiveContent(e, idx + 1)}
               >
                 {Object.values(content)[0].content}
-              </span>
+              </div>
             );
           })}
       </div>

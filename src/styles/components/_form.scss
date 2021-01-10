@@ -1,0 +1,17 @@
+.form {
+  &__input {
+    outline: none;
+    border: none;
+    width: 100%;
+    color: #141414;
+    font-weight: 400;
+    font-size: 1.4rem;
+    font-family: "roboto-regular";
+    &::placeholder {
+      color: #141414;
+      font-weight: 400;
+      font-size: 1.4rem;
+      font-family: "roboto-regular";
+    }
+  }
+}

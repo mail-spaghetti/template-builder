@@ -6,7 +6,7 @@ const BlockLayout = (_ref, content = "Normal Text") => (
         <div>
           {require(`../atoms/${
             _ref[0].toUpperCase() + _ref.substring(1).toLowerCase()
-          }.js`).default({ content })}
+          }.js`).default({ content, edit:"false" })}
         </div>
       }
     </div>
