@@ -70,7 +70,10 @@ const structureReducerDefaultState = {
   ],
 };
 
-const structureReducer = (state = structureReducerDefaultState, { type }) => {
+const structureReducer = (
+  state = structureReducerDefaultState,
+  { type, payload }
+) => {
   switch (type) {
     default:
       return state;
