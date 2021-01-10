@@ -1,4 +1,5 @@
 export const OPTIONS = ["Components", "Structure", "Page Settings"];
+export const DEFAULT_LEAF_VALUE = "Drop content here";
 
 export const CARDS = [
   {
