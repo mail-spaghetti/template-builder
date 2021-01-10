@@ -13,6 +13,10 @@
     }
   }
 
+  .col-1-of-1 {
+    width: 100%;
+  }
+
   .col-1-of-2 {
     width: calc((100% - #{$gutter-horizontal}) / 2);
   }
@@ -27,6 +31,18 @@
 
   .col-1-of-5 {
     width: calc((100% - 4 *#{$gutter-horizontal}) / 5);
+  }
+
+  .col-4-of-5 {
+    width: calc(4 * (100% - 4 *#{$gutter-horizontal}) / 5  + 3 * #{$gutter-horizontal});
+  }
+
+  .col-2-of-5 {
+    width: calc(2 * (100% - 4 *#{$gutter-horizontal}) / 5);
+  }
+
+  .col-3-of-5 {
+    width: calc(3 * (100% - 4 *#{$gutter-horizontal}) / 5);
   }
 
   .col-2-of-3 {

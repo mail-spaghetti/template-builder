@@ -1,6 +1,7 @@
 export const OPTIONS = ["Components", "Structure", "Page Settings"];
 export const DEFAULT_LEAF_VALUE = "Drop content here";
-export const INPUT_PLACEHOLDER="This is your new text block with first paragraph."
+export const INPUT_PLACEHOLDER =
+  "This is your new text block with first paragraph.";
 
 export const CARDS = [
   {
@@ -53,3 +54,38 @@ export const CARDS = [
 export const ITEMS = {
   BLOCK: "block",
 };
+
+export const STRUCTURE_INDICES = [
+  {
+    parts: 1,
+    columns: [1],
+  },
+  {
+    parts: 2,
+    columns: [1, 1],
+  },
+  {
+    parts: 3,
+    columns: [1, 1, 1],
+  },
+  {
+    parts: 4,
+    columns: [1, 1, 1, 1],
+  },
+  {
+    parts: 3,
+    columns: [1, 2],
+  },
+  {
+    parts: 3,
+    columns: [2, 1],
+  },
+  {
+    parts: 5,
+    columns: [4, 1],
+  },
+  {
+    parts: 5,
+    columns: [1, 4],
+  },
+];
