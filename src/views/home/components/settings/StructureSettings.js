@@ -13,7 +13,7 @@ const StructureSettings = ({ type, structure, settings, dispatch }) => {
   const onHandleSettingsExit = () => dispatch(setSelected({ selected: false }));
   return (
     <div className="settings">
-      <div className="settings__type">
+      <div className="settings__type u-margin-top-light">
         <Text className="text-tertiary" content={type} />
         <div className="settings__back" onClick={onHandleSettingsExit}>
           <span>
@@ -94,6 +94,17 @@ const StructureSettings = ({ type, structure, settings, dispatch }) => {
                 properties={{
                   color: structure.backgroundColor,
                   text: structure.backgroundColor,
+                  border:
+                    structure[
+                      border
+                        .split("-")
+                        .map((b, idx) => {
+                          return idx > 0
+                            ? b[0].toUpperCase() + b.substring(1)
+                            : b;
+                        })
+                        .join("")
+                    ],
                 }}
               />
             </div>

@@ -16,11 +16,69 @@
 
   &__text {
     display: inline-block;
+    color: $color-black;
+    font-weight: bold;
   }
 
   > * {
     &:not(:first-child) {
       margin-left: 2rem;
+    }
+  }
+
+  &__borderWrapper {
+    display: inline-block;
+    > * {
+      &:not(:first-child) {
+        margin-left: 0.5rem;
+      }
+    }
+  }
+
+  &__border {
+    display: inline-block;
+    background: #f0f0f0;
+    width: 4.5rem;
+    height: 2.6rem;
+    border-radius: 0.5rem;
+  }
+
+  &--solid {
+    position: relative;
+    &::after {
+      position: absolute;
+      content: "___";
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: $color-black;
+      font-weight: bold;
+    }
+  }
+
+  &--dashed {
+    position: relative;
+    &::after {
+      position: absolute;
+      content: "- - -";
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: $color-black;
+      font-weight: bold;
+    }
+  }
+
+  &--dotted {
+    position: relative;
+    &::after {
+      position: absolute;
+      content: "....";
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: $color-black;
+      font-weight: bolder;
     }
   }
 }
