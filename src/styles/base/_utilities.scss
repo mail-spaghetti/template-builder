@@ -2,6 +2,10 @@
   margin-top: 1.2rem;
 }
 
+.u-margin-top-small {
+  margin-top: 2rem;
+}
+
 .u-padding-custom-1 {
   padding: 1.6rem 0.7rem;
 }
@@ -12,4 +16,10 @@
 
 .u-background-green {
   background: $color-green;
+}
+
+.u-display-flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

@@ -1,0 +1,26 @@
+.paper {
+  cursor: pointer;
+  background: #fafafa;
+  border: 1px solid #d0d0d0;
+  border-radius: 0.5rem;
+  width: 15.8rem;
+  height: 3.6rem;
+  padding: 0.5rem;
+
+  &__bgColor {
+    width: 2.6rem;
+    height: 2.6rem;
+    display: inline-block;
+    border-radius: 0.5rem;
+  }
+
+  &__text {
+    display: inline-block;
+  }
+
+  > * {
+    &:not(:first-child) {
+      margin-left: 2rem;
+    }
+  }
+}

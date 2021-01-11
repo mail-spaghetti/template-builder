@@ -1,8 +1,12 @@
-import React from "react";
+import React, { Fragment } from "react";
+import { connect } from "react-redux";
+
 import Structs from "./Structs";
 import { STRUCTURE_INDICES, STRUCT_HEADER } from "../../data";
+import { setSelected, setType } from "../../../../actions/options.action";
+import Settings from "../settings/Settings";
 
-const Structure = () => {
+const Structure = ({ dispatch, selected, type }) => {
   const generateStructure = () => {
     const rows = [...Array(Math.ceil(STRUCTURE_INDICES.length / 2))];
     const structRows = rows.map((row, index) =>
@@ -25,16 +29,28 @@ const Structure = () => {
   };
 
   const onHandleStructSelection = () => {
-    console.log("clicked");
+    dispatch(setSelected({ selected: true }));
+    dispatch(setType({ type: "Structure" }));
   };
   return (
     <div className="card__structWrapper">
       <div>
-        <div className="card__structHeader">{STRUCT_HEADER}</div>
-        <div className="u-margin-top-light">{generateStructure()}</div>
+        {selected ? (
+          <Settings type={type} />
+        ) : (
+          <Fragment>
+            <div className="card__structHeader">{STRUCT_HEADER}</div>
+            <div className="u-margin-top-light">{generateStructure()}</div>
+          </Fragment>
+        )}
       </div>
     </div>
   );
 };
 
-export default Structure;
+const mapStateToProps = (state) => ({
+  selected: state.option.selected,
+  type: state.option.type,
+});
+
+export default connect(mapStateToProps)(Structure);
