@@ -6,6 +6,10 @@
   margin-top: 2rem;
 }
 
+.u-padding-small {
+  padding: 1.5rem !important;
+}
+
 .u-padding-custom-1 {
   padding: 1.6rem 0.7rem;
 }
@@ -22,4 +26,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.u-margin-bottom-none {
+  margin-bottom: 0 !important;
+}
+
+.u-translate-up-y-2 {
+  display: inline-block;
+  transform: translateY(-2rem);
 }

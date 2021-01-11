@@ -2,11 +2,36 @@ import React from "react";
 
 import Text from "../atoms/Text";
 
-const Paper = ({ bgColor, text }) => (
-  <div className="paper">
-    {bgColor && <div className="paper__bgColor" style={{ background: bgColor }}>&nbsp;</div>}
-    {bgColor ? <Text className="paper__text" content={bgColor} /> : <Text content={text} />}
-  </div>
-);
+const Paper = ({ properties }) => {
+  const getPropertyPrinted = (value, index) => {
+    switch (value) {
+      case "color":
+        return (
+          <div
+            key={index}
+            className="paper__bgColor"
+            style={{ background: properties[value] }}
+          >
+            &nbsp;
+          </div>
+        );
+      case "text":
+        return (
+          <Text
+            key={index}
+            className="paper__text"
+            content={properties[value]}
+          />
+        );
+    }
+  };
+  return (
+    <div className="paper">
+      {Object.keys(properties).map((property, idx) =>
+        getPropertyPrinted(property, idx)
+      )}
+    </div>
+  );
+};
 
 export default Paper;

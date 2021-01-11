@@ -26,6 +26,7 @@
     border-radius: 2rem;
     transition: 0.3s;
     outline: none;
+    cursor: pointer;
     &:checked {
       background: #00bd1e;
     }
@@ -39,12 +40,26 @@
       background: $color-white;
       top: 1px;
       left: 2px;
-      transition: .3s;
+      transition: 0.3s;
       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     }
 
     &:checked::after {
       left: 1.9rem;
+    }
+  }
+
+  &__rule {
+    position: relative;
+    height: 5rem;
+    &--line {
+      width: 100%;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      border-top: 1px solid #dbdbdb;
+      height: .5rem;
     }
   }
 }

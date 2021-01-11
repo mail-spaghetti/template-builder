@@ -33,18 +33,18 @@ const Structure = ({ dispatch, selected, type }) => {
     dispatch(setType({ type: "Structure" }));
   };
   return (
-    <div className="card__structWrapper">
+    <Fragment>
       <div>
         {selected ? (
           <Settings type={type} />
         ) : (
-          <Fragment>
+          <div className="card__structWrapper">
             <div className="card__structHeader">{STRUCT_HEADER}</div>
             <div className="u-margin-top-light">{generateStructure()}</div>
-          </Fragment>
+          </div>
         )}
       </div>
-    </div>
+    </Fragment>
   );
 };
 

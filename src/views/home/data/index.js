@@ -3,6 +3,14 @@ export const DEFAULT_LEAF_VALUE = "Drop content here";
 export const INPUT_PLACEHOLDER =
   "This is your new text block with first paragraph.";
 export const STRUCT_HEADER = "Columns";
+export const BORDER_SETTINGS = ["solid", "dashed", "dotted"];
+export const BORDER_TYPES = [
+  "border",
+  "border-top",
+  "border-bottom",
+  "border-left",
+  "border-right",
+];
 
 export const CARDS = [
   {
