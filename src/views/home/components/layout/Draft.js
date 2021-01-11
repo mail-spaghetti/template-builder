@@ -4,12 +4,9 @@ import { useDrop } from "react-dnd";
 
 import { setActiveContent } from "../../../../actions/components.action";
 
-import Add from "../../../../utils/icons/Add";
-import Copy from "../../../../utils/icons/Copy";
-import Delete from "../../../../utils/icons/Delete";
+import SnapLeaflet from "./SnapLeaflet";
 import Drop from "../../../../utils/icons/Drop";
-import Move from "../../../../utils/icons/Move";
-import { ITEMS } from "../../data";
+import { DEFAULT_LEAF_VALUE, ITEMS } from "../../data";
 
 const Layout = ({ height, component, dispatch }) => {
   useEffect(() => {
@@ -20,14 +17,44 @@ const Layout = ({ height, component, dispatch }) => {
 
   const [{ isOver }, dropRef] = useDrop({
     accept: ITEMS.BLOCK,
-    drop: (item, monitor) => console.log("dropped"),
+    drop: (item, monitor) => setNewLayout(item),
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
   });
 
-  const onChangeActiveContent = (activeContent) =>
+  const onChangeActiveContent = (e, activeContent) => {
+    e.stopPropagation();
     dispatch(setActiveContent({ activeContent }));
+  };
+
+  const setNewLayout = (layoutContent) => {
+    const blocklayout = require("../../../../components/molecules/BlockLayout");
+    let existingContents = contents.slice();
+    existingContents = existingContents.map((content, idx) => {
+      if (idx == component.activeContent - 1) {
+        return {
+          [idx]: {
+            content: (
+              <div
+                key={idx}
+                className="draft__blocks draft__blocks--active"
+                style={{
+                  height: "12rem",
+                  padding: "2.5rem 14rem",
+                  position: "relative",
+                }}
+              >
+                {addActiveSnap(blocklayout, layoutContent.content)}
+              </div>
+            ),
+          },
+        };
+      }
+      return content;
+    });
+    setContents(existingContents);
+  };
 
   const setInitLayout = () => {
     let layout = [];
@@ -39,8 +66,8 @@ const Layout = ({ height, component, dispatch }) => {
             key={i}
             className="draft__blocks draft__blocks--active"
             style={{
-              height: "14rem",
-              padding: "2.5rem 14rem",
+              height: "12rem",
+              padding: "1.5rem 14rem",
               position: "relative",
             }}
           >
@@ -65,50 +92,50 @@ const Layout = ({ height, component, dispatch }) => {
     setContents(layout);
   };
 
-  const addActiveSnap = () => (
-    <Fragment>
-      <div className="draft__snap draft__snap--1">
-        <span>
-          <Add />
-        </span>
-        <span>
-          <Delete />
-        </span>
-      </div>
-      <div className="draft__snap draft__snap--2">
-        <span>
-          <Add />
-        </span>
-        <span>
-          <Move />
-        </span>
-      </div>
-      <div className="draft__snap draft__snap--3">
-        <span>
-          <Copy />
-        </span>
-      </div>
-      <div ref={dropRef} className="draft__contents">
-        <div>
-          <Drop />
-        </div>
-        <div>Drop content here</div>
-      </div>
-    </Fragment>
-  );
+  const addActiveSnap = (Component = null, content) => {
+    return (
+      <Fragment>
+        <SnapLeaflet />
+        {Component ? (
+          <div ref={dropRef} className="draft__dragContent">
+            <SnapLeaflet _leaflet="inner" />
+            <div onChange={onHandleTextChange}>
+              {Component.default(content.component)}
+            </div>
+          </div>
+        ) : (
+          <div ref={dropRef} className="draft__contents">
+            <div>
+              <Drop />
+            </div>
+            <div>{DEFAULT_LEAF_VALUE}</div>
+          </div>
+        )}
+      </Fragment>
+    );
+  };
+
+  const onHandleTextChange = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log(e.target.value);
+  }
+
   return (
     <section className="section-draft" style={{ height }}>
       <div>
         {contents &&
-          contents.map((content, idx) => (
-            <span
-              key={idx}
-              className="draft__blockEvent"
-              onClick={() => onChangeActiveContent(idx + 1)}
-            >
-              {Object.values(content)[0].content}
-            </span>
-          ))}
+          contents.map((content, idx) => {
+            return (
+              <div
+                key={idx}
+                className="draft__blockEvent"
+                onDoubleClick={(e) => onChangeActiveContent(e, idx + 1)}
+              >
+                {Object.values(content)[0].content}
+              </div>
+            );
+          })}
       </div>
     </section>
   );

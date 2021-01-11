@@ -1,0 +1,53 @@
+.knob {
+  width: 12.8rem;
+  display: flex;
+  align-items: center;
+  height: 3.6rem;
+
+  &__icon {
+    background: #888888;
+    width: 3.6rem;
+    height: inherit;
+    cursor: pointer;
+    text-align: center;
+
+    &--left {
+      border-top-left-radius: 0.5rem;
+      border-bottom-left-radius: 0.5rem;
+    }
+
+    &--right {
+      border-top-right-radius: 0.5rem;
+      border-bottom-right-radius: 0.5rem;
+    }
+
+    &--plus {
+      padding: 1rem;
+    }
+
+    &--minus {
+      padding: 0.5rem;
+    }
+
+    &:hover {
+      background: darken(#888888, 4%);
+    }
+  }
+
+  &__text {
+    width: 5.6rem;
+    border: 1px solid #d0d0d0;
+    height: inherit;
+    text-align: center;
+    padding: 0.5rem;
+    background: #fafafa;
+
+    &--value {
+      display: inline-block;
+      font-family: "roboto-regular";
+      color: $color-black;
+      font-size: 1.4rem;
+      font-weight: 400;
+    }
+  }
+}

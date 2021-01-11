@@ -1,3 +1,38 @@
+.u-margin-top-light {
+  margin-top: 1.2rem!important;
+}
+
+.u-margin-top-small {
+  margin-top: 2rem!important;
+}
+
+.u-padding-small {
+  padding: 1.5rem !important;
+}
+
 .u-padding-custom-1 {
   padding: 1.6rem 0.7rem;
+}
+
+.u-background-red {
+  background: $color-red;
+}
+
+.u-background-green {
+  background: $color-green;
+}
+
+.u-display-flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.u-margin-bottom-none {
+  margin-bottom: 0 !important;
+}
+
+.u-translate-up-y-2 {
+  display: inline-block;
+  transform: translateY(-2rem);
 }

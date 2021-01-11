@@ -1,0 +1,65 @@
+.form {
+  &__input {
+    outline: none;
+    border: none;
+    width: 100%;
+    color: #141414;
+    font-weight: 400;
+    font-size: 1.4rem;
+    font-family: "roboto-regular";
+    &::placeholder {
+      color: #141414;
+      font-weight: 400;
+      font-size: 1.4rem;
+      font-family: "roboto-regular";
+    }
+  }
+
+  &__slider {
+    position: relative;
+    width: 4rem;
+    height: 2.2rem;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: #c4c4c4;
+    border-radius: 2rem;
+    transition: 0.3s;
+    outline: none;
+    cursor: pointer;
+    &:checked {
+      background: #00bd1e;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 2rem;
+      background: $color-white;
+      top: 1px;
+      left: 2px;
+      transition: 0.3s;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    &:checked::after {
+      left: 1.9rem;
+    }
+  }
+
+  &__rule {
+    position: relative;
+    height: 5rem;
+    &--line {
+      width: 100%;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      border-top: 1px solid #dbdbdb;
+      height: .5rem;
+    }
+  }
+}

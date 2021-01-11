@@ -15,7 +15,6 @@
 
   &__snap {
     display: inline-block;
-    background: #d54d42;
     padding: 0.5rem 1rem;
     height: 3.1rem;
     cursor: pointer;
@@ -46,6 +45,15 @@
   &__blockEvent {
     display: inline-block;
     width: 100%;
+  }
+
+  &__dragContent {
+    position: relative;
+    background: $color-white;
+    min-height: 7rem;
+    border: 1px solid $color-green;
+    text-align: center;
+    padding: 1rem;
   }
 }
 
