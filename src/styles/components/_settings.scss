@@ -23,7 +23,7 @@
   }
 
   &__heading {
-    font-family: 'roboto-regular';
+    font-family: "roboto-regular";
     font-weight: 700;
     font-size: 1.4rem;
     color: $color-black;
@@ -32,5 +32,13 @@
   &__scroll {
     height: 70vh;
     overflow-y: scroll;
+  }
+
+  &__types {
+    > * {
+      &:not(:first-child) {
+        margin-left: 1rem;
+      }
+    }
   }
 }

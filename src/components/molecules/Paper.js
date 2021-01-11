@@ -4,14 +4,12 @@ import { BORDER_SETTINGS } from "../../views/home/data";
 import Text from "../atoms/Text";
 
 const Paper = ({ properties }) => {
-  const displayBorder = (border, index) => {
-    console.log(border, index);
-    return (
-      <div className={`paper__border paper--${border}`} key={index}>
-        &nbsp;
-      </div>
-    );
-  };
+  const displayBorder = (border, index) => (
+    <div className={`paper__border paper--${border}`} key={index}>
+      &nbsp;
+    </div>
+  );
+
   const getPropertyPrinted = (value, index) => {
     switch (value) {
       case "color":

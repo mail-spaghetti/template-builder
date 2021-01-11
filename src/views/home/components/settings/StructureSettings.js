@@ -1,16 +1,18 @@
 import React from "react";
 
 import { setSelected } from "../../../../actions/options.action";
+import Button from "../../../../components/atoms/Button";
 import HorizontalRule from "../../../../components/atoms/HorizontalRule";
 import Text from "../../../../components/atoms/Text";
 import Paper from "../../../../components/molecules/Paper";
 import Slider from "../../../../components/molecules/Slider";
 import Knob from "../../../../components/organisms/Knob";
 import LeftArrow from "../../../../utils/icons/LeftArrow";
-import { BORDER_TYPES } from "../../data";
+import { BORDER_TYPES, COLUMN_TYPES, IMAGE_WARNING } from "../../data";
 
 const StructureSettings = ({ type, structure, settings, dispatch }) => {
   const onHandleSettingsExit = () => dispatch(setSelected({ selected: false }));
+
   return (
     <div className="settings">
       <div className="settings__type u-margin-top-light">
@@ -85,6 +87,139 @@ const StructureSettings = ({ type, structure, settings, dispatch }) => {
           {BORDER_TYPES.map((border, idx) => (
             <div key={idx}>
               <Text
+                className="u-margin-top-light"
+                content={border
+                  .split("-")
+                  .map((b) => b[0].toUpperCase() + b.substring(1))
+                  .join(" ")}
+              />
+              <Paper
+                properties={{
+                  color: structure.backgroundColor,
+                  text: structure.backgroundColor,
+                  border:
+                    structure[
+                      border
+                        .split("-")
+                        .map((b, idx) => {
+                          return idx > 0
+                            ? b[0].toUpperCase() + b.substring(1)
+                            : b;
+                        })
+                        .join("")
+                    ],
+                }}
+              />
+            </div>
+          ))}
+        </div>
+        <HorizontalRule />
+        <div>
+          <Text className="settings__heading" content="Background Image" />
+          <div className="u-margin-top-light">
+            <Button text="Choose Image" variant="primary" />
+          </div>
+          <Text
+            className="u-margin-top-small small-text-primary"
+            content={IMAGE_WARNING}
+          />
+        </div>
+        <HorizontalRule />
+        <div>
+          <Text className="settings__heading" content="Column's properties" />
+          <div className="settings__types u-margin-top-small">
+            {COLUMN_TYPES.map((type, idx) => (
+              <span key={idx}>
+                <Button
+                  text={type}
+                  variant={`${
+                    structure.selectedColumn === idx + 1
+                      ? "tertiary"
+                      : "tertiary--disabled"
+                  }`}
+                />
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className="row u-margin-top-small u-margin-bottom-none">
+          <div className="col-1-of-2">
+            <div>
+              <Text content="Background Color" />
+            </div>
+            <div className="u-margin-top-light">
+              <Paper
+                properties={{
+                  color: structure.backgroundColor,
+                  text: structure.backgroundColor,
+                }}
+              />
+            </div>
+          </div>
+          <div className="col-1-of-2">
+            <div>
+              <Text content="Border Radius" />
+            </div>
+            <div className="u-margin-top-light">
+              <Knob />
+            </div>
+          </div>
+        </div>
+        <HorizontalRule />
+        <div className="row u-margin-bottom-none">
+          <div className="col-1-of-2">
+            <div>
+              <Text content="Margin Top" />
+            </div>
+            <div className="u-margin-top-light">
+              <Knob />
+            </div>
+          </div>
+          <div className="col-1-of-2">
+            <div>
+              <Text content="Margin Bottom" />
+            </div>
+            <div className="u-margin-top-light">
+              <Knob />
+            </div>
+          </div>
+        </div>
+        <div className="row u-margin-bottom-none u-margin-top-light">
+          <div className="col-1-of-2">
+            <div>
+              <Text content="Margin Top" />
+            </div>
+            <div className="u-margin-top-light">
+              <Knob />
+            </div>
+          </div>
+          <div className="col-1-of-2">
+            <div>
+              <Text content="Margin Bottom" />
+            </div>
+            <div className="u-margin-top-light">
+              <Knob />
+            </div>
+          </div>
+        </div>
+        <div className="row u-margin-bottom-none u-margin-top-light">
+          <div className="col-1-of-3">&nbsp;</div>
+          <div className="col-2-of-3">
+            <div className="u-display-flex-between">
+              <span>
+                <Text content="Independent borders" />
+              </span>
+              <span>
+                <Slider />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div>
+          {BORDER_TYPES.map((border, idx) => (
+            <div key={idx}>
+              <Text
+                className="u-margin-top-light"
                 content={border
                   .split("-")
                   .map((b) => b[0].toUpperCase() + b.substring(1))

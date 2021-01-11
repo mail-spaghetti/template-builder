@@ -1,5 +1,6 @@
 const structureReducerDefaultState = {
   columns: 1,
+  selectedColumn: 1,
   verticalPadding: "10px",
   backgroundColor: "#D7D7D7",
   mobileStack: false,
