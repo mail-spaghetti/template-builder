@@ -1,17 +1,17 @@
 import React, { Fragment } from "react";
 import { connect } from "react-redux";
 
-const Settings = ({ type, ...rest }) => (
+const Settings = ({ selection, ...rest }) => (
   <Fragment>
-    {require(`./${type.replace(" Settings", "")}Settings.js`).default({
-      type,
+    {require(`./${selection.replace(" Settings", "")}Settings.js`).default({
+      type: selection,
       ...rest,
     })}
   </Fragment>
 );
 
 const mapStateToProps = (state) => ({
-  type: state.option.type,
+  selection: state.option.selection,
   structure: state.structure,
   settings: state.settings,
 });

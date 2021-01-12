@@ -3,7 +3,7 @@ import { BORDER_SETTINGS } from "../../views/home/data";
 
 import Text from "../atoms/Text";
 
-const Paper = ({ properties }) => {
+const Paper = ({ properties, className }) => {
   const displayBorder = (border, index) => (
     <div className={`paper__border paper--${border}`} key={index}>
       &nbsp;
@@ -54,7 +54,7 @@ const Paper = ({ properties }) => {
     }
   };
   return (
-    <div className="paper">
+    <div className={`paper ${className}`}>
       {Object.keys(properties).map((property, idx) =>
         getPropertyPrinted(property, idx)
       )}
