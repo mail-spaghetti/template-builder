@@ -1,10 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-const Text = ({ content, className, color }) => (
-  <p
-    className={`${className} text-primary`}
-    style={{ color }}
-  >
+const Text = ({ content, className, color, style }) => (
+  <p className={`${className} text-primary`} style={{ color, ...style }}>
     {content}
   </p>
 );

@@ -1,11 +1,11 @@
 import React from "react";
+
 import Text from "../../../../components/atoms/Text";
-import LeftArrow from "../../../../utils/icons/LeftArrow";
-import { setSelected } from "../../../../actions/options.action";
 import Knob from "../../../../components/organisms/Knob";
 import Slider from "../../../../components/molecules/Slider";
 import HorizontalRule from "../../../../components/atoms/HorizontalRule";
 import Paper from "../../../../components/molecules/Paper";
+import BaseLineLocale from "../../../../components/organisms/BaselineLocale";
 
 const PageSettings = ({ type, dispatch, settings }) => {
   return (
@@ -62,6 +62,13 @@ const PageSettings = ({ type, dispatch, settings }) => {
           <div className="col-1-of-2">&nbsp;</div>
         </div>
         <HorizontalRule />
+        <Text className="settings__heading" content="Fonts Setting" />
+        {settings.fontSettings.map((setting, idx) => (
+          <div className="u-margin-top-small" key={idx}>
+            <Text content={Object.keys(setting)} />
+            <BaseLineLocale className="u-margin-top-light" properties={Object.values(setting)[0]} />
+          </div>
+        ))}
       </div>
     </div>
   );
