@@ -9,7 +9,7 @@ import BaseLineLocale from "../../../../components/organisms/BaselineLocale";
 
 const PageSettings = ({ type, dispatch, settings }) => {
   return (
-    <div className="settings">
+    <div className="settings settings--scroll">
       <div className="u-padding-small">
         <div className="u-display-flex u-display-inline-2">
           <div>
