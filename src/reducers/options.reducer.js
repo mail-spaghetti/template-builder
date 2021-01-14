@@ -1,7 +1,7 @@
 import { OPTIONS } from "../views/home/data";
 
 const optionsReducerDefaultState = {
-  selection: OPTIONS[2],
+  selection: OPTIONS[0],
   selected: false,
   type: "Components",
 };

@@ -6,6 +6,8 @@ import Slider from "../../../../components/molecules/Slider";
 import HorizontalRule from "../../../../components/atoms/HorizontalRule";
 import Paper from "../../../../components/molecules/Paper";
 import BaseLineLocale from "../../../../components/organisms/BaselineLocale";
+import Checker from "../../../../components/molecules/Checker";
+import { ATTACHMENT_TYPES } from "../../data";
 
 const PageSettings = ({ type, dispatch, settings }) => {
   return (
@@ -66,9 +68,42 @@ const PageSettings = ({ type, dispatch, settings }) => {
         {settings.fontSettings.map((setting, idx) => (
           <div className="u-margin-top-small" key={idx}>
             <Text content={Object.keys(setting)} />
-            <BaseLineLocale className="u-margin-top-light" properties={Object.values(setting)[0]} />
+            <BaseLineLocale
+              className="u-margin-top-light"
+              properties={Object.values(setting)[0]}
+            />
           </div>
         ))}
+        <HorizontalRule />
+        <Text className="settings__heading" content="Attachment Settings" />
+        <div className="u-margin-top-small">
+          <div className="row">
+            <div className="col-1-of-2">
+              <Text content="In-force an attachment" />
+            </div>
+            <div className="col-1-of-2">
+              <Slider />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-1-of-2">Number of attachments</div>
+            <div className="col-1-of-2">
+              <Knob />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-1-of-2">Attachment Types</div>
+            <div className="col-1-of-2 u-child-margin-top-light">
+              {ATTACHMENT_TYPES.map((attachment, idx) => (
+                <Checker
+                  key={idx}
+                  content={attachment}
+                  id={attachment.toLowerCase()}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

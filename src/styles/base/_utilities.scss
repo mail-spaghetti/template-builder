@@ -23,7 +23,7 @@
 }
 
 .u-display-flex {
-  display: flex!important;
+  display: flex !important;
 }
 
 .u-display-flex-between {
@@ -34,7 +34,7 @@
 
 .u-display-inline-2 {
   > div {
-    display: inline-block!important;
+    display: inline-block !important;
     &:not(:first-child) {
       margin-left: 2rem;
     }
@@ -48,4 +48,12 @@
 .u-translate-up-y-2 {
   display: inline-block;
   transform: translateY(-2rem);
+}
+
+.u-child-margin-top-light {
+  > * {
+    &:not(:first-child) {
+      margin-top: 1.2rem;
+    }
+  }
 }
