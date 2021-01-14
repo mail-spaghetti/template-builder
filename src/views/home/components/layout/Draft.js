@@ -40,7 +40,7 @@ const Layout = ({ height, component, dispatch }) => {
                 key={idx}
                 className="draft__blocks draft__blocks--active"
                 style={{
-                  height: "12rem",
+                  minHeight: "12rem",
                   padding: "2.5rem 14rem",
                   position: "relative",
                 }}
@@ -66,7 +66,7 @@ const Layout = ({ height, component, dispatch }) => {
             key={i}
             className="draft__blocks draft__blocks--active"
             style={{
-              height: "12rem",
+              minHeight: "12rem",
               padding: "1.5rem 14rem",
               position: "relative",
             }}
@@ -119,7 +119,7 @@ const Layout = ({ height, component, dispatch }) => {
     e.preventDefault();
     e.stopPropagation();
     console.log(e.target.value);
-  }
+  };
 
   return (
     <section className="section-draft" style={{ height }}>

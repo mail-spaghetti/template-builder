@@ -32,7 +32,7 @@ export const CARDS = [
   {
     text: "GIF",
     icon: "Gif",
-    component: "Input",
+    component: "Gif",
   },
   {
     text: "BUTTON",
@@ -57,7 +57,7 @@ export const CARDS = [
   {
     text: "VIDEO",
     icon: "Video",
-    component: "Input",
+    component: "DraftVideo",
   },
   {
     text: "HTML",
