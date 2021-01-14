@@ -98,12 +98,24 @@ const Layout = ({ height, component, structure, dispatch }) => {
       <Fragment>
         <SnapLeaflet />
         {Component ? (
-          <div ref={dropRef} className="draft__dragContent">
-            <SnapLeaflet _leaflet="inner" />
-            <div onChange={onHandleTextChange}>
-              {Component.default(content.component)}
-            </div>
-          </div>
+          <tr
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-around",
+            }}
+          >
+            {Array.from(Array(structure.columns), (e, i) => (
+              <td style={{ width: "100%" }}>
+                <div ref={dropRef} className="draft__dragContent">
+                  <SnapLeaflet _leaflet="inner" />
+                  <div onChange={onHandleTextChange}>
+                    {Component.default(content.component)}
+                  </div>
+                </div>
+              </td>
+            ))}
+          </tr>
         ) : (
           <tr
             style={{
