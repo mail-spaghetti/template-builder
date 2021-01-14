@@ -10,10 +10,10 @@ const Button = (props) => {
     }
   }, []);
 
-  const { text, variant } = props;
+  const { text="Choose Image", variant, className } = props;
 
   return (
-    <button className={`btn btn__${variant}`}>
+    <button className={`btn btn__${variant} ${className}`}>
       <div className="btn__contents">
         {component && <span>{component}</span>}
         <span>{text}</span>

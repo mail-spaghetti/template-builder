@@ -65,4 +65,12 @@
       margin-right: 0.6rem;
     }
   }
+
+  &--draft {
+    color: $color-white;
+    background: #D54D42;
+    min-width: 13.8rem;
+    min-height: 3.9rem;
+    font-size: 1.4rem;
+  }
 }

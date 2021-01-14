@@ -37,7 +37,7 @@ export const CARDS = [
   {
     text: "BUTTON",
     icon: "Button",
-    component: "INPUT",
+    component: "DRAFTBUTTON",
   },
   {
     text: "DIVIDER",
