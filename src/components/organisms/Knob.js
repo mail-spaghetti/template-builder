@@ -3,16 +3,11 @@ import Minus from "../../utils/icons/Minus";
 import Plus from "../../utils/icons/Plus";
 import Text from "../atoms/Text";
 
-const Knob = ({
-  className,
-  content = 0,
-  onHandleLeftClick,
-  onHandleRightClick,
-}) => (
+const Knob = ({ className, content = 0, onHandleClick }) => (
   <div className={(className, "knob")}>
     <div
       className="knob__icon knob__icon--left knob__icon--minus"
-      onClick={onHandleLeftClick}
+      onClick={() => onHandleClick(-1)}
     >
       <Minus />
     </div>
@@ -21,7 +16,7 @@ const Knob = ({
     </div>
     <div
       className="knob__icon knob__icon--right knob__icon--plus"
-      onClick={onHandleRightClick}
+      onClick={() => onHandleClick(1)}
     >
       <Plus />
     </div>

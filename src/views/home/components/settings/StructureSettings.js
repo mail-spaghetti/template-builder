@@ -1,6 +1,13 @@
 import React from "react";
 
 import { setSelected } from "../../../../actions/options.action";
+import {
+  changeColumns,
+  changePadding,
+  setIndependentBorder,
+  setMobileStack,
+  setSelectedColumn,
+} from "../../../../actions/structure.action";
 import Button from "../../../../components/atoms/Button";
 import HorizontalRule from "../../../../components/atoms/HorizontalRule";
 import Text from "../../../../components/atoms/Text";
@@ -12,6 +19,29 @@ import { BORDER_TYPES, COLUMN_TYPES, IMAGE_WARNING } from "../../data";
 
 const StructureSettings = ({ type, structure, settings, dispatch }) => {
   const onHandleSettingsExit = () => dispatch(setSelected({ selected: false }));
+
+  const onHandleColumnChange = (column) => dispatch(setSelectedColumn(column));
+
+  const onChangeColumn = (status) => {
+    if (structure.columns > 1 && structure.columns < 4)
+      dispatch(changeColumns(status));
+    else if (structure.columns === 4 && status === -1)
+      dispatch(changeColumns(status));
+    else if (structure.columns === 1 && status === 1)
+      dispatch(changeColumns(status));
+  };
+
+  const onChangeVerticalPadding = (status) => dispatch(changePadding(status));
+
+  const onSliderChange = (type) => {
+    switch (type) {
+      case "BORDER":
+        dispatch(setIndependentBorder());
+        break;
+      case "STACK":
+        dispatch(setMobileStack());
+    }
+  };
 
   return (
     <div className="settings">
@@ -30,7 +60,7 @@ const StructureSettings = ({ type, structure, settings, dispatch }) => {
         <div>
           <Text content="Columns" />
           <div className="u-margin-top-light">
-            <Knob />
+            <Knob onHandleClick={onChangeColumn} content={structure.columns} />
           </div>
         </div>
         <div className="u-margin-top-small">
@@ -40,7 +70,10 @@ const StructureSettings = ({ type, structure, settings, dispatch }) => {
                 <Text content="Top & Bottom padding" />
               </div>
               <div className="u-margin-top-light">
-                <Knob />
+                <Knob
+                  onHandleClick={onChangeVerticalPadding}
+                  content={`${structure.verticalPadding}px`}
+                />
               </div>
             </div>
             <div className="col-1-of-2">
@@ -63,7 +96,10 @@ const StructureSettings = ({ type, structure, settings, dispatch }) => {
             <Text content="Do not stack column on mobile" />
           </span>
           <span>
-            <Slider />
+            <Slider
+              sliderValue={structure.setMobileStack}
+              onSliderValueChange={() => onSliderChange("STACK")}
+            />
           </span>
         </div>
         <HorizontalRule />
@@ -78,7 +114,10 @@ const StructureSettings = ({ type, structure, settings, dispatch }) => {
                 <Text content="Independent borders" />
               </span>
               <span>
-                <Slider />
+                <Slider
+                  sliderValue={structure.independentBorders}
+                  onSliderValueChange={() => onSliderChange("BORDER")}
+                />
               </span>
             </div>
           </div>
@@ -131,6 +170,7 @@ const StructureSettings = ({ type, structure, settings, dispatch }) => {
             {COLUMN_TYPES.map((type, idx) => (
               <span key={idx}>
                 <Button
+                  onHandleClick={() => onHandleColumnChange(idx + 1)}
                   text={type}
                   variant={`${
                     structure.selectedColumn === idx + 1

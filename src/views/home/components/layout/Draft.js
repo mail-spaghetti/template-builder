@@ -8,10 +8,10 @@ import SnapLeaflet from "./SnapLeaflet";
 import Drop from "../../../../utils/icons/Drop";
 import { DEFAULT_LEAF_VALUE, ITEMS } from "../../data";
 
-const Layout = ({ height, component, dispatch }) => {
+const Layout = ({ height, component, structure, dispatch }) => {
   useEffect(() => {
     setInitLayout();
-  }, [component]);
+  }, [component, structure]);
 
   const [contents, setContents] = useState([]);
 
@@ -29,6 +29,7 @@ const Layout = ({ height, component, dispatch }) => {
   };
 
   const setNewLayout = (layoutContent) => {
+    console.log("called");
     const blocklayout = require("../../../../components/molecules/BlockLayout");
     let existingContents = contents.slice();
     existingContents = existingContents.map((content, idx) => {
@@ -97,19 +98,43 @@ const Layout = ({ height, component, dispatch }) => {
       <Fragment>
         <SnapLeaflet />
         {Component ? (
-          <div ref={dropRef} className="draft__dragContent">
-            <SnapLeaflet _leaflet="inner" />
-            <div onChange={onHandleTextChange}>
-              {Component.default(content.component)}
-            </div>
-          </div>
+          <tr
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-around",
+            }}
+          >
+            {Array.from(Array(structure.columns), (e, i) => (
+              <td style={{ width: "100%" }}>
+                <div ref={dropRef} className="draft__dragContent">
+                  <SnapLeaflet _leaflet="inner" />
+                  <div onChange={onHandleTextChange}>
+                    {Component.default(content.component)}
+                  </div>
+                </div>
+              </td>
+            ))}
+          </tr>
         ) : (
-          <div ref={dropRef} className="draft__contents">
-            <div>
-              <Drop />
-            </div>
-            <div>{DEFAULT_LEAF_VALUE}</div>
-          </div>
+          <tr
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-around",
+            }}
+          >
+            {Array.from(Array(structure.columns), (e, i) => (
+              <td style={{ width: "100%" }} key={i} ref={dropRef}>
+                <div className="draft__contents">
+                  <div>
+                    <Drop />
+                  </div>
+                  <div>{DEFAULT_LEAF_VALUE}</div>
+                </div>
+              </td>
+            ))}
+          </tr>
         )}
       </Fragment>
     );
@@ -144,6 +169,7 @@ const Layout = ({ height, component, dispatch }) => {
 const mapStateToProps = (state) => ({
   height: state.settings.height,
   component: state.component,
+  structure: state.structure,
 });
 
 export default connect(mapStateToProps)(Layout);

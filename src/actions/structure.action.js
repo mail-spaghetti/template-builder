@@ -1,31 +1,19 @@
-export const incrementColumns = (value = 1) => ({
-  type: "ADD_COLUMNS",
+export const changeColumns = (value = 1) => ({
+  type: "CHANGE_COLUMNS",
   payload: value,
 });
 
-export const decrementColumns = (value = 1) => ({
-  type: "MINUS_COLUMNS",
+export const changePadding = (value = 1) => ({
+  type: "CHANGE_PADDING",
   payload: value,
 });
 
-export const incrementVerticalPadding = (value = 1) => ({
-  type: "ADD_VERTICAL_PADDING",
-  payload: value,
+export const setMobileStack = () => ({
+  type: "SET_MOBILE_STACK"
 });
 
-export const decrementVerticalPadding = (value = 1) => ({
-  type: "MINUS_VERTICAL_PADDING",
-  payload: value,
-});
-
-export const setMobileStack = (value = false) => ({
-  type: "SET_MOBILE_STACK",
-  payload: value,
-});
-
-export const setIndependentBorder = (value = true) => ({
+export const setIndependentBorder = () => ({
   type: "SET_INDEPENDENT_BORDER",
-  payload: value,
 });
 
 export const setBorder = ({ border }) => ({
