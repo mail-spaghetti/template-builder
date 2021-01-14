@@ -16,6 +16,8 @@ export const BORDER_TYPES = [
 
 export const COLUMN_TYPES = ["Column 1", "Column 2", "Column 3", "Column 4"];
 
+export const ATTACHMENT_TYPES = ["PDF", "PNG", "JPEG"];
+
 export const CARDS = [
   {
     text: "TEXT",

@@ -1,4 +1,8 @@
 .settings {
+  &--scroll {
+    overflow-y: scroll;
+    height: 54rem;
+  }
   &__type {
     background: $color-white;
     width: 34.5rem;
