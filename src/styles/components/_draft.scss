@@ -50,6 +50,16 @@
     }
   }
 
+  &__gif {
+    background: #fdece8;
+    padding: 0.5rem;
+
+    &--text {
+      color: #d54d42;
+      font-size: 1.4rem;
+    }
+  }
+
   &__blockEvent {
     display: inline-block;
     width: 100%;
@@ -62,6 +72,14 @@
     border: 1px solid $color-green;
     text-align: center;
     padding: 1rem;
+  }
+
+  &__video {
+    background: #F9F9F9;
+    height: 19.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
