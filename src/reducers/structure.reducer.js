@@ -1,7 +1,7 @@
 const structureReducerDefaultState = {
   columns: 1,
   selectedColumn: 1,
-  verticalPadding: "10px",
+  verticalPadding: "10",
   backgroundColor: "#D7D7D7",
   mobileStack: false,
   independentBorders: true,
@@ -76,6 +76,21 @@ const structureReducer = (
   { type, payload }
 ) => {
   switch (type) {
+    case "CHANGE_COLUMNS":
+      return { ...state, columns: state.columns + payload };
+    case "CHANGE_PADDING":
+      return {
+        ...state,
+        verticalPadding: `${
+          parseInt(state.verticalPadding.split("px")[0]) + payload
+        }`,
+      };
+    case "SET_INDEPENDENT_BORDER":
+      return { ...state, independentBorders: !state.independentBorders };
+    case "SET_MOBILE_STACK":
+      return { ...state, mobileStack: !state.mobileStack };
+    case "SET_SELECTED_COLUMN":
+      return { ...state, selectedColumn: payload };
     default:
       return state;
   }

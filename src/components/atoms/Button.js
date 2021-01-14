@@ -13,7 +13,7 @@ const Button = (props) => {
   const { text="Choose Image", variant, className } = props;
 
   return (
-    <button className={`btn btn__${variant} ${className}`}>
+    <button className={`btn btn__${variant} ${className}`} onClick={props.onHandleClick}>
       <div className="btn__contents">
         {component && <span>{component}</span>}
         <span>{text}</span>

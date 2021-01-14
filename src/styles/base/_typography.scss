@@ -10,6 +10,12 @@ body {
   font-family: "roboto-light";
   font-size: 1.4rem;
   font-weight: 400;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .text-tertiary {
@@ -21,5 +27,5 @@ body {
 .small-text-primary {
   font-size: 1.1rem;
   color: #5d5d5d;
-  font-family: 'roboto-regular';
+  font-family: "roboto-regular";
 }
