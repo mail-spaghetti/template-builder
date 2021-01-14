@@ -22,47 +22,47 @@ export const CARDS = [
   {
     text: "TEXT",
     icon: "Text",
-    component: "INPUT",
+    component: "Input",
   },
   {
     text: "IMAGE",
     icon: "Image",
-    component: "INPUT",
+    component: "Input",
   },
   {
     text: "GIF",
     icon: "Gif",
-    component: "INPUT",
+    component: "Input",
   },
   {
     text: "BUTTON",
     icon: "Button",
-    component: "DRAFTBUTTON",
+    component: "DraftButton",
   },
   {
     text: "DIVIDER",
     icon: "Divider",
-    component: "INPUT",
+    component: "HorizontalRule",
   },
   {
     text: "SPACER",
     icon: "Spacer",
-    component: "INPUT",
+    component: "Input",
   },
   {
     text: "SOCIAL",
     icon: "Social",
-    component: "INPUT",
+    component: "Input",
   },
   {
     text: "VIDEO",
     icon: "Video",
-    component: "INPUT",
+    component: "Input",
   },
   {
     text: "HTML",
     icon: "Code",
-    component: "INPUT",
+    component: "Input",
   },
 ];
 
