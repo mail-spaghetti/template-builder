@@ -6,6 +6,10 @@
   margin-top: 2rem !important;
 }
 
+.u-padding-light {
+  padding: 1rem !important;
+}
+
 .u-padding-small {
   padding: 1.5rem !important;
 }
@@ -24,6 +28,14 @@
 
 .u-display-flex {
   display: flex !important;
+  &--2 {
+    > div {
+      display: inline-block !important;
+      &:not(:first-child) {
+        margin-left: 2rem;
+      }
+    }
+  }
 }
 
 .u-display-flex-between {
