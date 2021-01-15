@@ -1,5 +1,7 @@
 import React, { Fragment, useEffect } from "react";
+
 import { BORDER_SETTINGS } from "../../views/home/data";
+import Input from "../atoms/Input";
 
 import Text from "../atoms/Text";
 
@@ -10,8 +12,22 @@ const Paper = ({ properties, className }) => {
     </div>
   );
 
+  useEffect(() => {
+    console.log(properties);
+  }, []);
   const getPropertyPrinted = (value, index) => {
     switch (value) {
+      case "link":
+        return (
+          <div key={index} className="paper__link">
+            <div className="paper__link--icon">
+              {require(`../../utils/icons/${properties[value].icon}`).default()}
+            </div>
+            <div className="paper__link--input">
+              <Input value={properties[value].input} />
+            </div>
+          </div>
+        );
       case "color":
         return (
           <div

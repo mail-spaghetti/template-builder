@@ -3,6 +3,7 @@
     overflow-y: scroll;
     height: 54rem;
   }
+  
   &__type {
     background: $color-white;
     width: 34.5rem;
@@ -44,5 +45,11 @@
         margin-left: 1rem;
       }
     }
+  }
+
+  &__button {
+    color: #5D5D5D;
+    font-size: 1.4rem;
+    font-family: 'roboto-regular';
   }
 }

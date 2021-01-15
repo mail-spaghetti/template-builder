@@ -1,4 +1,7 @@
 .paper {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
   cursor: pointer;
   background: #fafafa;
   border: 1px solid #d0d0d0;
@@ -42,6 +45,28 @@
     width: 4.5rem;
     height: 2.6rem;
     border-radius: 0.5rem;
+  }
+
+  &__link {
+    display: inline-block;
+    width: 100%;
+    height: inherit;
+    &--icon {
+      display: inline-block;
+      background: #888888;
+      width: 15%;
+      height: inherit;
+      text-align: center;
+      transform: translateY(-0.5rem);
+      > * {
+        transform: translateY(0.8rem);
+      }
+    }
+    &--input {
+      width: 85%;
+      display: inline-block;
+      height: inherit;
+    }
   }
 
   &--solid {
