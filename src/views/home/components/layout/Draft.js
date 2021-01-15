@@ -106,18 +106,18 @@ const Layout = ({ height, component, structure, dispatch }) => {
             }}
           >
             {Array.from(Array(structure.columns), (e, i) => (
-              <td style={{ width: "100%" }}>
+              <div style={{ width: "100%" }}>
                 <div ref={dropRef} className="draft__dragContent">
                   <SnapLeaflet _leaflet="inner" />
                   <div onChange={onHandleTextChange}>
                     {Component.default(content.component)}
                   </div>
                 </div>
-              </td>
+              </div>
             ))}
           </tr>
         ) : (
-          <tr
+          <div
             style={{
               display: "flex",
               alignItems: "center",
@@ -125,16 +125,20 @@ const Layout = ({ height, component, structure, dispatch }) => {
             }}
           >
             {Array.from(Array(structure.columns), (e, i) => (
-              <td style={{ width: "100%" }} key={i} ref={dropRef}>
+              <div
+                style={{ width: "100%", marginLeft: "1rem" }}
+                key={i}
+                ref={dropRef}
+              >
                 <div className="draft__contents">
                   <div>
                     <Drop />
                   </div>
                   <div>{DEFAULT_LEAF_VALUE}</div>
                 </div>
-              </td>
+              </div>
             ))}
-          </tr>
+          </div>
         )}
       </Fragment>
     );

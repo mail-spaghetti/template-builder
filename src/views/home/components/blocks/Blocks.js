@@ -1,9 +1,12 @@
 import React from "react";
+import { connect } from "react-redux";
 
 import Block from "./Block";
-import { CARDS, ITEMS } from "../../data";
+import Settings from "../settings/Settings";
 
-const Blocks = () => {
+import { CARDS, ITEMS, OPTIONS } from "../../data";
+
+const Blocks = ({ dispatch, selection, selected, type }) => {
   const generateBlocks = () => {
     const rows = [...Array(Math.ceil(CARDS.length / 3))];
     const blockRows = rows.map((row, index) =>
@@ -13,7 +16,7 @@ const Blocks = () => {
       <div className="a-row" key={index}>
         {row.map((block, idx) => (
           <div className="a-col-1-of-3" key={`${index}-${idx}`}>
-            <Block block={block} />
+            <Block block={block} dispatch={dispatch} />
           </div>
         ))}
       </div>
@@ -21,7 +24,21 @@ const Blocks = () => {
     return blocks;
   };
 
-  return <div className="u-padding-custom-1">{generateBlocks()}</div>;
+  return (
+    <div className="u-padding-custom-1">
+      {selection === OPTIONS[0] && selected ? (
+        <Settings type={type} />
+      ) : (
+        generateBlocks()
+      )}
+    </div>
+  );
 };
 
-export default Blocks;
+const mapStateToProps = (state) => ({
+  selection: state.option.selection,
+  selected: state.option.selected,
+  type: state.option.type,
+});
+
+export default connect(mapStateToProps)(Blocks);

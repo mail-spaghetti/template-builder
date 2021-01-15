@@ -1,9 +1,21 @@
+.u-margin-top-x-light {
+  margin-top: 0.5rem !important;
+}
+
 .u-margin-top-light {
   margin-top: 1.2rem !important;
 }
 
 .u-margin-top-small {
   margin-top: 2rem !important;
+}
+
+.u-padding-none {
+  padding: 0 !important;
+}
+
+.u-padding-light {
+  padding: 1rem !important;
 }
 
 .u-padding-small {
@@ -24,6 +36,14 @@
 
 .u-display-flex {
   display: flex !important;
+  &--2 {
+    > div {
+      display: inline-block !important;
+      &:not(:first-child) {
+        margin-left: 2rem;
+      }
+    }
+  }
 }
 
 .u-display-flex-between {

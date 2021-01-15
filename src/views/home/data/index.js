@@ -22,12 +22,12 @@ export const CARDS = [
   {
     text: "TEXT",
     icon: "Text",
-    component: "Input",
+    component: "DraftInput",
   },
   {
     text: "IMAGE",
     icon: "Image",
-    component: "Input",
+    component: "DraftInput",
   },
   {
     text: "GIF",
@@ -47,12 +47,12 @@ export const CARDS = [
   {
     text: "SPACER",
     icon: "Spacer",
-    component: "Input",
+    component: "DraftInput",
   },
   {
     text: "SOCIAL",
     icon: "Social",
-    component: "Input",
+    component: "DraftInput",
   },
   {
     text: "VIDEO",
@@ -62,7 +62,7 @@ export const CARDS = [
   {
     text: "HTML",
     icon: "Code",
-    component: "Input",
+    component: "DraftInput",
   },
 ];
 
