@@ -1,7 +1,14 @@
 import React from "react";
 
-const ComponentsSettings = () => {
-  return <div>ComponentSettings</div>;
+const ComponentsSettings = ({ type, ...rest }) => {
+  return (
+    <div>
+      {require(`./${type.replace(" Settings", "")}Settings.js`).default({
+        type: type || selection,
+        ...rest,
+      })}
+    </div>
+  );
 };
 
 export default ComponentsSettings;
