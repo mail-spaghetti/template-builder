@@ -4,7 +4,7 @@ import Plus from "../../utils/icons/Plus";
 import Text from "../atoms/Text";
 
 const Knob = ({ className, content = 0, onHandleClick }) => (
-  <div className={(className, "knob")}>
+  <div className={`${className} knob`}>
     <div
       className="knob__icon knob__icon--left knob__icon--minus"
       onClick={() => onHandleClick(-1)}
