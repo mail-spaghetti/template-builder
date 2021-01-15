@@ -71,21 +71,70 @@ const componentsReducerDefaultState = {
       url: null,
       text: "Alt text",
     },
-    imageSize: '300',
-    margin: '15',
+    imageSize: "300",
+    margin: "15",
     mobile: true,
     desktop: false,
-  }
-
+  },
 };
 
 const componentsReducer = (
   state = componentsReducerDefaultState,
-  { type, activeContent }
+  { type, activeContent, payload }
 ) => {
   switch (type) {
     case "SET_ACTIVE_CONTENT":
       return { ...state, activeContent };
+    case "SET_TEXT_MARGIN_TOP":
+      return {
+        ...state,
+        text: {
+          ...state.text,
+          marginTop: (parseInt(state.text.marginTop) + payload).toString(),
+        },
+      };
+    case "SET_TEXT_MARGIN_BOTTOM":
+      return {
+        ...state,
+        text: {
+          ...state.text,
+          marginBottom: (
+            parseInt(state.text.marginBottom) + payload
+          ).toString(),
+        },
+      };
+    case "SET_TEXT_MARGIN_LEFT":
+      return {
+        ...state,
+        text: {
+          ...state.text,
+          marginLeft: (parseInt(state.text.marginLeft) + payload).toString(),
+        },
+      };
+    case "SET_TEXT_MARGIN_RIGHT":
+      return {
+        ...state,
+        text: {
+          ...state.text,
+          marginRight: (parseInt(state.text.marginRight) + payload).toString(),
+        },
+      };
+    case "SHOW_TEXT_DESKTOP":
+      return {
+        ...state,
+        text: {
+          ...state.text,
+          desktop: !state.text.desktop,
+        },
+      };
+    case "SHOW_TEXT_MOBILE":
+      return {
+        ...state,
+        text: {
+          ...state.text,
+          mobile: !state.text.mobile,
+        },
+      };
     default:
       return state;
   }
