@@ -1,16 +1,23 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { changeSelection } from "../../../actions/options.action";
+import {
+  changeSelection,
+  setSelected,
+  setType,
+} from "../../../actions/options.action";
 import { OPTIONS } from "../data";
 import Blocks from "./blocks/Blocks";
 import Options from "./options/Options";
 import Structure from "./structure/Structure";
-import Settings from './settings/Settings';
+import Settings from "./settings/Settings";
 
 class Choice extends Component {
-  onHandleSelection = (selection) =>
+  onHandleSelection = (selection) => {
+    this.props.dispatch(setSelected({ selected: false }));
+    this.props.dispatch(setType({ type: null }));
     this.props.dispatch(changeSelection({ selection }));
+  };
 
   render() {
     return (
