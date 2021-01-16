@@ -3,30 +3,43 @@ export const setActiveContent = ({ activeContent = 1 }) => ({
   activeContent,
 });
 
-export const setTextMarginTop = (value = 1) => ({
-  type: "SET_TEXT_MARGIN_TOP",
+export const setMarginTop = (value = 1, block) => ({
+  type: "SET_MARGIN_TOP",
   payload: value,
+  block,
 });
 
-export const setTextMarginBottom = (value = 1) => ({
-  type: "SET_TEXT_MARGIN_BOTTOM",
+export const setMarginBottom = (value = 1, block) => ({
+  type: "SET_MARGIN_BOTTOM",
   payload: value,
+  block,
 });
 
-export const setTextMarginRight = (value = 1) => ({
-  type: "SET_TEXT_MARGIN_RIGHT",
+export const setMarginRight = (value = 1, block) => ({
+  type: "SET_MARGIN_RIGHT",
   payload: value,
+  block,
 });
 
-export const setTextMarginLeft = (value = 1) => ({
-  type: "SET_TEXT_MARGIN_LEFT",
+export const setMarginLeft = (value = 1, block) => ({
+  type: "SET_MARGIN_LEFT",
   payload: value,
+  block,
 });
 
-export const showTextDestkop = () => ({
-  type: "SHOW_TEXT_DESKTOP",
+export const showDestkop = ({ block }) => ({
+  type: "SHOW_DESKTOP",
+  block,
 });
 
-export const showTextMobile = () => ({
-  type: "SHOW_TEXT_MOBILE",
+export const showMobile = ({ block }) => ({
+  type: "SHOW_MOBILE",
+  block,
+});
+
+export const setURL = (value, block, prop) => ({
+  type: "SET_URL",
+  payload: value,
+  block,
+  prop,
 });

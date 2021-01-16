@@ -23,10 +23,23 @@ const componentsReducerDefaultState = {
   },
   gif: {
     file: null,
-    sourceURL: null,
-    properties: {
-      url: null,
-      text: "Alt text",
+    sourceURL: {
+      link: {
+        icon: "Link",
+        input: "http://",
+      },
+    },
+    gifURL: {
+      link: {
+        icon: "Link",
+        input: "http://",
+      },
+    },
+    gifText: {
+      link: {
+        icon: "Alt",
+        input: "Alt",
+      },
     },
     align: "left",
     marginTop: "15",
@@ -80,59 +93,75 @@ const componentsReducerDefaultState = {
 
 const componentsReducer = (
   state = componentsReducerDefaultState,
-  { type, activeContent, payload }
+  { type, activeContent, payload, block, prop }
 ) => {
   switch (type) {
     case "SET_ACTIVE_CONTENT":
       return { ...state, activeContent };
-    case "SET_TEXT_MARGIN_TOP":
+    case "SET_MARGIN_TOP":
       return {
         ...state,
-        text: {
-          ...state.text,
-          marginTop: (parseInt(state.text.marginTop) + payload).toString(),
+        [block]: {
+          ...state[block],
+          marginTop: (parseInt(state[block].marginTop) + payload).toString(),
         },
       };
-    case "SET_TEXT_MARGIN_BOTTOM":
+    case "SET_MARGIN_BOTTOM":
       return {
         ...state,
-        text: {
-          ...state.text,
+        [block]: {
+          ...state[block],
           marginBottom: (
-            parseInt(state.text.marginBottom) + payload
+            parseInt(state[block].marginBottom) + payload
           ).toString(),
         },
       };
-    case "SET_TEXT_MARGIN_LEFT":
+    case "SET_MARGIN_LEFT":
       return {
         ...state,
-        text: {
-          ...state.text,
-          marginLeft: (parseInt(state.text.marginLeft) + payload).toString(),
+        [block]: {
+          ...state[block],
+          marginLeft: (parseInt(state[block].marginLeft) + payload).toString(),
         },
       };
-    case "SET_TEXT_MARGIN_RIGHT":
+    case "SET_MARGIN_RIGHT":
       return {
         ...state,
-        text: {
-          ...state.text,
-          marginRight: (parseInt(state.text.marginRight) + payload).toString(),
+        [block]: {
+          ...state[block],
+          marginRight: (
+            parseInt(state[block].marginRight) + payload
+          ).toString(),
         },
       };
-    case "SHOW_TEXT_DESKTOP":
+    case "SHOW_DESKTOP":
       return {
         ...state,
-        text: {
-          ...state.text,
-          desktop: !state.text.desktop,
+        [block]: {
+          ...state[block],
+          desktop: !state[block].desktop,
         },
       };
-    case "SHOW_TEXT_MOBILE":
+    case "SHOW_MOBILE":
       return {
         ...state,
-        text: {
-          ...state.text,
-          mobile: !state.text.mobile,
+        [block]: {
+          ...state[block],
+          mobile: !state[block].mobile,
+        },
+      };
+    case "SET_URL":
+      return {
+        ...state,
+        [block]: {
+          ...state[block],
+          [prop]: {
+            ...state[block][prop],
+            link: {
+              ...state[block][prop].link,
+              input: payload,
+            },
+          },
         },
       };
     default:

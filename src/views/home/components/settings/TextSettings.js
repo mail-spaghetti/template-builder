@@ -1,12 +1,12 @@
 import React from "react";
 
 import {
-  setTextMarginBottom,
-  setTextMarginLeft,
-  setTextMarginRight,
-  setTextMarginTop,
-  showTextDestkop,
-  showTextMobile,
+  setMarginBottom,
+  setMarginLeft,
+  setMarginRight,
+  setMarginTop,
+  showDestkop,
+  showMobile,
 } from "../../../../actions/components.action";
 
 import HorizontalRule from "../../../../components/atoms/HorizontalRule";
@@ -14,16 +14,17 @@ import Text from "../../../../components/atoms/Text";
 import DisplaySlider from "../../../../components/organisms/DisplaySlider";
 import MarginSet from "../../../../components/organisms/MarginSet";
 
-const TextSettings = ({ component, dispatch }) => {
-  const { text: textSettingValues } = component;
+const TextSettings = ({ type, component, dispatch }) => {
+  const { text: textSettingValues } = component,
+    block = type.toLowerCase();
 
   const funcMap = {
-    top: (value) => dispatch(setTextMarginTop(value)),
-    bottom: (value) => dispatch(setTextMarginBottom(value)),
-    right: (value) => dispatch(setTextMarginRight(value)),
-    left: (value) => dispatch(setTextMarginLeft(value)),
-    mobile: () => dispatch(showTextMobile()),
-    desktop: () => dispatch(showTextDestkop()),
+    top: (value) => dispatch(setMarginTop(value, block)),
+    bottom: (value) => dispatch(setMarginBottom(value, block)),
+    right: (value) => dispatch(setMarginRight(value, block)),
+    left: (value) => dispatch(setMarginLeft(value, block)),
+    mobile: () => dispatch(showMobile({ block })),
+    desktop: () => dispatch(showDestkop({ block })),
   };
 
   const onHandleMarginSet = (value, position) => funcMap[position](value);
