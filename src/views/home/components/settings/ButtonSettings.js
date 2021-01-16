@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import Button from "../../../../components/atoms/Button";
 import HorizontalRule from "../../../../components/atoms/HorizontalRule";
@@ -8,57 +8,98 @@ import DisplaySlider from "../../../../components/organisms/DisplaySlider";
 import Knob from "../../../../components/organisms/Knob";
 import MarginSet from "../../../../components/organisms/MarginSet";
 
-const ButtonSettings = () => (
-  <div className="settings__scroll u-padding-light">
-    <Button variant="tertiary" text="Choose GIF" className="settings__button" />
-    <HorizontalRule />
-    <Text content="Link" className="settings__heading" />
-    <Paper
-      properties={{
-        link: {
-          icon: "Link",
-          input: "http://www.google.com",
-        },
-      }}
-      className="u-padding-none"
-    />
-    <HorizontalRule />
-    <Text content="Properties" className="settings__heading" />
-    <div className="row">
-      <div className="col-1-of-2">
-        <Text content="Background color" />
-        <Paper
-          className="u-margin-top-light"
-          properties={{
-            color: "#D54D42",
-            text: "#D54D42",
-          }}
-        />
+import {
+  setMarginBottom,
+  setMarginLeft,
+  setMarginRight,
+  setMarginTop,
+  setURL,
+  showDestkop,
+  showMobile,
+} from "../../../../actions/components.action";
+
+const ButtonSettings = ({ type, component, dispatch }) => {
+  useEffect(() => {
+    console.log(type, component);
+  }, []);
+  const { button: buttonSettingValues } = component,
+    block = type.toLowerCase();
+
+  const funcMap = {
+    top: (value) => dispatch(setMarginTop(value, block)),
+    bottom: (value) => dispatch(setMarginBottom(value, block)),
+    right: (value) => dispatch(setMarginRight(value, block)),
+    left: (value) => dispatch(setMarginLeft(value, block)),
+    mobile: () => dispatch(showMobile({ block })),
+    desktop: () => dispatch(showDestkop({ block })),
+    linkInput: (value, prop) => dispatch(setURL(value, block, prop)),
+  };
+
+  const onHandleMarginSet = (value, position) => funcMap[position](value);
+
+  const onHandleSliderChange = (position) => funcMap[position]();
+
+  const onHandleInputChange = (e, prop) =>
+    funcMap["linkInput"](e.target.value, prop);
+
+  return (
+    <div className="settings__scroll u-padding-light">
+      <Button
+        variant="tertiary"
+        text="Choose GIF"
+        className="settings__button"
+      />
+      <HorizontalRule />
+      <Text content="Link" className="settings__heading" />
+      <Paper
+        properties={buttonSettingValues.buttonURL}
+        onHandleInputChange={(e) => onHandleInputChange(e, "buttonURL")}
+        className="u-padding-none"
+      />
+      <HorizontalRule />
+      <Text content="Properties" className="settings__heading" />
+      <div className="row">
+        <div className="col-1-of-2">
+          <Text content="Background color" />
+          <Paper
+            className="u-margin-top-light"
+            properties={{
+              color: "#D54D42",
+              text: "#D54D42",
+            }}
+          />
+        </div>
+        <div className="col-1-of-2">
+          <Text content="Button Text color" />
+          <Paper
+            className="u-margin-top-light"
+            properties={{
+              color: "#FFFFFF",
+              text: "#FFFFFF",
+            }}
+          />
+        </div>
       </div>
-      <div className="col-1-of-2">
-        <Text content="Button Text color" />
-        <Paper
-          className="u-margin-top-light"
-          properties={{
-            color: "#FFFFFF",
-            text: "#FFFFFF",
-          }}
-        />
+      <div className="row u-margin-bottom-none">
+        <div className="col-1-of-2">
+          <Text content="Border Radius" />
+          <Knob className="u-margin-top-light" />
+        </div>
+        <div className="col-1-of-2">&nbsp;</div>
       </div>
+      <HorizontalRule />
+      <Text content="Margin" className="settings__heading" />
+      <MarginSet
+        {...buttonSettingValues}
+        onHandleMarginSet={onHandleMarginSet}
+      />
+      <HorizontalRule />
+      <DisplaySlider
+        {...buttonSettingValues}
+        onSliderValueChange={onHandleSliderChange}
+      />
     </div>
-    <div className="row u-margin-bottom-none">
-      <div className="col-1-of-2">
-        <Text content="Border Radius" />
-        <Knob className="u-margin-top-light" />
-      </div>
-      <div className="col-1-of-2">&nbsp;</div>
-    </div>
-    <HorizontalRule />
-    <Text content="Margin" className="settings__heading" />
-    <MarginSet />
-    <HorizontalRule />
-    <DisplaySlider />
-  </div>
-);
+  );
+};
 
 export default ButtonSettings;

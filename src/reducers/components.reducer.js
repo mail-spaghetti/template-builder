@@ -53,6 +53,12 @@ const componentsReducerDefaultState = {
     file: null,
     link: null,
     align: "left",
+    buttonURL: {
+      link: {
+        icon: "Link",
+        input: "http://www.google.com",
+      },
+    },
     properties: {
       buttonColor: "#D5D42",
       buttonTextColor: "#FFFFFF",
