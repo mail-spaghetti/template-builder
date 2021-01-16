@@ -8,39 +8,19 @@ import DisplaySlider from "../../../../components/organisms/DisplaySlider";
 import Knob from "../../../../components/organisms/Knob";
 import MarginSet from "../../../../components/organisms/MarginSet";
 
-import {
-  setMarginBottom,
-  setMarginLeft,
-  setMarginRight,
-  setMarginTop,
-  setURL,
-  showDestkop,
-  showMobile,
-} from "../../../../actions/components.action";
+import { funcMap } from "../../data/helper";
 
 const ButtonSettings = ({ type, component, dispatch }) => {
-  useEffect(() => {
-    console.log(type, component);
-  }, []);
   const { button: buttonSettingValues } = component,
     block = type.toLowerCase();
 
-  const funcMap = {
-    top: (value) => dispatch(setMarginTop(value, block)),
-    bottom: (value) => dispatch(setMarginBottom(value, block)),
-    right: (value) => dispatch(setMarginRight(value, block)),
-    left: (value) => dispatch(setMarginLeft(value, block)),
-    mobile: () => dispatch(showMobile({ block })),
-    desktop: () => dispatch(showDestkop({ block })),
-    linkInput: (value, prop) => dispatch(setURL(value, block, prop)),
-  };
+  const onHandleMarginSet = (value, position) =>
+    dispatch(funcMap[position](value, block));
 
-  const onHandleMarginSet = (value, position) => funcMap[position](value);
-
-  const onHandleSliderChange = (position) => funcMap[position]();
+  const onHandleSliderChange = (position) => dispatch(funcMap[position](block));
 
   const onHandleInputChange = (e, prop) =>
-    funcMap["linkInput"](e.target.value, prop);
+    dispatch(funcMap["linkInput"](e.target.value, prop, block));
 
   return (
     <div className="settings__scroll u-padding-light">
