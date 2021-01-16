@@ -17,7 +17,7 @@ const TextSettings = ({ type, component, dispatch }) => {
   const onHandleSliderChange = (position) => dispatch(funcMap[position](block));
 
   return (
-    <div className="u-padding-light">
+    <div className="u-padding-small">
       <Text className="settings__heading" content="Margin" />
       <MarginSet {...textSettingValues} onHandleMarginSet={onHandleMarginSet} />
       <HorizontalRule />

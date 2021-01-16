@@ -13,7 +13,7 @@ const Blocks = ({ dispatch, selection, selected, type }) => {
       CARDS.slice(index * 3, index * 3 + 3)
     );
     const blocks = blockRows.map((row, index) => (
-      <div className="a-row" key={index}>
+      <div className="a-row u-padding-custom-2" key={index}>
         {row.map((block, idx) => (
           <div className="a-col-1-of-3" key={`${index}-${idx}`}>
             <Block block={block} dispatch={dispatch} />

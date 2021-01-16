@@ -9,7 +9,7 @@ const ComponentsSettings = ({ type, ...rest }) => {
   const onHandleSettingsExit = () => rest.dispatch(setSelected({ selected: false }));
   return (
     <div className="settings">
-      <div className="settings__type u-margin-top-light">
+      <div className="settings__type">
         <Text className="text-tertiary" content={type} />
         <div className="settings__back" onClick={onHandleSettingsExit}>
           <span>

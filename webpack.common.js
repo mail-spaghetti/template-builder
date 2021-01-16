@@ -28,7 +28,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       hash: true,
-      title: "Mail Speghetti",
+      title: "Mail Spaghetti",
       cache: false,
       publicPath: "/dist",
       filename: "../index.html",
