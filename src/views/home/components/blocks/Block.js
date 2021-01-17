@@ -1,6 +1,6 @@
 import React from "react";
 import { useDrag } from "react-dnd";
-import { setSelected, setType } from "../../../../actions/options.action";
+import { setSelected, setType } from "../../../../actions/optionsAction";
 
 import Card from "../../../../components/molecules/Cards";
 import { ITEMS } from "../../data";
