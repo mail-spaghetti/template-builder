@@ -13,6 +13,10 @@ const Layout = ({ height, component, structure, dispatch }) => {
     setInitLayout();
   }, [component, structure]);
 
+  useEffect(() => {
+    setInitLayout();
+  }, []);
+
   const [contents, setContents] = useState([]);
 
   const [{ isOver }, dropRef] = useDrop({
@@ -24,12 +28,13 @@ const Layout = ({ height, component, structure, dispatch }) => {
   });
 
   const onChangeActiveContent = (e, activeContent) => {
-    e.stopPropagation();
-    dispatch(setActiveContent({ activeContent }));
+    if (e.target.className === "draft__blocks")
+      dispatch(setActiveContent({ activeContent }));
   };
 
+  const changeLayout = () => {};
+
   const setNewLayout = (layoutContent) => {
-    console.log("called");
     const blocklayout = require("../../../../components/molecules/BlockLayout");
     let existingContents = contents.slice();
     existingContents = existingContents.map((content, idx) => {
@@ -159,7 +164,7 @@ const Layout = ({ height, component, structure, dispatch }) => {
               <div
                 key={idx}
                 className="draft__blockEvent"
-                onDoubleClick={(e) => onChangeActiveContent(e, idx + 1)}
+                onClick={(e) => onChangeActiveContent(e, idx + 1)}
               >
                 {Object.values(content)[0].content}
               </div>

@@ -1,5 +1,6 @@
 const componentsReducerDefaultState = {
   activeContent: 1,
+  activeSubcontent: 1,
   component: null,
   text: {
     marginTop: "15",
