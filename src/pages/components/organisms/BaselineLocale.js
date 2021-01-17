@@ -1,5 +1,5 @@
 import React from "react";
-import { FONT_STYLES } from "../../utils";
+import { FONT_STYLES } from "../../../utils";
 
 import Text from "../atoms/Text";
 

@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useDrop } from "react-dnd";
 
-import { setActiveContent } from "../../../../actions/components.action";
+import { setActiveContent } from "../../../../actions/componentsAction";
 
 import SnapLeaflet from "./SnapLeaflet";
 import Drop from "../../../../utils/icons/Drop";
