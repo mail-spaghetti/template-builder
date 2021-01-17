@@ -15,30 +15,55 @@ git clone https://github.com/mailspaghetti/template-builder && cd template-build
 
 # Code Structure
 └── src
+
     ├── api
+    
     │   ├── apiHandler.js
+    
     │   └── userApi.js
+    
     ├── common
+    
     │   ├── components
-    │   │   └── ProfileComponent.jsx
+    
+    │   │   └── ProfileComponent.js
+    
     │   └── containers
+    
     │       └── ProfileContainer.js
+    
     ├── pages
+    
     │   └── HomePage
+    
     │       ├── components
-    │       │   ├── ArticleListComponent.jsx
-    │       │   ├── CategoryComponent.jsx
-    │       │   └── HomePageComponent.jsx
+    
+    │       │   ├── ArticleListComponent.js
+    
+    │       │   ├── CategoryComponent.js
+    
+    │       │   └── HomePageComponent.js
+    
     │       └── HomePageContainer.js
+    
     ├── state
+    
     │   ├── store.js
+    
     ├── reducers
+    
     │   ├── homeReducer.js
+    
     │   └── userReducer.js
+    
     └── utils
+    
         └── authUtils.js 
+        
     ├── index.js
+    
     ├── routes.js
+    
 
 ## components
 Presentational components
