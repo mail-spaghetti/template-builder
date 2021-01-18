@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Children, Fragment, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useDrop } from "react-dnd";
 
@@ -6,11 +6,12 @@ import { setActiveContent } from "../../../../actions/components.action";
 
 import SnapLeaflet from "./SnapLeaflet";
 import Drop from "../../../../utils/icons/Drop";
-import { DEFAULT_LEAF_VALUE, ITEMS } from "../../data";
+import { DEFAULT_LEAF_VALUE, ITEMS, DEFAULT_STYLE } from "../../data";
+import { setSelected, setType } from "../../../../actions/options.action";
 
 const Layout = ({ height, component, structure, dispatch }) => {
   useEffect(() => {
-    setInitLayout();
+    changeLayout();
   }, [component, structure]);
 
   useEffect(() => {
@@ -27,14 +28,55 @@ const Layout = ({ height, component, structure, dispatch }) => {
     }),
   });
 
-  const onChangeActiveContent = (e, activeContent) => {
-    if (e.target.className === "draft__blocks")
-      dispatch(setActiveContent({ activeContent }));
+  const onChangeActiveContent = (e, activeContent) =>
+    e.target.className === "draft__blocks" &&
+    dispatch(setActiveContent({ activeContent }));
+
+  const changeLayout = () => {
+    let existingContents = contents.slice();
+    existingContents = existingContents.map((content, idx) => {
+      if (idx == component.activeContent - 1) {
+        return {
+          [idx]: {
+            content: (
+              <div
+                key={idx}
+                className="draft__blocks draft__blocks--active"
+                style={DEFAULT_STYLE}
+              >
+                {addActiveSnap()}
+              </div>
+            ),
+          },
+        };
+      }
+
+      const ol = Object.values(content)[0].content;
+
+      let iter = null;
+      (function fn(children) {
+        Children.map(children, (child) => {
+          if (child?.props?.children) fn(child.props.children);
+          if (child?.props?.id == "blocks") iter = child;
+        });
+      })(ol);
+      if (iter)
+        return {
+          [idx]: {
+            content: <div style={DEFAULT_STYLE}>{iter}</div>,
+          },
+        };
+      return content;
+    });
+    setContents(existingContents);
   };
 
-  const changeLayout = () => {};
-
   const setNewLayout = (layoutContent) => {
+    const type = layoutContent.content.text;
+    dispatch(
+      setType({ type: type[0].toUpperCase() + type.substring(1).toLowerCase() })
+    );
+    dispatch(setSelected({ selected: true }));
     const blocklayout = require("../../../../components/molecules/BlockLayout");
     let existingContents = contents.slice();
     existingContents = existingContents.map((content, idx) => {
@@ -45,11 +87,7 @@ const Layout = ({ height, component, structure, dispatch }) => {
               <div
                 key={idx}
                 className="draft__blocks draft__blocks--active"
-                style={{
-                  minHeight: "12rem",
-                  padding: "2.5rem 14rem",
-                  position: "relative",
-                }}
+                style={DEFAULT_STYLE}
               >
                 {addActiveSnap(blocklayout, layoutContent.content)}
               </div>
@@ -71,11 +109,7 @@ const Layout = ({ height, component, structure, dispatch }) => {
           <div
             key={i}
             className="draft__blocks draft__blocks--active"
-            style={{
-              minHeight: "12rem",
-              padding: "1.5rem 14rem",
-              position: "relative",
-            }}
+            style={DEFAULT_STYLE}
           >
             {addActiveSnap()}
           </div>
@@ -114,7 +148,7 @@ const Layout = ({ height, component, structure, dispatch }) => {
               <div style={{ width: "100%" }}>
                 <div ref={dropRef} className="draft__dragContent">
                   <SnapLeaflet _leaflet="inner" />
-                  <div onChange={onHandleTextChange}>
+                  <div className="el" onChange={onHandleTextChange}>
                     {Component.default(content.component)}
                   </div>
                 </div>
