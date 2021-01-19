@@ -32,7 +32,8 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     dispatch(setActiveSubContent({ activeSubcontent: hoverIndex + 1 }));
   };
 
-  const onChangeActiveContent = (index) => {
+  const onChangeActiveContent = (index, content) => {
+    console.log(content);
     dispatch(setActiveContent({ activeContent: index + 1 }));
     dispatch(setActiveSubContent({ activeSubcontent: null }));
   };
@@ -78,9 +79,15 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
           </Fragment>
         );
       case "Text":
-        return <Fragment>{blocklayout.default("DraftText")}</Fragment>;
+        return (
+          <Fragment>
+            {blocklayout.default("DraftText", onHandleChange)}
+          </Fragment>
+        );
     }
   };
+
+  const onHandleChange = (e) => console.log(e.target.innerHTML, component.activeContent, hoverIndex)
 
   return (
     <section className="section-draft">
@@ -89,7 +96,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
           return (
             <div
               key={idx}
-              onClick={() => onChangeActiveContent(idx)}
+              onClick={() => onChangeActiveContent(idx, content)}
               className={`draft__blockEvent ${
                 component.activeContent == idx + 1
                   ? "draft__blockEvent--active"
