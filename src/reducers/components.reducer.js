@@ -101,11 +101,26 @@ const componentsReducerDefaultState = {
 
 const componentsReducer = (
   state = componentsReducerDefaultState,
-  { type, activeContent, payload, block, prop }
+  { type, activeContent, activeSubcontent, payload, block, prop }
 ) => {
   switch (type) {
     case "ADD_CONTENT":
       return { ...state, contents: payload };
+    case "INSERT_CONTENT":
+      return {
+        ...state,
+        contents: [
+          ...state.contents,
+          (state.contents[payload.index - 1] = {
+            content: [
+              ...state.contents[payload.index - 1].content,
+              (state.contents[payload.index - 1].content[payload.subIndex] = {
+                type: "Text",
+              }),
+            ],
+          }),
+        ],
+      };
     case "MODIFY_CONTENT":
       return {
         ...state,
@@ -120,6 +135,8 @@ const componentsReducer = (
       };
     case "SET_ACTIVE_CONTENT":
       return { ...state, activeContent };
+    case "SET_ACTIVE_SUBCONTENT":
+      return { ...state, activeSubcontent };
     case "SET_MARGIN_TOP":
       return {
         ...state,

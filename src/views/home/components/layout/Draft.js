@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import {
   addContent,
   setActiveContent,
+  insertContent,
+  setActiveSubContent,
 } from "../../../../actions/components.action";
 import Drop from "../../../../utils/icons/Drop";
 import { DEFAULT_LEAF_VALUE, ITEMS } from "../../data";
@@ -19,14 +21,21 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
 
   const [{ isOver }, dropRef] = useDrop({
     accept: ITEMS.BLOCK,
-    drop: (item, monitor) => console.log(item),
+    drop: (item, monitor) => insertBlock(item),
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
   });
 
-  const onChangeActiveContent = (index) =>
+  const insertBlock = (item) => {
+    dispatch(insertContent(item, component.activeContent, hoverIndex));
+    dispatch(setActiveSubContent({ activeSubcontent: hoverIndex + 1 }));
+  };
+
+  const onChangeActiveContent = (index) => {
     dispatch(setActiveContent({ activeContent: index + 1 }));
+    dispatch(setActiveSubContent({ activeSubcontent: null }));
+  };
 
   const setInitialLayout = () => {
     let layout = [];
@@ -49,16 +58,28 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     if (idx + 1 === component.activeContent)
       return (
         <Fragment key={index}>
-          <div
-            className="draft__contents"
-            ref={getDropRef(index)}
-            onDragOver={() => setHoverIndex(index)}
-          >
-            <Drop />
-            <div>{DEFAULT_LEAF_VALUE}</div>
+          <div ref={getDropRef(index)} onDragOver={() => setHoverIndex(index)}>
+            {getLeafContent(content, index)}
           </div>
         </Fragment>
       );
+  };
+
+  const getLeafContent = (content, index) => {
+    const blocklayout = require("../../../../components/molecules/BlockLayout");
+    switch (content.content[index].type) {
+      case "default":
+        return (
+          <Fragment>
+            <div className="draft__contents">
+              <Drop />
+              <div>{DEFAULT_LEAF_VALUE}</div>
+            </div>
+          </Fragment>
+        );
+      case "Text":
+        return <Fragment>{blocklayout.default("DraftText")}</Fragment>;
+    }
   };
 
   return (
@@ -78,7 +99,6 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
               {component.activeContent == idx + 1 && <SnapLeaflet />}
               <div className="draft__subBlocks">
                 {content.content.map((subcontent, index) => {
-                  console.log("s", subcontent, index);
                   return (
                     <div
                       key={index}

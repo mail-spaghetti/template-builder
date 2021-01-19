@@ -3,12 +3,26 @@ export const setActiveContent = ({ activeContent = 1 }) => ({
   activeContent,
 });
 
+export const setActiveSubContent = ({ activeSubcontent = 1 }) => ({
+  type: "SET_ACTIVE_SUBCONTENT",
+  activeSubcontent,
+});
+
 export const addContent = (content) => {
   return {
     type: "ADD_CONTENT",
     payload: content,
   };
 };
+
+export const insertContent = (content, index, subIndex) => ({
+  type: "INSERT_CONTENT",
+  payload: {
+    content,
+    index,
+    subIndex,
+  },
+});
 
 export const modifyContent = (newContent, columns) => ({
   type: "MODIFY_CONTENT",
