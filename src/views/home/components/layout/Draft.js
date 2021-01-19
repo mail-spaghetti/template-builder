@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import SnapLeaflet from "./SnapLeaflet";
 
 const Layout = ({ height, component, structure, blockType, dispatch }) => {
   useEffect(() => {
@@ -32,12 +33,32 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
         {contents &&
           contents.map((content, idx) => {
             return (
-              <div key={idx} className="draft__blockEvent">
-                <div className="draft__blockEvent--active">
-                  {content.content.map((subcontent, index) => (
-                    <div key={index}>{subcontent.content}</div>
-                  ))}
-                </div>
+              <div
+                key={idx}
+                className={`draft__blockEvent ${
+                  component.activeContent == idx + 1
+                    ? "draft__blockEvent--active"
+                    : null
+                }`}
+              >
+                {component.activeContent == idx + 1 && <SnapLeaflet />}
+                {content.content.map((subcontent, index) => (
+                  <div
+                    key={index}
+                    className={`draft__subBlockEvent ${
+                      component.activeContent == idx + 1 &&
+                      component.activeSubcontent == index + 1
+                        ? "draft__subBlockEvent--active"
+                        : null
+                    }`}
+                  >
+                    {component.activeContent == idx + 1 &&
+                      component.activeSubcontent == index + 1 && (
+                        <SnapLeaflet _leaflet="inner" />
+                      )}
+                    {subcontent.content}
+                  </div>
+                ))}
               </div>
             );
           })}

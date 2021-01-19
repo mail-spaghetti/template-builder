@@ -1,10 +1,4 @@
 .draft {
-  &__blocks {
-    &--active {
-      border: 1px solid #d54d42;
-    }
-  }
-
   &__contents {
     background: #ededed;
     min-height: 7rem;
@@ -61,8 +55,24 @@
   }
 
   &__blockEvent {
+    min-height: 12rem;
+    padding: 2.5rem 14rem;
+    position: relative;
     display: inline-block;
     width: 100%;
+    &--active {
+      border: 1px solid #d54d42;
+    }
+  }
+
+  &__subBlockEvent {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    min-height: 10rem;
+    &--active {
+      border: 1px solid #00bd1e;
+    }
   }
 
   &__dragContent {
@@ -75,7 +85,7 @@
   }
 
   &__video {
-    background: #F9F9F9;
+    background: #f9f9f9;
     height: 19.6rem;
     display: flex;
     align-items: center;
