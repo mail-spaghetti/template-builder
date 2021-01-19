@@ -104,3 +104,9 @@ export const STRUCTURE_INDICES = [
     columns: [1, 4],
   },
 ];
+
+export const DEFAULT_STYLE = {
+  minHeight: "12rem",
+  padding: "2.5rem 14rem",
+  position: "relative",
+}

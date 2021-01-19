@@ -13,6 +13,7 @@ const Settings = ({ selection, type, ...rest }) => (
 const mapStateToProps = (state) => ({
   selection: state.option.selection,
   type: state.option.type,
+  component: state.component,
   structure: state.structure,
   settings: state.settings,
 });

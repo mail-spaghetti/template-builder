@@ -1,89 +1,62 @@
 import React from "react";
+
 import Button from "../../../../components/atoms/Button";
 import HorizontalRule from "../../../../components/atoms/HorizontalRule";
 import Text from "../../../../components/atoms/Text";
 import Paper from "../../../../components/molecules/Paper";
-import Slider from "../../../../components/molecules/Slider";
-import Knob from "../../../../components/organisms/Knob";
+import DisplaySlider from "../../../../components/organisms/DisplaySlider";
+import MarginSet from "../../../../components/organisms/MarginSet";
 
-const GifSettings = () => (
-  <div className="settings__scroll u-padding-light">
-    <Button
-      variant="tertiary"
-      text="Choose Image"
-      className="settings__button"
-    />
-    <HorizontalRule />
-    <Text content="Source url" className="settings__heading" />
-    <Paper
-      properties={{
-        link: {
-          icon: "Link",
-          input: "http://",
-        },
-      }}
-      className="u-padding-none"
-    />
-    <HorizontalRule />
-    <Text content="Gif Properites" className="settings__heading" />
-    <Paper
-      properties={{
-        link: {
-          icon: "Link",
-          input: "http://",
-        },
-      }}
-      className="u-padding-none"
-    />
-    <Paper
-      properties={{
-        link: {
-          icon: "Alt",
-          input: "Alt",
-        },
-      }}
-      className="u-padding-none u-margin-top-small"
-    />
-    <HorizontalRule />
-    <Text content="Margin" className="settings__heading" />
-    <div className="row">
-      <div className="col-1-of-2">
-        <Text content="Margin Top" />
-        <Knob />
-      </div>
-      <div className="col-1-of-2">
-        <Text content="Margin Bottom" />
-        <Knob />
-      </div>
+import { funcMap } from "../../data/helper";
+
+const GifSettings = ({ type, component, dispatch }) => {
+  const { gif: gifSettings } = component,
+    block = type.toLowerCase();
+
+  const onHandleMarginSet = (value, position) =>
+    dispatch(funcMap[position](value, block));
+
+  const onHandleSliderChange = (position) => dispatch(funcMap[position](block));
+
+  const onHandleInputChange = (e, prop) =>
+    dispatch(funcMap["linkInput"](e.target.value, prop, block));
+
+  return (
+    <div className="settings__scroll u-padding-light">
+      <Button
+        variant="tertiary"
+        text="Choose Image"
+        className="settings__button"
+      />
+      <HorizontalRule />
+      <Text content="Source url" className="settings__heading" />
+      <Paper
+        properties={gifSettings.sourceURL}
+        className="u-padding-none"
+        onHandleInputChange={(e) => onHandleInputChange(e, "sourceURL")}
+      />
+      <HorizontalRule />
+      <Text content="Gif Properites" className="settings__heading" />
+      <Paper
+        properties={gifSettings.gifURL}
+        className="u-padding-none"
+        onHandleInputChange={(e) => onHandleInputChange(e, "gifURL")}
+      />
+      <Paper
+        properties={gifSettings.gifText}
+        className="u-padding-none u-margin-top-small"
+        onHandleInputChange={(e) => onHandleInputChange(e, "gifText")}
+      />
+      <HorizontalRule />
+      <Text content="Margin" className="settings__heading" />
+      <MarginSet {...gifSettings} onHandleMarginSet={onHandleMarginSet} />
+      <HorizontalRule />
+      <DisplaySlider
+        {...gifSettings}
+        onSliderValueChange={onHandleSliderChange}
+      />
     </div>
-    <div className="row u-margin-bottom-none">
-      <div className="col-1-of-2">
-        <Text content="Margin Left" />
-        <Knob />
-      </div>
-      <div className="col-1-of-2">
-        <Text content="Margin Right" />
-        <Knob />
-      </div>
-    </div>
-    <HorizontalRule />
-    <div className="u-display-flex u-display-flex--2">
-      <div>
-        <Slider />
-      </div>
-      <div>
-        <Text content="Hide on mobile" />
-      </div>
-    </div>
-    <div className="u-display-flex u-display-flex--2 u-margin-top-small">
-      <div>
-        <Slider />
-      </div>
-      <div>
-        <Text content="Hide on desktop" />
-      </div>
-    </div>
-  </div>
-);
+  );
+};
 
 export default GifSettings;
