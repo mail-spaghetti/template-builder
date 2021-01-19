@@ -106,6 +106,18 @@ const componentsReducer = (
   switch (type) {
     case "ADD_CONTENT":
       return { ...state, contents: payload };
+    case "MODIFY_CONTENT":
+      return {
+        ...state,
+        contents: state.contents.map((content, idx) => {
+          if (state.activeContent == idx + 1)
+            content.content = Array.from(
+              Array(content.content.length + payload.columns),
+              (e, i) => payload.content
+            );
+          return content;
+        }),
+      };
     case "SET_ACTIVE_CONTENT":
       return { ...state, activeContent };
     case "SET_MARGIN_TOP":

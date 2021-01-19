@@ -17,3 +17,7 @@ export const funcMap = {
   desktop: (block) => showDestkop({ block }),
   linkInput: (value, prop, block) => setURL(value, block, prop),
 };
+
+export const getDefaultLeafValue = () => ({
+  type: "default",
+});

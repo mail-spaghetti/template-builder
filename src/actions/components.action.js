@@ -4,12 +4,16 @@ export const setActiveContent = ({ activeContent = 1 }) => ({
 });
 
 export const addContent = (content) => {
-  console.log('action', content);
   return {
     type: "ADD_CONTENT",
     payload: content,
-  }
+  };
 };
+
+export const modifyContent = (newContent, columns) => ({
+  type: "MODIFY_CONTENT",
+  payload: { content: newContent, columns },
+});
 
 export const setMarginTop = (value = 1, block) => ({
   type: "SET_MARGIN_TOP",

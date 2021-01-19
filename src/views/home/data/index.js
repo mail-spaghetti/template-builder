@@ -1,7 +1,8 @@
 export const OPTIONS = ["Components", "Structure", "Page Settings"];
-export const DEFAULT_LEAF_VALUE = "Drop content here";
 export const INPUT_PLACEHOLDER =
   "This is your new text block with first paragraph.";
+
+export const DEFAULT_LEAF_VALUE = "Drop content here";
 export const IMAGE_WARNING =
   "Not every e-mail client can show background image properly. According to that, set also similar background color";
 export const STRUCT_HEADER = "Columns";
@@ -109,4 +110,4 @@ export const DEFAULT_STYLE = {
   minHeight: "12rem",
   padding: "2.5rem 14rem",
   position: "relative",
-}
+};

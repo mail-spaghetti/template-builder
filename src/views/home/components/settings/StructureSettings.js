@@ -2,8 +2,8 @@ import React from "react";
 
 import { setSelected } from "../../../../actions/options.action";
 import {
-  changeColumns,
   changePadding,
+  modifyColumnStructure,
   setIndependentBorder,
   setMobileStack,
   setSelectedColumn,
@@ -24,11 +24,11 @@ const StructureSettings = ({ type, structure, settings, dispatch }) => {
 
   const onChangeColumn = (status) => {
     if (structure.columns > 1 && structure.columns < 4)
-      dispatch(changeColumns(status));
+      dispatch(modifyColumnStructure(status));
     else if (structure.columns === 4 && status === -1)
-      dispatch(changeColumns(status));
+      dispatch(modifyColumnStructure(status));
     else if (structure.columns === 1 && status === 1)
-      dispatch(changeColumns(status));
+      dispatch(modifyColumnStructure(status));
   };
 
   const onChangeVerticalPadding = (status) => dispatch(changePadding(status));

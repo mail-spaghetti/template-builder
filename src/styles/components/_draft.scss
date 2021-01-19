@@ -75,6 +75,15 @@
     }
   }
 
+  &__subBlocks {
+    display: flex;
+    > * {
+      &:not(:first-child) {
+        margin-left: 1rem;
+      }
+    }
+  }
+
   &__dragContent {
     position: relative;
     background: $color-white;
