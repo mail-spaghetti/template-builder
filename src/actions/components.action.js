@@ -3,6 +3,14 @@ export const setActiveContent = ({ activeContent = 1 }) => ({
   activeContent,
 });
 
+export const addContent = (content) => {
+  console.log('action', content);
+  return {
+    type: "ADD_CONTENT",
+    payload: content,
+  }
+};
+
 export const setMarginTop = (value = 1, block) => ({
   type: "SET_MARGIN_TOP",
   payload: value,

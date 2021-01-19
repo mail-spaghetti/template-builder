@@ -1,7 +1,8 @@
 const componentsReducerDefaultState = {
   activeContent: 1,
-  activeSubcontent: 1,
+  activeSubcontent: null,
   component: null,
+  contents: [],
   text: {
     marginTop: "15",
     marginBottom: "15",
@@ -103,6 +104,8 @@ const componentsReducer = (
   { type, activeContent, payload, block, prop }
 ) => {
   switch (type) {
+    case "ADD_CONTENT":
+      return { ...state, contents: payload };
     case "SET_ACTIVE_CONTENT":
       return { ...state, activeContent };
     case "SET_MARGIN_TOP":
