@@ -1,11 +1,12 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { useDrop } from "react-dnd";
 import { connect } from "react-redux";
 import {
   addContent,
   setActiveContent,
 } from "../../../../actions/components.action";
 import Drop from "../../../../utils/icons/Drop";
-import { DEFAULT_LEAF_VALUE } from "../../data";
+import { DEFAULT_LEAF_VALUE, ITEMS } from "../../data";
 import { getDefaultLeafValue } from "../../data/helper";
 import SnapLeaflet from "./SnapLeaflet";
 
@@ -14,13 +15,21 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     setInitialLayout();
   }, []);
 
-  const [contents, setContents] = useState([]);
+  const [hoverIndex, setHoverIndex] = useState(0);
+
+  const [{ isOver }, dropRef] = useDrop({
+    accept: ITEMS.BLOCK,
+    drop: (item, monitor) => console.log(item),
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
+  });
 
   const onChangeActiveContent = (index) =>
     dispatch(setActiveContent({ activeContent: index + 1 }));
 
   const setInitialLayout = () => {
-    let layout = contents.slice();
+    let layout = [];
     for (let i = 0; i < height.split("px")[0] / 50; i++) {
       layout = [
         ...layout,
@@ -32,11 +41,19 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     dispatch(addContent(layout));
   };
 
+  const getDropRef = (index) => {
+    if (index == hoverIndex) return dropRef;
+  };
+
   const iterateSubcomponent = (idx, index, content) => {
     if (idx + 1 === component.activeContent)
       return (
         <Fragment key={index}>
-          <div className="draft__contents">
+          <div
+            className="draft__contents"
+            ref={getDropRef(index)}
+            onDragOver={() => setHoverIndex(index)}
+          >
             <Drop />
             <div>{DEFAULT_LEAF_VALUE}</div>
           </div>
