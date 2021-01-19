@@ -3,13 +3,13 @@ import { connect } from "react-redux";
 import { useDrop } from "react-dnd";
 
 import { setActiveContent } from "../../../../actions/components.action";
+import { setSelected, setType } from "../../../../actions/options.action";
 
 import SnapLeaflet from "./SnapLeaflet";
 import Drop from "../../../../utils/icons/Drop";
 import { DEFAULT_LEAF_VALUE, ITEMS, DEFAULT_STYLE } from "../../data";
-import { setSelected, setType } from "../../../../actions/options.action";
 
-const Layout = ({ height, component, structure, dispatch }) => {
+const Layout = ({ height, component, structure, blockType, dispatch }) => {
   useEffect(() => {
     changeLayout();
   }, [component, structure]);
@@ -19,6 +19,7 @@ const Layout = ({ height, component, structure, dispatch }) => {
   }, []);
 
   const [contents, setContents] = useState([]);
+  const [contentIndex, setContentIndex] = useState(1);
 
   const [{ isOver }, dropRef] = useDrop({
     accept: ITEMS.BLOCK,
@@ -36,11 +37,25 @@ const Layout = ({ height, component, structure, dispatch }) => {
     <div
       key={index}
       className="draft__blocks draft__blocks--active"
-      style={DEFAULT_STYLE}
+      style={{ ...DEFAULT_STYLE }}
     >
       {addActiveSnap(block, content)}
     </div>
   );
+
+  const addComponent = (Component, content, index) => {
+    console.log(Component, content, index)
+    return (
+      <div style={{ width: "100%" }} key={index}>
+        <div ref={dropRef} className="draft__dragContent">
+          <SnapLeaflet _leaflet="inner" />
+          <div className="el" onChange={onHandleTextChange}>
+            {Component.default(content.component)}
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   const onChangeActiveContent = (e, activeContent) =>
     e.target.className === "draft__blocks" &&
@@ -48,45 +63,87 @@ const Layout = ({ height, component, structure, dispatch }) => {
 
   const changeLayout = () => {
     let existingContents = contents.slice();
-    existingContents = existingContents.map((content, idx) => {
-      if (idx == component.activeContent - 1) {
-        return {
-          [idx]: {
-            content: activeBlock(idx),
-          },
-        };
-      }
+    if (contentIndex === component.activeContent) {
+      existingContents = existingContents.map((content, idx) => {
+        if (idx == component.activeContent - 1) {
+          const ol = Object.values(content)[0].content;
 
-      const ol = Object.values(content)[0].content;
-
-      let iter = null;
-      (function fn(children) {
-        Children.map(children, (child) => {
-          if (child.props?.id == "empty_block") {
-            iter = {
-              id: child.props.id,
-              child,
+          let iter = null;
+          (function fn(children) {
+            Children.map(children, (child) => {
+              if (child.props?.id == "empty_block") {
+                iter = {
+                  id: child.props.id,
+                  child,
+                };
+              }
+              if (child?.props?.id == "blocks")
+                iter = { id: child.props.id, child };
+              if (child?.props?.children) fn(child.props.children);
+            });
+          })(ol);
+          if (iter?.id == "blocks")
+            return {
+              [idx]: {
+                content: (
+                  <div
+                    style={{
+                      ...DEFAULT_STYLE,
+                      marginTop: component[blockType].marginTop + "px",
+                      marginBottom: component[blockType].marginBottom + "px",
+                      marginLeft: component[blockType].marginLeft + "px",
+                      marginRight: component[blockType].marginRight + "px",
+                    }}
+                  >
+                    {iter.child}
+                  </div>
+                ),
+              },
             };
-          }
-          if (child?.props?.id == "blocks")
-            iter = { id: child.props.id, child };
-          if (child?.props?.children) fn(child.props.children);
-        });
-      })(ol);
-      if (iter?.id == "blocks")
-        return {
-          [idx]: {
-            content: <div style={DEFAULT_STYLE}>{iter.child}</div>,
-          },
-        };
-      else if (iter?.id == "empty_block")
-        return {
-          [idx]: {
-            content: emptyBlock(),
-          },
-        };
-      return content;
-    });
+        }
+        return content;
+      });
+    } else {
+      existingContents = existingContents.map((content, idx) => {
+        if (idx == component.activeContent - 1) {
+          return {
+            [idx]: {
+              content: activeBlock(idx),
+            },
+          };
+        }
+
+        const ol = Object.values(content)[0].content;
+
+        let iter = null;
+        (function fn(children) {
+          Children.map(children, (child) => {
+            if (child.props?.id == "empty_block") {
+              iter = {
+                id: child.props.id,
+                child,
+              };
+            }
+            if (child?.props?.id == "blocks")
+              iter = { id: child.props.id, child };
+            if (child?.props?.children) fn(child.props.children);
+          });
+        })(ol);
+        if (iter?.id == "blocks")
+          return {
+            [idx]: {
+              content: <div style={{ ...DEFAULT_STYLE }}>{iter.child}</div>,
+            },
+          };
+        else if (iter?.id == "empty_block")
+          return {
+            [idx]: {
+              content: emptyBlock(),
+            },
+          };
+        return content;
+      });
+    }
     setContents(existingContents);
   };
 
@@ -140,16 +197,9 @@ const Layout = ({ height, component, structure, dispatch }) => {
               justifyContent: "space-around",
             }}
           >
-            {Array.from(Array(structure.columns), (e, i) => (
-              <div style={{ width: "100%" }}>
-                <div ref={dropRef} className="draft__dragContent">
-                  <SnapLeaflet _leaflet="inner" />
-                  <div className="el" onChange={onHandleTextChange}>
-                    {Component.default(content.component)}
-                  </div>
-                </div>
-              </div>
-            ))}
+            {Array.from(Array(structure.columns), (e, i) =>
+              addComponent(Component, content, i)
+            )}
           </tr>
         ) : (
           <div
@@ -210,6 +260,7 @@ const mapStateToProps = (state) => ({
   height: state.settings.height,
   component: state.component,
   structure: state.structure,
+  blockType: state.option.type?.toLowerCase(),
 });
 
 export default connect(mapStateToProps)(Layout);
