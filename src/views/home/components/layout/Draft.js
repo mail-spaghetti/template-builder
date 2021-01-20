@@ -32,10 +32,12 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     dispatch(setActiveSubContent({ activeSubcontent: hoverIndex + 1 }));
   };
 
-  const onChangeActiveContent = (index, content) => {
-    console.log(content);
-    dispatch(setActiveContent({ activeContent: index + 1 }));
-    dispatch(setActiveSubContent({ activeSubcontent: null }));
+  const onChangeActiveContent = (e, index, content) => {
+    e = window.event || e;
+    if (e.target.id === "block" || e.target.id === "subBlock") {
+      dispatch(setActiveContent({ activeContent: index + 1 }));
+      dispatch(setActiveSubContent({ activeSubcontent: null }));
+    }
   };
 
   const setInitialLayout = () => {
@@ -64,6 +66,26 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
           </div>
         </Fragment>
       );
+    return (
+      <Fragment key={index}>{getInactiveLeafContent(content, index)}</Fragment>
+    );
+  };
+
+  const getInactiveLeafContent = (content, index) => {
+    switch (content.content[index].type) {
+      case "default":
+        return;
+      case "Text":
+        const stringHTML = content.content[index].content;
+        // console.log(JSON.parse(stringHTML))
+        console.log(stringHTML);
+        if (stringHTML) {
+          const doc = new DOMParser().parseFromString(stringHTML, "text/html");
+          console.log(doc.body)
+          return <div>{stringHTML}</div>;
+        }
+        return;
+    }
   };
 
   const getLeafContent = (content, index) => {
@@ -81,13 +103,23 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
       case "Text":
         return (
           <Fragment>
-            {blocklayout.default("DraftText", onHandleChange)}
+            {blocklayout.default(
+              "DraftText",
+              onHandleChange,
+              content.content[index].content
+            )}
           </Fragment>
         );
     }
   };
 
-  const onHandleChange = (e) => console.log(e.target.innerHTML, component.activeContent, hoverIndex)
+  const onHandleChange = (e) => {
+    const content = {
+      type: "Text",
+      data: e.target.innerHTML,
+    };
+    dispatch(insertContent(content, component.activeContent, hoverIndex));
+  };
 
   return (
     <section className="section-draft">
@@ -96,7 +128,8 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
           return (
             <div
               key={idx}
-              onClick={() => onChangeActiveContent(idx, content)}
+              id="block"
+              onClick={(e) => onChangeActiveContent(e, idx, content)}
               className={`draft__blockEvent ${
                 component.activeContent == idx + 1
                   ? "draft__blockEvent--active"
@@ -109,6 +142,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
                   return (
                     <div
                       key={index}
+                      id="subBlock"
                       className={`draft__subBlockEvent ${
                         component.activeContent == idx + 1 &&
                         component.activeSubcontent == index + 1

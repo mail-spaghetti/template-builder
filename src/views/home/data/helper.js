@@ -20,4 +20,5 @@ export const funcMap = {
 
 export const getDefaultLeafValue = () => ({
   type: "default",
+  content: null,
 });

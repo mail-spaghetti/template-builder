@@ -1,13 +1,15 @@
 import React from "react";
 
-const DraftText = ({ onHandleChange }) => {
+import { INPUT_PLACEHOLDER } from "../../views/home/data";
+
+const DraftText = ({ onHandleChange, content = INPUT_PLACEHOLDER }) => {
   return (
     <p
-      onInput={onHandleChange}
+      onBlur={onHandleChange}
       suppressContentEditableWarning={true}
       contentEditable={true}
     >
-      This is a draft text
+      {content}
     </p>
   );
 };

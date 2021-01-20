@@ -116,6 +116,7 @@ const componentsReducer = (
               ...state.contents[payload.index - 1].content,
               (state.contents[payload.index - 1].content[payload.subIndex] = {
                 type: "Text",
+                content: payload.content?.data,
               }),
             ],
           }),
