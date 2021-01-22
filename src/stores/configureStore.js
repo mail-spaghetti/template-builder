@@ -17,7 +17,7 @@ export default () => {
       structure: structureReducer,
       settings: settingsReducer,
     }),
-    composeEnhancers(applyMiddleware(thunk, logger))
+    composeEnhancers(applyMiddleware(thunk))
   );
 
   return store;

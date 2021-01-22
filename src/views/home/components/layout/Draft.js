@@ -28,6 +28,32 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   const onSetActive = (index) => {
     dispatch(setActive({ activeContent: index }));
   };
+
+  const setColumns = (content) => (
+    <Fragment>
+      {content.columns.map((column, index) => (
+        <td key={index} style={{ padding: "0 10px" }} ref={dropRef}>
+          {column.rows.map((row, idx) => (
+            <Fragment key={idx}>{setRows(row)}</Fragment>
+          ))}
+        </td>
+      ))}
+    </Fragment>
+  );
+
+  const setRows = (content) => (
+    <Fragment>
+      <div className="draft__contents" style={{ background }}>
+        {content.content == null && (
+          <Fragment>
+            <Drop />
+            <div>{DEFAULT_LEAF_VALUE}</div>
+          </Fragment>
+        )}
+      </div>
+    </Fragment>
+  );
+
   return (
     <section className="section-draft">
       <div>
@@ -47,23 +73,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
               <table style={{ width: "100%" }}>
                 {component.contents.map((content, idx) => (
                   <tbody key={idx}>
-                    <tr>
-                      {content.columns.map((column, index) => (
-                        <td
-                          key={index}
-                          style={{ padding: "0 10px" }}
-                          ref={dropRef}
-                        >
-                          <div
-                            className="draft__contents"
-                            style={{ background }}
-                          >
-                            <Drop />
-                            <div>{DEFAULT_LEAF_VALUE}</div>
-                          </div>
-                        </td>
-                      ))}
-                    </tr>
+                    <tr>{setColumns(content)}</tr>
                   </tbody>
                 ))}
               </table>
