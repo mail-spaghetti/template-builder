@@ -1,256 +1,167 @@
-import React, { Children, Fragment, useEffect, useState } from "react";
-import { connect } from "react-redux";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDrop } from "react-dnd";
-
-import { setActiveContent } from "../../../../actions/components.action";
-import { setSelected, setType } from "../../../../actions/options.action";
-
-import SnapLeaflet from "./SnapLeaflet";
+import { connect } from "react-redux";
+import {
+  addContent,
+  setActiveContent,
+  insertContent,
+  setActiveSubContent,
+} from "../../../../actions/components.action";
 import Drop from "../../../../utils/icons/Drop";
-import { DEFAULT_LEAF_VALUE, ITEMS, DEFAULT_STYLE } from "../../data";
+import { DEFAULT_LEAF_VALUE, ITEMS } from "../../data";
+import { getDefaultLeafValue } from "../../data/helper";
+import SnapLeaflet from "./SnapLeaflet";
 
 const Layout = ({ height, component, structure, blockType, dispatch }) => {
   useEffect(() => {
-    changeLayout();
-  }, [component, structure]);
-
-  useEffect(() => {
-    setInitLayout();
+    setInitialLayout();
   }, []);
 
-  const [contents, setContents] = useState([]);
-  const [contentIndex, setContentIndex] = useState(1);
+  const [hoverIndex, setHoverIndex] = useState(0);
 
   const [{ isOver }, dropRef] = useDrop({
     accept: ITEMS.BLOCK,
-    drop: (item, monitor) => setNewLayout(item),
+    drop: (item, monitor) => insertBlock(item),
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
   });
 
-  const emptyBlock = () => (
-    <div className="draft__blocks" style={{ height: "14rem" }}></div>
-  );
+  const insertBlock = (item) => {
+    dispatch(insertContent(item, component.activeContent, hoverIndex));
+    dispatch(setActiveSubContent({ activeSubcontent: hoverIndex + 1 }));
+  };
 
-  const activeBlock = (index, block = null, content = null) => (
-    <div
-      key={index}
-      className="draft__blocks draft__blocks--active"
-      style={{ ...DEFAULT_STYLE }}
-    >
-      {addActiveSnap(block, content)}
-    </div>
-  );
-
-  const addComponent = (Component, content, index) => {
-    console.log(Component, content, index)
-    return (
-      <div style={{ width: "100%" }} key={index}>
-        <div ref={dropRef} className="draft__dragContent">
-          <SnapLeaflet _leaflet="inner" />
-          <div className="el" onChange={onHandleTextChange}>
-            {Component.default(content.component)}
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  const onChangeActiveContent = (e, activeContent) =>
-    e.target.className === "draft__blocks" &&
-    dispatch(setActiveContent({ activeContent }));
-
-  const changeLayout = () => {
-    let existingContents = contents.slice();
-    if (contentIndex === component.activeContent) {
-      existingContents = existingContents.map((content, idx) => {
-        if (idx == component.activeContent - 1) {
-          const ol = Object.values(content)[0].content;
-
-          let iter = null;
-          (function fn(children) {
-            Children.map(children, (child) => {
-              if (child.props?.id == "empty_block") {
-                iter = {
-                  id: child.props.id,
-                  child,
-                };
-              }
-              if (child?.props?.id == "blocks")
-                iter = { id: child.props.id, child };
-              if (child?.props?.children) fn(child.props.children);
-            });
-          })(ol);
-          if (iter?.id == "blocks")
-            return {
-              [idx]: {
-                content: (
-                  <div
-                    style={{
-                      ...DEFAULT_STYLE,
-                      marginTop: component[blockType].marginTop + "px",
-                      marginBottom: component[blockType].marginBottom + "px",
-                      marginLeft: component[blockType].marginLeft + "px",
-                      marginRight: component[blockType].marginRight + "px",
-                    }}
-                  >
-                    {iter.child}
-                  </div>
-                ),
-              },
-            };
-        }
-        return content;
-      });
-    } else {
-      existingContents = existingContents.map((content, idx) => {
-        if (idx == component.activeContent - 1) {
-          return {
-            [idx]: {
-              content: activeBlock(idx),
-            },
-          };
-        }
-
-        const ol = Object.values(content)[0].content;
-
-        let iter = null;
-        (function fn(children) {
-          Children.map(children, (child) => {
-            if (child.props?.id == "empty_block") {
-              iter = {
-                id: child.props.id,
-                child,
-              };
-            }
-            if (child?.props?.id == "blocks")
-              iter = { id: child.props.id, child };
-            if (child?.props?.children) fn(child.props.children);
-          });
-        })(ol);
-        if (iter?.id == "blocks")
-          return {
-            [idx]: {
-              content: <div style={{ ...DEFAULT_STYLE }}>{iter.child}</div>,
-            },
-          };
-        else if (iter?.id == "empty_block")
-          return {
-            [idx]: {
-              content: emptyBlock(),
-            },
-          };
-        return content;
-      });
+  const onChangeActiveContent = (e, index, content) => {
+    e = window.event || e;
+    if (e.target.id === "block" || e.target.id === "subBlock") {
+      dispatch(setActiveContent({ activeContent: index + 1 }));
+      dispatch(setActiveSubContent({ activeSubcontent: null }));
     }
-    setContents(existingContents);
   };
 
-  const setNewLayout = (layoutContent) => {
-    const type = layoutContent.content.text;
-    dispatch(
-      setType({ type: type[0].toUpperCase() + type.substring(1).toLowerCase() })
-    );
-    dispatch(setSelected({ selected: true }));
-    const blocklayout = require("../../../../components/molecules/BlockLayout");
-    let existingContents = contents.slice();
-    existingContents = existingContents.map((content, idx) => {
-      if (idx == component.activeContent - 1) {
-        return {
-          [idx]: {
-            content: activeBlock(idx, blocklayout, layoutContent.content),
-          },
-        };
-      }
-      return content;
-    });
-    setContents(existingContents);
-  };
-
-  const setInitLayout = () => {
+  const setInitialLayout = () => {
     let layout = [];
-    for (let i = 0; i < parseInt(parseInt(height.split("px")) / 15); i++) {
-      let content = null;
-      if (component.activeContent === i + 1) content = activeBlock(i);
-      else content = emptyBlock();
-
+    for (let i = 0; i < height.split("px")[0] / 50; i++) {
       layout = [
         ...layout,
         {
-          [i]: { content },
+          content: [getDefaultLeafValue()],
         },
       ];
     }
-    setContents(layout);
+    dispatch(addContent(layout));
   };
 
-  const addActiveSnap = (Component = null, content) => {
-    return (
-      <Fragment>
-        <SnapLeaflet />
-        {Component ? (
-          <tr
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-around",
-            }}
-          >
-            {Array.from(Array(structure.columns), (e, i) =>
-              addComponent(Component, content, i)
-            )}
-          </tr>
-        ) : (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-around",
-            }}
-          >
-            {Array.from(Array(structure.columns), (e, i) => (
-              <div
-                style={{ width: "100%", marginLeft: "1rem" }}
-                key={i}
-                ref={dropRef}
-                id="empty_block"
-              >
-                <div className="draft__contents">
-                  <div>
-                    <Drop />
-                  </div>
-                  <div>{DEFAULT_LEAF_VALUE}</div>
-                </div>
-              </div>
-            ))}
+  const getDropRef = (index) => {
+    if (index == hoverIndex) return dropRef;
+  };
+
+  const iterateSubcomponent = (idx, index, content) => {
+    if (idx + 1 === component.activeContent)
+      return (
+        <Fragment key={index}>
+          <div ref={getDropRef(index)} onDragOver={() => setHoverIndex(index)}>
+            {getLeafContent(content, index)}
           </div>
-        )}
-      </Fragment>
+        </Fragment>
+      );
+    return (
+      <Fragment key={index}>{getInactiveLeafContent(content, index)}</Fragment>
     );
   };
 
-  const onHandleTextChange = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log(e.target.value);
+  const getInactiveLeafContent = (content, index) => {
+    switch (content.content[index].type) {
+      case "default":
+        return;
+      case "Text":
+        const stringHTML = content.content[index].content;
+        // console.log(JSON.parse(stringHTML))
+        console.log(stringHTML);
+        if (stringHTML) {
+          const doc = new DOMParser().parseFromString(stringHTML, "text/html");
+          console.log(doc.body)
+          return <div>{stringHTML}</div>;
+        }
+        return;
+    }
+  };
+
+  const getLeafContent = (content, index) => {
+    const blocklayout = require("../../../../components/molecules/BlockLayout");
+    switch (content.content[index].type) {
+      case "default":
+        return (
+          <Fragment>
+            <div className="draft__contents">
+              <Drop />
+              <div>{DEFAULT_LEAF_VALUE}</div>
+            </div>
+          </Fragment>
+        );
+      case "Text":
+        return (
+          <Fragment>
+            {blocklayout.default(
+              "DraftText",
+              onHandleChange,
+              content.content[index].content
+            )}
+          </Fragment>
+        );
+    }
+  };
+
+  const onHandleChange = (e) => {
+    const content = {
+      type: "Text",
+      data: e.target.innerHTML,
+    };
+    dispatch(insertContent(content, component.activeContent, hoverIndex));
   };
 
   return (
-    <section className="section-draft" style={{ height }}>
+    <section className="section-draft">
       <div>
-        {contents &&
-          contents.map((content, idx) => {
-            return (
-              <div
-                key={idx}
-                className="draft__blockEvent"
-                onClick={(e) => onChangeActiveContent(e, idx + 1)}
-              >
-                {Object.values(content)[0].content}
+        {component.contents.map((content, idx) => {
+          return (
+            <div
+              key={idx}
+              id="block"
+              onClick={(e) => onChangeActiveContent(e, idx, content)}
+              className={`draft__blockEvent ${
+                component.activeContent == idx + 1
+                  ? "draft__blockEvent--active"
+                  : null
+              }`}
+            >
+              {component.activeContent == idx + 1 && <SnapLeaflet />}
+              <div className="draft__subBlocks">
+                {content.content.map((subcontent, index) => {
+                  return (
+                    <div
+                      key={index}
+                      id="subBlock"
+                      className={`draft__subBlockEvent ${
+                        component.activeContent == idx + 1 &&
+                        component.activeSubcontent == index + 1
+                          ? "draft__subBlockEvent--active"
+                          : null
+                      }`}
+                    >
+                      {component.activeContent == idx + 1 &&
+                        component.activeSubcontent == index + 1 && (
+                          <SnapLeaflet _leaflet="inner" />
+                        )}
+                      {iterateSubcomponent(idx, index, content)}
+                    </div>
+                  );
+                })}
               </div>
-            );
-          })}
+            </div>
+          );
+        })}
       </div>
     </section>
   );
