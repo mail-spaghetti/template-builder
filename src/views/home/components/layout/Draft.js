@@ -26,6 +26,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
         {component.contents.map((content, idx) => (
           <div
             key={idx}
+            style={{ padding: `${structure.verticalPadding}px 14rem` }}
             className={`draft__blockEvent ${
               component.hoverContent === idx ? "draft__blockEvent--hover" : null
             } ${content.active ? "draft__blockEvent--active" : null}`}
@@ -34,7 +35,24 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
             onMouseLeave={() => dispatch(unsetHoverContent())}
           >
             {component.hoverContent === idx && <SnapLeaflet />}
-            <div className={`draft__subBlockEvent`}>content</div>
+            <div className={`draft__subBlockEvent`}>
+              <table style={{ width: "100%" }}>
+                {component.contents.map((content, idx) => (
+                  <tbody key={idx}>
+                    <tr>
+                      {content.columns.map((column, index) => (
+                        <td key={index}>
+                          <div className="draft__contents">
+                            <Drop />
+                            <div>{DEFAULT_LEAF_VALUE}</div>
+                          </div>
+                        </td>
+                      ))}
+                    </tr>
+                  </tbody>
+                ))}
+              </table>
+            </div>
           </div>
         ))}
       </div>

@@ -42,10 +42,10 @@ export const insertContent = (content, index, subIndex) => ({
   },
 });
 
-export const modifyContent = (newContent, columns) => ({
-  type: "MODIFY_CONTENT",
-  payload: { content: newContent, columns },
-});
+export const modifyColumns = (value) => {
+  if (value > 0) return { type: "INCREMENT_COLUMNS" };
+  return { type: "DECREMENT_COLUMNS" };
+};
 
 export const setMarginTop = (value = 1, block) => ({
   type: "SET_MARGIN_TOP",

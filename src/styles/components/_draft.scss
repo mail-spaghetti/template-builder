@@ -55,13 +55,13 @@
   }
 
   &__blockEvent {
-    min-height: 12rem;
-    padding: 2.5rem 14rem;
     position: relative;
     display: inline-block;
     width: 100%;
+    border: 1px solid transparent;
     &--active {
       border: 1px solid #d54d42;
+      outline: 2px solid lighten(#d54d42, 20%);
     }
 
     &--hover {
@@ -73,7 +73,6 @@
     position: relative;
     display: inline-block;
     width: 100%;
-    min-height: 10rem;
     &--active {
       border: 1px solid #00bd1e;
     }

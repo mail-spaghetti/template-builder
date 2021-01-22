@@ -1,9 +1,8 @@
-import { getDefaultLeafValue } from "../views/home/data/helper";
-import { modifyContent } from "./components.action";
+import { modifyColumns } from "./components.action";
 
 export const modifyColumnStructure = (value) => (dispatch) => {
   dispatch(changeColumns(value));
-  dispatch(modifyContent(getDefaultLeafValue(), value));
+  dispatch(modifyColumns(value));
 };
 
 export const changeColumns = (value = 1) => ({

@@ -6,11 +6,18 @@ const componentsReducerDefaultState = {
   contents: [
     {
       active: false,
-      content: [],
-    },
-    {
-      active: false,
-      content: [],
+      verticalPadding: "10",
+      bgColor: "#d7d7d7",
+      columns: [
+        {
+          rows: [
+            {
+              active: false,
+              content: null,
+            },
+          ],
+        },
+      ],
     },
   ],
   text: {
@@ -122,13 +129,36 @@ const componentsReducer = (
       });
       return { ...state, contents };
     case "SET_ACTIVE_CONTENT":
-      let existingContents = state.contents.slice();
+      var existingContents = state.contents.slice();
       existingContents[activeContent].active = true;
       return { ...state, existingContents };
     case "SET_HOVER_CONTENT":
       return { ...state, hoverContent: payload };
     case "UNSET_HOVER_CONTENT":
       return { ...state, hoverContent: null };
+    case "INCREMENT_COLUMNS":
+      var existingContents = state.contents.slice();
+      existingContents = existingContents.map((content) => {
+        if (content.active)
+          content.columns = [
+            ...content.columns,
+            {
+              rows: [
+                {
+                  active: false,
+                  content: null,
+                },
+              ],
+            },
+          ];
+        return content;
+      });
+      return { ...state, contents: existingContents };
+    case "DECREMENT_COLUMNS":
+      state.contents.slice().map((content) => {
+        if (content.active) content.columns.pop();
+        return content;
+      });
     default:
       return state;
   }
