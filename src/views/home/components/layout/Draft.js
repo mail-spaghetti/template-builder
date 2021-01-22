@@ -25,31 +25,55 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
       background: monitor.isOver() ? "#e2e2e2" : null,
     }),
   });
+
+  const [activeSubcontent, setActiveSubContent] = useState(0);
+
+  const getDropRef = (index) => {
+    if (index === activeSubcontent) return dropRef;
+  };
+
   const onSetActive = (index) => {
     dispatch(setActive({ activeContent: index }));
   };
 
+  const onHandleHoverColumn = (index) => setActiveSubContent(index);
+
   const setColumns = (content) => (
     <Fragment>
       {content.columns.map((column, index) => (
-        <td key={index} style={{ padding: "0 10px" }} ref={dropRef}>
+        <td
+          key={index}
+          style={{ padding: "0 10px" }}
+          onDragOver={() => onHandleHoverColumn(index)}
+          ref={getDropRef(index)}
+        >
           {column.rows.map((row, idx) => (
-            <Fragment key={idx}>{setRows(row)}</Fragment>
+            <Fragment key={idx}>{setRows(row, index)}</Fragment>
           ))}
         </td>
       ))}
     </Fragment>
   );
 
-  const setRows = (content) => (
-    <Fragment>
-      <div className="draft__contents" style={{ background }}>
-        {content.content == null && (
+  const setContent = (content) => {
+    switch (content.content) {
+      case null:
+        return (
           <Fragment>
             <Drop />
             <div>{DEFAULT_LEAF_VALUE}</div>
           </Fragment>
-        )}
+        );
+    }
+  };
+
+  const setRows = (content, index) => (
+    <Fragment>
+      <div
+        className="draft__contents"
+        style={{ background: index === activeSubcontent ? background : null }}
+      >
+        {setContent(content)}
       </div>
     </Fragment>
   );
