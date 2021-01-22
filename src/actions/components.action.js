@@ -3,6 +3,24 @@ export const setActiveContent = ({ activeContent = 1 }) => ({
   activeContent,
 });
 
+export const setInactiveContent = () => ({
+  type: "SET_INACTIVE_CONTENT",
+});
+
+export const setHoverContent = ({ index }) => ({
+  type: "SET_HOVER_CONTENT",
+  payload: index,
+});
+
+export const unsetHoverContent = () => ({
+  type: "UNSET_HOVER_CONTENT",
+});
+
+export const setActive = ({ activeContent = 1 }) => (dispatch) => {
+  dispatch(setInactiveContent());
+  dispatch(setActiveContent({ activeContent }));
+};
+
 export const setActiveSubContent = ({ activeSubcontent = 1 }) => ({
   type: "SET_ACTIVE_SUBCONTENT",
   activeSubcontent,

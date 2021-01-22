@@ -1,8 +1,18 @@
 const componentsReducerDefaultState = {
-  activeContent: 1,
+  activeContent: null,
+  hoverContent: null,
   activeSubcontent: null,
   component: null,
-  contents: [],
+  contents: [
+    {
+      active: false,
+      content: [],
+    },
+    {
+      active: false,
+      content: [],
+    },
+  ],
   text: {
     marginTop: "15",
     marginBottom: "15",
@@ -104,106 +114,21 @@ const componentsReducer = (
   { type, activeContent, activeSubcontent, payload, block, prop }
 ) => {
   switch (type) {
-    case "ADD_CONTENT":
-      return { ...state, contents: payload };
-    case "INSERT_CONTENT":
-      return {
-        ...state,
-        contents: [
-          ...state.contents,
-          (state.contents[payload.index - 1] = {
-            content: [
-              ...state.contents[payload.index - 1].content,
-              (state.contents[payload.index - 1].content[payload.subIndex] = {
-                type: "Text",
-                content: payload.content?.data,
-              }),
-            ],
-          }),
-        ],
-      };
-    case "MODIFY_CONTENT":
-      return {
-        ...state,
-        contents: state.contents.map((content, idx) => {
-          if (state.activeContent == idx + 1)
-            content.content = Array.from(
-              Array(content.content.length + payload.columns),
-              (e, i) => payload.content
-            );
-          return content;
-        }),
-      };
+    case "SET_INACTIVE_CONTENT":
+      let contents = state.contents.slice();
+      contents = state.contents.map((content) => {
+        content.active = false;
+        return content;
+      });
+      return { ...state, contents };
     case "SET_ACTIVE_CONTENT":
-      return { ...state, activeContent };
-    case "SET_ACTIVE_SUBCONTENT":
-      return { ...state, activeSubcontent };
-    case "SET_MARGIN_TOP":
-      return {
-        ...state,
-        [block]: {
-          ...state[block],
-          marginTop: (parseInt(state[block].marginTop) + payload).toString(),
-        },
-      };
-    case "SET_MARGIN_BOTTOM":
-      return {
-        ...state,
-        [block]: {
-          ...state[block],
-          marginBottom: (
-            parseInt(state[block].marginBottom) + payload
-          ).toString(),
-        },
-      };
-    case "SET_MARGIN_LEFT":
-      return {
-        ...state,
-        [block]: {
-          ...state[block],
-          marginLeft: (parseInt(state[block].marginLeft) + payload).toString(),
-        },
-      };
-    case "SET_MARGIN_RIGHT":
-      return {
-        ...state,
-        [block]: {
-          ...state[block],
-          marginRight: (
-            parseInt(state[block].marginRight) + payload
-          ).toString(),
-        },
-      };
-    case "SHOW_DESKTOP":
-      return {
-        ...state,
-        [block]: {
-          ...state[block],
-          desktop: !state[block].desktop,
-        },
-      };
-    case "SHOW_MOBILE":
-      return {
-        ...state,
-        [block]: {
-          ...state[block],
-          mobile: !state[block].mobile,
-        },
-      };
-    case "SET_URL":
-      return {
-        ...state,
-        [block]: {
-          ...state[block],
-          [prop]: {
-            ...state[block][prop],
-            link: {
-              ...state[block][prop].link,
-              input: payload,
-            },
-          },
-        },
-      };
+      let existingContents = state.contents.slice();
+      existingContents[activeContent].active = true;
+      return { ...state, existingContents };
+    case "SET_HOVER_CONTENT":
+      return { ...state, hoverContent: payload };
+    case "UNSET_HOVER_CONTENT":
+      return { ...state, hoverContent: null };
     default:
       return state;
   }
