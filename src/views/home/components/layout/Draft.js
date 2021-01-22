@@ -17,6 +17,14 @@ import { getDefaultLeafValue } from "../../data/helper";
 import SnapLeaflet from "./SnapLeaflet";
 
 const Layout = ({ height, component, structure, blockType, dispatch }) => {
+  const [{ isOver, background }, dropRef] = useDrop({
+    accept: ITEMS.BLOCK,
+    drop: (item, monitor) => console.log(item),
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      background: monitor.isOver() ? "#e2e2e2" : null,
+    }),
+  });
   const onSetActive = (index) => {
     dispatch(setActive({ activeContent: index }));
   };
@@ -26,7 +34,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
         {component.contents.map((content, idx) => (
           <div
             key={idx}
-            style={{ padding: `${structure.verticalPadding}px 14rem` }}
+            style={{ padding: `${structure.verticalPadding}px 50px` }}
             className={`draft__blockEvent ${
               component.hoverContent === idx ? "draft__blockEvent--hover" : null
             } ${content.active ? "draft__blockEvent--active" : null}`}
@@ -41,8 +49,15 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
                   <tbody key={idx}>
                     <tr>
                       {content.columns.map((column, index) => (
-                        <td key={index}>
-                          <div className="draft__contents">
+                        <td
+                          key={index}
+                          style={{ padding: "0 10px" }}
+                          ref={dropRef}
+                        >
+                          <div
+                            className="draft__contents"
+                            style={{ background }}
+                          >
                             <Drop />
                             <div>{DEFAULT_LEAF_VALUE}</div>
                           </div>
