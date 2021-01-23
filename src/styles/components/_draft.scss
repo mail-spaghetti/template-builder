@@ -13,6 +13,11 @@
       -ms-user-select: none;
       user-select: none;
     }
+
+    &--white {
+      background: $color-white;
+      border: none;
+    }
   }
 
   &__snap {

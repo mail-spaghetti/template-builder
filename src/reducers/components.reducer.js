@@ -166,10 +166,9 @@ const componentsReducer = (
       ] = {
         active: true,
         content: payload.content,
-        value: "",
+        value: null,
       };
       return { ...state, content: existingContents };
-      return state;
     default:
       return state;
   }

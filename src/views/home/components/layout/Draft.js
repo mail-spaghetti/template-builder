@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useDrop } from "react-dnd";
 import { connect } from "react-redux";
 import {
@@ -20,6 +20,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   const [{ isOver, background }, dropRef] = useDrop({
     accept: ITEMS.BLOCK,
     drop: (item, monitor) => dropItem(item.content.text),
+    hover: (item, monitor) => setHoverClient(monitor.getClientOffset()),
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       background: monitor.isOver() ? "#e2e2e2" : null,
@@ -29,6 +30,9 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   const [activeSubcontent, setActiveSubContent] = useState(0);
   const [row, setRow] = useState(0);
   const [column, setColumn] = useState(0);
+  const [hoverClient, setHoverClient] = useState(null);
+
+  const ref = useRef(null);
 
   const getDropRef = (index) => {
     if (index === activeSubcontent) return dropRef;
@@ -38,19 +42,18 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
 
   const onHandleHoverColumn = (index) => setActiveSubContent(index);
 
-  const dropItem = (item) => {
+  const dropItem = (item) =>
     dispatch(insertContent(item, activeSubcontent, row, column));
-  };
 
   const onHandleChange = (e) => {
     const content = {
       type: "Text",
       data: e.target.innerHTML,
     };
-    dispatch(insertContent(content, component.activeContent, hoverIndex));
+    dispatch(insertContent(content, component.activeContent, activeSubcontent));
   };
 
-  const setColumns = (content) => (
+  const setColumns = (content, idx) => (
     <Fragment>
       {content.columns.map((column, index) => (
         <td
@@ -60,16 +63,32 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
           ref={getDropRef(index)}
         >
           {column.rows.map((row, idx) => (
-            <Fragment key={idx}>{setRows(row, index)}</Fragment>
+            <Fragment key={idx}>{setRows(row, index, idx)}</Fragment>
           ))}
         </td>
       ))}
     </Fragment>
   );
 
+  const setRows = (content, index, idx) => (
+    <Fragment>
+      <div
+        ref={activeSubcontent === index ? ref : null}
+        className={`draft__contents ${
+          content.content ? "draft__contents--white" : null
+        }`}
+        onMouseOver={() => dispatch(setHoverContent({ index: idx }))}
+        onDragOver={(e) => setDragOverProps(e, idx)}
+        onMouseLeave={() => dispatch(unsetHoverContent())}
+        style={{ background: index === activeSubcontent ? background : null }}
+      >
+        {setContent(content)}
+      </div>
+    </Fragment>
+  );
+
   const setContent = (content) => {
     const blocklayout = require("../../../../components/molecules/BlockLayout");
-    console.log(content);
     switch (content.content) {
       case null:
         return (
@@ -87,16 +106,12 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     }
   };
 
-  const setRows = (content, index) => (
-    <Fragment>
-      <div
-        className="draft__contents"
-        style={{ background: index === activeSubcontent ? background : null }}
-      >
-        {setContent(content)}
-      </div>
-    </Fragment>
-  );
+  const setDragOverProps = (e, idx) => {
+    console.log(ref.current.getBoundingClientRect());
+    const clientBox = ref.current.getBoundingClientRect();
+    const boxHeight = clientBox.bottom - clientBox.top;
+    dispatch(setHoverContent({ index: idx }));
+  };
 
   return (
     <section className="section-draft">
@@ -109,16 +124,13 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
               component.hoverContent === idx ? "draft__blockEvent--hover" : null
             } ${content.active ? "draft__blockEvent--active" : null}`}
             onClick={() => onSetActive(idx)}
-            onMouseOver={() => dispatch(setHoverContent({ index: idx }))}
-            onDragOver={() => dispatch(setHoverContent({ index: idx }))}
-            onMouseLeave={() => dispatch(unsetHoverContent())}
           >
             {component.hoverContent === idx && <SnapLeaflet />}
             <div className={`draft__subBlockEvent`}>
               <table style={{ width: "100%" }}>
-                {component.contents.map((content, idx) => (
-                  <tbody key={idx}>
-                    <tr>{setColumns(content)}</tr>
+                {component.contents.map((content, index) => (
+                  <tbody key={index}>
+                    <tr>{setColumns(content, idx)}</tr>
                   </tbody>
                 ))}
               </table>
