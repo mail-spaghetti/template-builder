@@ -31,6 +31,8 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   const [row, setRow] = useState(0);
   const [column, setColumn] = useState(0);
   const [hoverClient, setHoverClient] = useState(null);
+  const [topClient, setTopClient] = useState(false);
+  const [bottomClient, setBottomClient] = useState(false);
 
   const ref = useRef(null);
 
@@ -72,6 +74,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
 
   const setRows = (content, index, idx) => (
     <Fragment>
+      {index === activeSubcontent && topClient && <div>Above</div>}
       <div
         ref={activeSubcontent === index ? ref : null}
         className={`draft__contents ${
@@ -84,6 +87,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
       >
         {setContent(content)}
       </div>
+      {index === activeSubcontent && bottomClient && <div>Below</div>}
     </Fragment>
   );
 
@@ -107,9 +111,11 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   };
 
   const setDragOverProps = (e, idx) => {
-    console.log(ref.current.getBoundingClientRect());
     const clientBox = ref.current.getBoundingClientRect();
-    const boxHeight = clientBox.bottom - clientBox.top;
+    const middlePosition = (clientBox.bottom - clientBox.top) / 2;
+    const hoverClientY = (hoverClient.y - clientBox.top);
+    if (hoverClientY > middlePosition) setBottomClient(true);
+    else setTopClient(true);
     dispatch(setHoverContent({ index: idx }));
   };
 
