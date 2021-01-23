@@ -33,12 +33,13 @@ export const addContent = (content) => {
   };
 };
 
-export const insertContent = (content, index, subIndex) => ({
+export const insertContent = (content, index, column, row) => ({
   type: "INSERT_CONTENT",
   payload: {
     content,
     index,
-    subIndex,
+    column,
+    row,
   },
 });
 

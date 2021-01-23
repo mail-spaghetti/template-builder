@@ -19,7 +19,7 @@ import SnapLeaflet from "./SnapLeaflet";
 const Layout = ({ height, component, structure, blockType, dispatch }) => {
   const [{ isOver, background }, dropRef] = useDrop({
     accept: ITEMS.BLOCK,
-    drop: (item, monitor) => console.log(item),
+    drop: (item, monitor) => dropItem(item.content.text),
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       background: monitor.isOver() ? "#e2e2e2" : null,
@@ -27,16 +27,28 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   });
 
   const [activeSubcontent, setActiveSubContent] = useState(0);
+  const [row, setRow] = useState(0);
+  const [column, setColumn] = useState(0);
 
   const getDropRef = (index) => {
     if (index === activeSubcontent) return dropRef;
   };
 
-  const onSetActive = (index) => {
-    dispatch(setActive({ activeContent: index }));
-  };
+  const onSetActive = (index) => dispatch(setActive({ activeContent: index }));
 
   const onHandleHoverColumn = (index) => setActiveSubContent(index);
+
+  const dropItem = (item) => {
+    dispatch(insertContent(item, activeSubcontent, row, column));
+  };
+
+  const onHandleChange = (e) => {
+    const content = {
+      type: "Text",
+      data: e.target.innerHTML,
+    };
+    dispatch(insertContent(content, component.activeContent, hoverIndex));
+  };
 
   const setColumns = (content) => (
     <Fragment>
@@ -56,12 +68,20 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   );
 
   const setContent = (content) => {
+    const blocklayout = require("../../../../components/molecules/BlockLayout");
+    console.log(content);
     switch (content.content) {
       case null:
         return (
           <Fragment>
             <Drop />
             <div>{DEFAULT_LEAF_VALUE}</div>
+          </Fragment>
+        );
+      case "TEXT":
+        return (
+          <Fragment>
+            {blocklayout.default("DraftText", onHandleChange, content.value)}
           </Fragment>
         );
     }
@@ -90,6 +110,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
             } ${content.active ? "draft__blockEvent--active" : null}`}
             onClick={() => onSetActive(idx)}
             onMouseOver={() => dispatch(setHoverContent({ index: idx }))}
+            onDragOver={() => dispatch(setHoverContent({ index: idx }))}
             onMouseLeave={() => dispatch(unsetHoverContent())}
           >
             {component.hoverContent === idx && <SnapLeaflet />}

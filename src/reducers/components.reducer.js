@@ -159,6 +159,17 @@ const componentsReducer = (
         if (content.active) content.columns.pop();
         return content;
       });
+    case "INSERT_CONTENT":
+      var existingContents = state.contents.slice();
+      existingContents[payload.index].columns[payload.column].rows[
+        payload.row
+      ] = {
+        active: true,
+        content: payload.content,
+        value: "",
+      };
+      return { ...state, content: existingContents };
+      return state;
     default:
       return state;
   }
