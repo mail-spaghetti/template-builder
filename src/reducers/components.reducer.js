@@ -165,8 +165,9 @@ const componentsReducer = (
         payload.row
       ] = {
         active: true,
-        content: payload.content,
-        value: null,
+        content: payload.content.text,
+        component: payload.content.component,
+        value: payload.content.value,
       };
       return { ...state, content: existingContents };
     default:

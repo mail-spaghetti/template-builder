@@ -24,6 +24,7 @@ export const CARDS = [
     text: "TEXT",
     icon: "Text",
     component: "DraftText",
+    value: "This is your new text block with first paragraph",
   },
   {
     text: "IMAGE",
@@ -39,6 +40,7 @@ export const CARDS = [
     text: "BUTTON",
     icon: "Button",
     component: "DraftButton",
+    value: "Choose Image",
   },
   {
     text: "DIVIDER",

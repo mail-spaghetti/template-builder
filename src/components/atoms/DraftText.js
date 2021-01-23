@@ -13,7 +13,7 @@ const DraftText = ({ onHandleChange, content }) => (
       setTimeout(() => document.getElementById("draftText").focus(), 0)
     }
   >
-    {content ? content: INPUT_PLACEHOLDER}
+    {content}
   </p>
 );
 
