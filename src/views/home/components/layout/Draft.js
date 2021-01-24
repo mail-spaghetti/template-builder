@@ -107,7 +107,16 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
           ref={getDropRef(index)}
         >
           {column.rows.map((row, idx) => (
-            <Fragment key={idx}>{setRows(row, index, idx)}</Fragment>
+            <Fragment key={idx}>
+              <div
+                ref={activeSubcontent === idx ? ref : null}
+                onDragOver={(e) => setDragOverProps(e, idx)}
+              >
+                <div className="draft__contents--new">&nbsp;</div>
+                {setRows(row, index, idx)}
+                <div className="draft__contents--new">&nbsp;</div>
+              </div>
+            </Fragment>
           ))}
         </td>
       ))}
@@ -115,9 +124,12 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   );
 
   const setRows = (content, index, idx) => {
+    console.log(content);
     return (
       <div>
-        {topClient && <div className="draft__contents--new">&nbsp;</div>}
+        {topClient && !!content.component && (
+          <div className="draft__contents--new">&nbsp;</div>
+        )}
         <div
           className={`draft__contents ${
             content.content ? "draft__contents--white" : null
@@ -127,8 +139,6 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
               ? "draft__contents--green"
               : null
           }`}
-          ref={activeSubcontent === idx ? ref : null}
-          onDragOver={(e) => setDragOverProps(e, idx)}
           /*onDrop={() => console.log("")}*/
           onMouseOver={() =>
             dispatch(setHoverSubcontent({ rowIndex: index, columnIndex: idx }))
@@ -136,13 +146,17 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
           onMouseLeave={() => dispatch(unsetHoverSubcontent())}
           style={{ background: index === activeSubcontent ? background : null }}
         >
-          {component.hoverSubcontent.rowIndex === index &&
-            component.hoverSubcontent.columnIndex === idx && (
-              <SnapLeaflet _leaflet="inner" />
-            )}
-          {setContent(content)}
+          <div>
+            {component.hoverSubcontent.rowIndex === index &&
+              component.hoverSubcontent.columnIndex === idx && (
+                <SnapLeaflet _leaflet="inner" />
+              )}
+            {setContent(content)}
+          </div>
         </div>
-        {bottomClient && <div className="draft__contents--new">&nbsp;</div>}
+        {bottomClient && !!content.component && (
+          <div className="draft__contents--new">&nbsp;</div>
+        )}
       </div>
     );
   };
@@ -174,18 +188,8 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     const clientBox = ref.current.getBoundingClientRect();
     const mouseVal = mousePos;
     //  delay to prevent the jumping effect
-    setTimeout(() => {
-      const dMouseVal = mouseVal === mousePos;
-      if (dMouseVal) {
-        if (hoverClient.y > clientBox.bottom - 5 || mousePos) {
-          setTopClient(false);
-          setBottomClient(true);
-        } else if (hoverClient.y < clientBox.top + 5 || !mousePos) {
-          setBottomClient(false);
-          setTopClient(true);
-        }
-      }
-    }, 1);
+    const middlePos = (clientBox.bottom - clientBox.top) / 2;
+    console.log(mouseVal);
     dispatch(setHoverContent({ index: idx }));
   };
 
