@@ -20,7 +20,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   const [{ isOver, background }, dropRef] = useDrop({
     accept: ITEMS.BLOCK,
     drop: (item, monitor) => {
-      console.log('item', item);
+      console.log("item", item);
       dropItem(item.content);
     },
     hover: (item, monitor) => setHoverClient(monitor.getClientOffset()),
@@ -81,26 +81,24 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     </Fragment>
   );
 
-  const setRows = (content, index, idx) => (
-    <Fragment>
-      <div
-        ref={activeSubcontent === index ? ref : null}
-        className={`draft__contents ${
-          content.content ? "draft__contents--white" : null
-        }`}
-        onMouseOver={() => dispatch(setHoverContent({ index: idx }))}
-        onDragOver={(e) => setDragOverProps(e, idx)}
-        onMouseLeave={onHandleUnset}
-        onDrop={() => console.log("")}
-        style={{ background: index === activeSubcontent ? background : null }}
-      >
-        {setContent(content)}
-      </div>
-    </Fragment>
-  );
+  const setRows = (content, index, idx) => {
+    return (
+      <Fragment>
+        <div
+          className={`draft__contents ${
+            content.content ? "draft__contents--white" : null
+          }`}
+          // onDragOver={(e) => setDragOverProps(e, idx)}
+          /*onDrop={() => console.log("")}*/
+          style={{ background: index === activeSubcontent ? background : null }}
+        >
+          {setContent(content)}
+        </div>
+      </Fragment>
+    );
+  };
 
   const setContent = (content) => {
-    console.log(content);
     const blocklayout = require("../../../../components/molecules/BlockLayout");
     switch (content.content) {
       case null:
@@ -110,13 +108,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
             <div>{DEFAULT_LEAF_VALUE}</div>
           </Fragment>
         );
-      case "TEXT":
-        return (
-          <Fragment>
-            {blocklayout.default("DraftText", onHandleChange, content.value)}
-          </Fragment>
-        );
-      case "BUTTON":
+      case content.content:
         return (
           <Fragment>
             {blocklayout.default(
@@ -133,6 +125,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     const clientBox = ref.current.getBoundingClientRect();
     const middlePosition = (clientBox.bottom - clientBox.top) / 2;
     const hoverClientY = hoverClient.y - clientBox.top;
+    console.log(clientBox, hoverClient.y, middlePosition);
     if (hoverClientY > middlePosition) {
       setTopClient(false);
       setBottomClient(true);
@@ -144,11 +137,15 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   };
 
   return (
-    <section className="section-draft">
-      <div onDragLeave={handleDragLeave}>
+    <section className="section-draft" onDragLeave={handleDragLeave}>
+      <div>
         {component.contents.map((content, idx) => (
           <div
+            onMouseOver={() => dispatch(setHoverContent({ index: idx }))}
+            onDragOver={()=>dispatch(setHoverContent({ index: idx }))}
+            onMouseLeave={onHandleUnset}
             key={idx}
+            ref={activeSubcontent === idx ? ref : null}
             style={{ padding: `${structure.verticalPadding}px 50px` }}
             className={`draft__blockEvent ${
               component.hoverContent === idx ? "draft__blockEvent--hover" : null
