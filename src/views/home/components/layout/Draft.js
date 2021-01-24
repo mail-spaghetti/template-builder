@@ -11,6 +11,7 @@ import {
   setHoverContent,
   unsetHoverContent,
   setHoverSubcontent,
+  unsetHoverSubcontent,
 } from "../../../../actions/components.action";
 import Drop from "../../../../utils/icons/Drop";
 import { DEFAULT_LEAF_VALUE, ITEMS } from "../../data";
@@ -23,7 +24,15 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     drop: (item, monitor) => {
       dropItem(item.content);
     },
-    hover: (item, monitor) => setHoverClient(monitor.getClientOffset()),
+    hover: (item, monitor) => {
+      let hY = monitor.getClientOffset().y;
+      setTimeout(() => {
+        const dhY = monitor.getClientOffset().y - hY;
+        if (dhY > 0) setMousePos(true);
+        else if (dhY < 0) setMousePos(false);
+      }, 0.15);
+      setHoverClient(monitor.getClientOffset());
+    },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       background: monitor.isOver() ? "#e2e2e2" : null,
@@ -36,6 +45,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   const [hoverClient, setHoverClient] = useState(null);
   const [topClient, setTopClient] = useState(false);
   const [bottomClient, setBottomClient] = useState(false);
+  const [mousePos, setMousePos] = useState(null);
 
   const ref = useRef(null);
 
@@ -106,7 +116,8 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
 
   const setRows = (content, index, idx) => {
     return (
-      <Fragment>
+      <div>
+        {topClient && <div className="draft__contents--new">&nbsp;</div>}
         <div
           className={`draft__contents ${
             content.content ? "draft__contents--white" : null
@@ -116,11 +127,13 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
               ? "draft__contents--green"
               : null
           }`}
-          // onDragOver={(e) => setDragOverProps(e, idx)}
+          ref={activeSubcontent === idx ? ref : null}
+          onDragOver={(e) => setDragOverProps(e, idx)}
           /*onDrop={() => console.log("")}*/
           onMouseOver={() =>
             dispatch(setHoverSubcontent({ rowIndex: index, columnIndex: idx }))
           }
+          onMouseLeave={() => dispatch(unsetHoverSubcontent())}
           style={{ background: index === activeSubcontent ? background : null }}
         >
           {component.hoverSubcontent.rowIndex === index &&
@@ -129,7 +142,8 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
             )}
           {setContent(content)}
         </div>
-      </Fragment>
+        {bottomClient && <div className="draft__contents--new">&nbsp;</div>}
+      </div>
     );
   };
 
@@ -158,15 +172,20 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
 
   const setDragOverProps = (e, idx) => {
     const clientBox = ref.current.getBoundingClientRect();
-    const middlePosition = (clientBox.bottom - clientBox.top) / 2;
-    const hoverClientY = hoverClient.y - clientBox.top;
-    if (hoverClientY > middlePosition) {
-      setTopClient(false);
-      setBottomClient(true);
-    } else {
-      setBottomClient(false);
-      setTopClient(true);
-    }
+    const mouseVal = mousePos;
+    //  delay to prevent the jumping effect
+    setTimeout(() => {
+      const dMouseVal = mouseVal === mousePos;
+      if (dMouseVal) {
+        if (hoverClient.y > clientBox.bottom - 5 || mousePos) {
+          setTopClient(false);
+          setBottomClient(true);
+        } else if (hoverClient.y < clientBox.top + 5 || !mousePos) {
+          setBottomClient(false);
+          setTopClient(true);
+        }
+      }
+    }, 1);
     dispatch(setHoverContent({ index: idx }));
   };
 
@@ -179,7 +198,6 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
             onDragOver={() => dispatch(setHoverContent({ index: idx }))}
             onMouseLeave={onHandleUnset}
             key={idx}
-            ref={activeSubcontent === idx ? ref : null}
             style={{ padding: `${structure.verticalPadding}px 50px` }}
             className={`draft__blockEvent ${
               component.hoverContent === idx ? "draft__blockEvent--hover" : null

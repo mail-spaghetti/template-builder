@@ -148,6 +148,14 @@ const componentsReducer = (
       };
     case "UNSET_HOVER_CONTENT":
       return { ...state, hoverContent: null };
+    case "UNSET_HOVER_SUBCONTENT":
+      return {
+        ...state,
+        hoverSubcontent: {
+          rowIndex: null,
+          columnIndex: null,
+        },
+      };
     case "INCREMENT_COLUMNS":
       var existingContents = state.contents.slice();
       existingContents = existingContents.map((content) => {

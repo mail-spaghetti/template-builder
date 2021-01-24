@@ -24,6 +24,10 @@ export const unsetHoverContent = () => ({
   type: "UNSET_HOVER_CONTENT",
 });
 
+export const unsetHoverSubcontent = () => ({
+  type: "UNSET_HOVER_SUBCONTENT"
+})
+
 export const setActive = ({ activeContent = 1 }) => (dispatch) => {
   dispatch(setInactiveContent());
   dispatch(setActiveContent({ activeContent }));
