@@ -20,7 +20,6 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   const [{ isOver, background }, dropRef] = useDrop({
     accept: ITEMS.BLOCK,
     drop: (item, monitor) => {
-      console.log("item", item);
       dropItem(item.content);
     },
     hover: (item, monitor) => setHoverClient(monitor.getClientOffset()),
@@ -56,12 +55,35 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   const dropItem = (item) =>
     dispatch(insertContent(item, activeSubcontent, row, column));
 
-  const onHandleChange = (e) => {
-    const content = {
-      type: "Text",
-      data: e.target.innerHTML,
-    };
-    dispatch(insertContent(content, component.activeContent, activeSubcontent));
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+
+  const onHandleChange = async (e, type) => {
+    e.preventDefault();
+    e.stopPropagation();
+    let content = {};
+    switch (type) {
+      case "GIF":
+        content = {
+          type: "GIF",
+          component: "Gif",
+          value: await toBase64(e.dataTransfer.files[0]),
+        };
+        break;
+      default:
+        content = {
+          type: "Text",
+          component: "DraftText",
+          value: e.target.innerHTML,
+        };
+    }
+
+    dispatch(insertContent(content, activeSubcontent, row, column));
   };
 
   const setColumns = (content, idx) => (
@@ -99,6 +121,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   };
 
   const setContent = (content) => {
+    console.log(content);
     const blocklayout = require("../../../../components/molecules/BlockLayout");
     switch (content.content) {
       case null:
@@ -125,7 +148,6 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     const clientBox = ref.current.getBoundingClientRect();
     const middlePosition = (clientBox.bottom - clientBox.top) / 2;
     const hoverClientY = hoverClient.y - clientBox.top;
-    console.log(clientBox, hoverClient.y, middlePosition);
     if (hoverClientY > middlePosition) {
       setTopClient(false);
       setBottomClient(true);
@@ -142,7 +164,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
         {component.contents.map((content, idx) => (
           <div
             onMouseOver={() => dispatch(setHoverContent({ index: idx }))}
-            onDragOver={()=>dispatch(setHoverContent({ index: idx }))}
+            onDragOver={() => dispatch(setHoverContent({ index: idx }))}
             onMouseLeave={onHandleUnset}
             key={idx}
             ref={activeSubcontent === idx ? ref : null}

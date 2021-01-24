@@ -29,7 +29,7 @@ export const CARDS = [
   {
     text: "IMAGE",
     icon: "Image",
-    component: "DraftInput",
+    component: "Gif",
   },
   {
     text: "GIF",
