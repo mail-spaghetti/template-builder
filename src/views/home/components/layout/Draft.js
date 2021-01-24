@@ -97,39 +97,45 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     dispatch(insertContent(content, activeSubcontent, row, column));
   };
 
-  const setColumns = (content, idx) => (
-    <Fragment>
-      {content.columns.map((column, index) => (
-        <td
-          key={index}
-          style={{ padding: "0 10px" }}
-          onDragOver={() => onHandleHoverColumn(index)}
-          ref={getDropRef(index)}
-        >
-          {column.rows.map((row, idx) => (
-            <Fragment key={idx}>
-              <div
-                ref={activeSubcontent === idx ? ref : null}
-                onDragOver={(e) => setDragOverProps(e, idx)}
-              >
-                <div className="draft__contents--new">&nbsp;</div>
-                {setRows(row, index, idx)}
-                <div className="draft__contents--new">&nbsp;</div>
-              </div>
-            </Fragment>
-          ))}
-        </td>
-      ))}
-    </Fragment>
-  );
+  const setColumns = (content, idx) => {
+    return (
+      <Fragment>
+        {content.columns.map((column, index) => (
+          <td
+            key={index}
+            style={{ padding: "0 10px" }}
+            onDragOver={() => onHandleHoverColumn(index)}
+            ref={getDropRef(index)}
+          >
+            {column.rows.map((row, idx) => (
+              <Fragment key={idx}>
+                <div
+                  ref={activeSubcontent === idx ? ref : null}
+                  onDragOver={(e) => setDragOverProps(e, idx)}
+                  onDragLeave={()=>{
+                    setTopClient(false);
+                    setBottomClient(false);
+                  }}
+                >
+                  {topClient && !!row.component && (
+                    <div className="draft__contents--new">&nbsp;</div>
+                  )}
+                  {setRows(row, index, idx)}
+                  {bottomClient && !!row.component && (
+                    <div className="draft__contents--new">&nbsp;</div>
+                  )}
+                </div>
+              </Fragment>
+            ))}
+          </td>
+        ))}
+      </Fragment>
+    );
+  };
 
   const setRows = (content, index, idx) => {
-    console.log(content);
     return (
       <div>
-        {topClient && !!content.component && (
-          <div className="draft__contents--new">&nbsp;</div>
-        )}
         <div
           className={`draft__contents ${
             content.content ? "draft__contents--white" : null
@@ -154,9 +160,6 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
             {setContent(content)}
           </div>
         </div>
-        {bottomClient && !!content.component && (
-          <div className="draft__contents--new">&nbsp;</div>
-        )}
       </div>
     );
   };
@@ -189,7 +192,18 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     const mouseVal = mousePos;
     //  delay to prevent the jumping effect
     const middlePos = (clientBox.bottom - clientBox.top) / 2;
-    console.log(mouseVal);
+    setTimeout(() => {
+      const dMouseVal = mouseVal === mousePos;
+      if (dMouseVal) {
+        if (mouseVal) {
+          setTopClient(false);
+          setBottomClient(true);
+        } else if (!mouseVal) {
+          setTopClient(true);
+          setBottomClient(false);
+        }
+      }
+    }, 150);
     dispatch(setHoverContent({ index: idx }));
   };
 
