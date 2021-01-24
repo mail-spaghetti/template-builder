@@ -12,6 +12,14 @@ export const setHoverContent = ({ index }) => ({
   payload: index,
 });
 
+export const setHoverSubcontent = ({ rowIndex, columnIndex }) => ({
+  type: "SET_HOVER_SUBCONTENT",
+  payload: {
+    rowIndex,
+    columnIndex,
+  },
+});
+
 export const unsetHoverContent = () => ({
   type: "UNSET_HOVER_CONTENT",
 });

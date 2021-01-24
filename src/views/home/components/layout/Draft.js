@@ -10,6 +10,7 @@ import {
   setInactiveContent,
   setHoverContent,
   unsetHoverContent,
+  setHoverSubcontent,
 } from "../../../../actions/components.action";
 import Drop from "../../../../utils/icons/Drop";
 import { DEFAULT_LEAF_VALUE, ITEMS } from "../../data";
@@ -109,11 +110,23 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
         <div
           className={`draft__contents ${
             content.content ? "draft__contents--white" : null
+          } ${
+            component.hoverSubcontent.rowIndex === index &&
+            component.hoverSubcontent.columnIndex === idx
+              ? "draft__contents--green"
+              : null
           }`}
           // onDragOver={(e) => setDragOverProps(e, idx)}
           /*onDrop={() => console.log("")}*/
+          onMouseOver={() =>
+            dispatch(setHoverSubcontent({ rowIndex: index, columnIndex: idx }))
+          }
           style={{ background: index === activeSubcontent ? background : null }}
         >
+          {component.hoverSubcontent.rowIndex === index &&
+            component.hoverSubcontent.columnIndex === idx && (
+              <SnapLeaflet _leaflet="inner" />
+            )}
           {setContent(content)}
         </div>
       </Fragment>
@@ -121,7 +134,6 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   };
 
   const setContent = (content) => {
-    console.log(content);
     const blocklayout = require("../../../../components/molecules/BlockLayout");
     switch (content.content) {
       case null:

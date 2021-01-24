@@ -1,6 +1,10 @@
 const componentsReducerDefaultState = {
   activeContent: null,
   hoverContent: null,
+  hoverSubcontent: {
+    rowIndex: null,
+    columnIndex: null,
+  },
   activeSubcontent: null,
   component: null,
   contents: [
@@ -134,6 +138,14 @@ const componentsReducer = (
       return { ...state, existingContents };
     case "SET_HOVER_CONTENT":
       return { ...state, hoverContent: payload };
+    case "SET_HOVER_SUBCONTENT":
+      return {
+        ...state,
+        hoverSubcontent: {
+          rowIndex: payload.rowIndex,
+          columnIndex: payload.columnIndex,
+        },
+      };
     case "UNSET_HOVER_CONTENT":
       return { ...state, hoverContent: null };
     case "INCREMENT_COLUMNS":
