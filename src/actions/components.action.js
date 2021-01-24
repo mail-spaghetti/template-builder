@@ -45,8 +45,28 @@ export const addContent = (content) => {
   };
 };
 
+export const insertContentAbove = (content, index, column, row) => ({
+  type: "INSERT_CONTENT_ABOVE",
+  payload: {
+    content,
+    index,
+    column,
+    row,
+  },
+});
+
 export const insertContent = (content, index, column, row) => ({
   type: "INSERT_CONTENT",
+  payload: {
+    content,
+    index,
+    column,
+    row,
+  },
+});
+
+export const insertContentBelow = (content, index, column, row) => ({
+  type: "INSERT_CONTENT_BELOW",
   payload: {
     content,
     index,

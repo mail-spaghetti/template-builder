@@ -179,7 +179,29 @@ const componentsReducer = (
         if (content.active) content.columns.pop();
         return content;
       });
+    case "INSERT_CONTENT_ABOVE":
+      var existingContents = state.contents.slice();
+      var existingColumn =
+        existingContents[payload.index].columns[payload.column];
+      existingColumn.rows.splice(payload.row - 1, 0, {
+        active: true,
+        content: payload.content.text,
+        component: payload.content.component,
+        value: payload.content.value,
+      });
+      return { ...state, content: existingContents };
     case "INSERT_CONTENT":
+      var existingContents = state.contents.slice();
+      existingContents[payload.index].columns[payload.column].rows[
+        payload.row
+      ] = {
+        active: true,
+        content: payload.content.text,
+        component: payload.content.component,
+        value: payload.content.value,
+      };
+      return { ...state, content: existingContents };
+    case "INSERT_CONTENT_BELOW":
       var existingContents = state.contents.slice();
       existingContents[payload.index].columns[payload.column].rows[
         payload.row

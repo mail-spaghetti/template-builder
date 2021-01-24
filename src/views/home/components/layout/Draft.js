@@ -12,6 +12,8 @@ import {
   unsetHoverContent,
   setHoverSubcontent,
   unsetHoverSubcontent,
+  insertContentBelow,
+  insertContentAbove,
 } from "../../../../actions/components.action";
 import Drop from "../../../../utils/icons/Drop";
 import { DEFAULT_LEAF_VALUE, ITEMS } from "../../data";
@@ -63,8 +65,15 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     setBottomClient(false);
   };
 
-  const dropItem = (item) =>
-    dispatch(insertContent(item, activeSubcontent, row, column));
+  const dropItem = (item) => {
+    if (
+      component.contents[activeSubcontent].columns[column].rows[row].component
+    ) {
+      if (topClient) dispatch(insertContentAbove(item, activeSubcontent, row, column));
+      else if (bottomClient)
+        dispatch(insertContentBelow(item, activeSubcontent, row, column));
+    } else dispatch(insertContent(item, activeSubcontent, row, column));
+  };
 
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -112,7 +121,11 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
                 <div
                   ref={activeSubcontent === idx ? ref : null}
                   onDragOver={(e) => setDragOverProps(e, idx)}
-                  onDragLeave={()=>{
+                  onDragLeave={() => {
+                    setTopClient(false);
+                    setBottomClient(false);
+                  }}
+                  onMouseLeave={() => {
                     setTopClient(false);
                     setBottomClient(false);
                   }}
