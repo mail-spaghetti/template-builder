@@ -69,7 +69,8 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     if (
       component.contents[activeSubcontent].columns[column].rows[row].component
     ) {
-      if (topClient) dispatch(insertContentAbove(item, activeSubcontent, row, column));
+      if (topClient)
+        dispatch(insertContentAbove(item, activeSubcontent, row, column));
       else if (bottomClient)
         dispatch(insertContentBelow(item, activeSubcontent, row, column));
     } else dispatch(insertContent(item, activeSubcontent, row, column));
@@ -119,8 +120,10 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
             {column.rows.map((row, idx) => (
               <Fragment key={idx}>
                 <div
-                  ref={activeSubcontent === idx ? ref : null}
-                  onDragOver={(e) => setDragOverProps(e, idx)}
+                  
+                  onDragOver={(e) => {
+                    if (activeSubcontent === idx) setDragOverProps(e, idx);
+                  }}
                   onDragLeave={() => {
                     setTopClient(false);
                     setBottomClient(false);
@@ -148,7 +151,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
 
   const setRows = (content, index, idx) => {
     return (
-      <div>
+      <div ref={activeSubcontent === idx ? ref : null}>
         <div
           className={`draft__contents ${
             content.content ? "draft__contents--white" : null

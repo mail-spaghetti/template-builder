@@ -7,6 +7,7 @@ import { setSelected } from "../../../../actions/options.action";
 
 const ComponentsSettings = ({ type, ...rest }) => {
   const onHandleSettingsExit = () => rest.dispatch(setSelected({ selected: false }));
+  console.log(type, rest, require(`./TextSettings.js`));
   return (
     <div className="settings">
       <div className="settings__type">
