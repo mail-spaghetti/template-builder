@@ -25,8 +25,8 @@ export const unsetHoverContent = () => ({
 });
 
 export const unsetHoverSubcontent = () => ({
-  type: "UNSET_HOVER_SUBCONTENT"
-})
+  type: "UNSET_HOVER_SUBCONTENT",
+});
 
 export const setActive = ({ activeContent = 1 }) => (dispatch) => {
   dispatch(setInactiveContent());
@@ -73,6 +73,20 @@ export const insertContentBelow = (content, index, row, column) => ({
     column,
     row,
   },
+});
+
+export const deleteColumnContent = (index, row, column) => ({
+  type: "DELETE_COLUMN_CONTENT",
+  payload: {
+    index,
+    row,
+    column,
+  },
+});
+
+export const deleteContent = (index) => ({
+  type: "DELETE_CONTENT",
+  payload: index,
 });
 
 export const modifyColumns = (value) => {

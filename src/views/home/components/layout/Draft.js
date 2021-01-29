@@ -13,6 +13,7 @@ import {
   unsetHoverSubcontent,
   insertContentBelow,
   insertContentAbove,
+  deleteColumnContent,
 } from "../../../../actions/components.action";
 import Drop from "../../../../utils/icons/Drop";
 import { DEFAULT_LEAF_VALUE, ITEMS } from "../../data";
@@ -62,6 +63,9 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     setTopClient(false);
     setBottomClient(false);
   };
+
+  const onHandleDelete = (type, idx, index) =>
+    type === "inner" ? dispatch(deleteColumnContent(0, index, idx)) : null;
 
   const dropItem = (item) => {
     if (
@@ -191,7 +195,10 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
           <div>
             {component.hoverSubcontent.rowIndex === idx &&
               component.hoverSubcontent.columnIndex === index && (
-                <SnapLeaflet _leaflet="inner" />
+                <SnapLeaflet
+                  _leaflet="inner"
+                  onHandleDelete={(type) => onHandleDelete(type, index, idx)}
+                />
               )}
             {setContent(content)}
           </div>

@@ -7,7 +7,7 @@ import Text from "../atoms/Text";
 const Knob = ({ className, content = 0, onHandleClick }) => {
   const intervalRef = useRef(null)
   const timeDifferential = (state, count) => {
-    if (state) intervalRef.current = setInterval(() => onHandleClick(count), 150);
+    if (state) intervalRef.current = setInterval(() => onHandleClick(count), 100);
     else clearInterval(intervalRef.current);
   };
 

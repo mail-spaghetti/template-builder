@@ -124,6 +124,7 @@ const componentsReducer = (
   state = componentsReducerDefaultState,
   { type, activeContent, activeSubcontent, payload, block, prop }
 ) => {
+  let existingContents = state.contents.slice();
   switch (type) {
     case "SET_INACTIVE_CONTENT":
       let contents = state.contents.slice();
@@ -133,7 +134,6 @@ const componentsReducer = (
       });
       return { ...state, contents };
     case "SET_ACTIVE_CONTENT":
-      var existingContents = state.contents.slice();
       existingContents[activeContent].active = true;
       return { ...state, existingContents };
     case "SET_HOVER_CONTENT":
@@ -157,7 +157,6 @@ const componentsReducer = (
         },
       };
     case "INCREMENT_COLUMNS":
-      var existingContents = state.contents.slice();
       existingContents = existingContents.map((content) => {
         if (content.active)
           content.columns = [
@@ -175,12 +174,11 @@ const componentsReducer = (
       });
       return { ...state, contents: existingContents };
     case "DECREMENT_COLUMNS":
-      state.contents.slice().map((content) => {
+      existingContents.map((content) => {
         if (content.active) content.columns.pop();
         return content;
       });
     case "INSERT_CONTENT_ABOVE":
-      var existingContents = state.contents.slice();
       var existingColumn =
         existingContents[payload.index].columns[payload.column];
       existingColumn.rows.splice(payload.row - 1, 0, {
@@ -191,7 +189,6 @@ const componentsReducer = (
       });
       return { ...state, content: existingContents };
     case "INSERT_CONTENT":
-      var existingContents = state.contents.slice();
       existingContents[payload.index].columns[payload.column].rows[
         payload.row
       ] = {
@@ -202,23 +199,26 @@ const componentsReducer = (
       };
       return { ...state, content: existingContents };
     case "INSERT_CONTENT_BELOW":
-      var existingContents = state.contents.slice();
       var existingColumn =
         existingContents[payload.index].columns[payload.column];
-      // existingContents[payload.index].columns[payload.column].rows[
-      //   payload.row + 1
-      // ] = {
-      //   active: true,
-      //   content: payload.content.text,
-      //   component: payload.content.component,
-      //   value: payload.content.value,
-      // };
       existingColumn.rows.splice(payload.row + 1, 0, {
         active: true,
         content: payload.content.text,
         component: payload.content.component,
         value: payload.content.value,
       });
+      return { ...state, content: existingContents };
+    case "DELETE_COLUMN_CONTENT":
+      var existingColumn =
+        existingContents[payload.index].columns[payload.column];
+      existingColumn.rows.splice(payload.row, 1);
+      if (existingColumn.rows.length === 0)
+        existingColumn.rows = [
+          {
+            active: false,
+            content: null,
+          },
+        ];
       return { ...state, content: existingContents };
     default:
       return state;
