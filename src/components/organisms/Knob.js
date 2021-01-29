@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 
 import Minus from "../../utils/icons/Minus";
 import Plus from "../../utils/icons/Plus";

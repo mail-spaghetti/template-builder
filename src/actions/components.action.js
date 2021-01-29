@@ -45,7 +45,7 @@ export const addContent = (content) => {
   };
 };
 
-export const insertContentAbove = (content, index, column, row) => ({
+export const insertContentAbove = (content, index, row, column) => ({
   type: "INSERT_CONTENT_ABOVE",
   payload: {
     content,
@@ -55,7 +55,7 @@ export const insertContentAbove = (content, index, column, row) => ({
   },
 });
 
-export const insertContent = (content, index, column, row) => ({
+export const insertContent = (content, index, row, column) => ({
   type: "INSERT_CONTENT",
   payload: {
     content,
@@ -65,7 +65,7 @@ export const insertContent = (content, index, column, row) => ({
   },
 });
 
-export const insertContentBelow = (content, index, column, row) => ({
+export const insertContentBelow = (content, index, row, column) => ({
   type: "INSERT_CONTENT_BELOW",
   payload: {
     content,
