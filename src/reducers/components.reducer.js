@@ -17,6 +17,17 @@ const componentsReducer = (
     case "SET_ACTIVE_CONTENT":
       existingContents[activeContent].active = true;
       return { ...state, contents: existingContents };
+    case "SET_ROWS_INACTIVE":
+      existingContents = existingContents.map((contents) => ({
+        ...contents,
+        columns: contents.columns.map((columns) => ({
+          ...columns,
+          rows: columns.rows.map((row) => ({ ...row, active: false })),
+        })),
+      }));
+      return { ...state, contents: existingContents };
+    case "SET_ACTIVE_ROW":
+      var existingColumns = existingContents[payload.index].columns;
     case "SET_HOVER_CONTENT":
       return { ...state, hoverContent: payload };
     case "SET_HOVER_SUBCONTENT":
@@ -100,6 +111,15 @@ const componentsReducer = (
             content: null,
           },
         ];
+      return { ...state, contents: existingContents };
+    case "COPY_ROW_CONTENT":
+      var existingColumn =
+        existingContents[payload.index].columns[payload.column];
+      existingColumn.rows.splice(
+        payload.row + 1,
+        0,
+        existingColumn.rows[payload.row]
+      );
       return { ...state, contents: existingContents };
     case "DELETE_CONTENT":
       existingContents[payload] = JSON.parse(

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import {
   addContent,
   setActiveContent,
+  setActivateRow,
   insertContent,
   setActive,
   setInactiveContent,
@@ -15,6 +16,7 @@ import {
   insertContentAbove,
   deleteColumnContent,
   deleteContent,
+  copyRowContent,
 } from "../../../../actions/components.action";
 import Drop from "../../../../utils/icons/Drop";
 import { DEFAULT_LEAF_VALUE, ITEMS } from "../../data";
@@ -59,7 +61,10 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
 
   const onHandleHoverColumn = (index) => setActiveSubContent(index);
 
+  const onSetActiveRow = (index, idx) => dispatch(setActivateRow(0, idx, index));
+
   const onHandleUnset = () => dispatch(unsetHoverContent());
+
   const handleDragLeave = () => {
     setTopClient(false);
     setBottomClient(false);
@@ -69,6 +74,9 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     type === "inner"
       ? dispatch(deleteColumnContent(0, index, idx))
       : dispatch(deleteContent(0));
+
+  const onHandleCopy = (type, idx = null, index = null) =>
+    type === "inner" ? dispatch(copyRowContent(0, idx, index)) : null;
 
   const dropItem = (item) => {
     if (
@@ -193,6 +201,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
             setColumnIndex(index);
           }}
           onMouseLeave={() => dispatch(unsetHoverSubcontent())}
+          onClick={() => onSetActiveRow(index, idx)}
           style={{ background: index === activeSubcontent ? background : null }}
         >
           <div>
@@ -201,6 +210,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
                 <SnapLeaflet
                   _leaflet="inner"
                   onHandleDelete={(type) => onHandleDelete(type, index, idx)}
+                  onHandleCopy={(type) => onHandleCopy(type, index, idx)}
                 />
               )}
             {setContent(content)}
