@@ -14,6 +14,7 @@ import {
   insertContentBelow,
   insertContentAbove,
   deleteColumnContent,
+  deleteContent,
 } from "../../../../actions/components.action";
 import Drop from "../../../../utils/icons/Drop";
 import { DEFAULT_LEAF_VALUE, ITEMS } from "../../data";
@@ -64,8 +65,10 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     setBottomClient(false);
   };
 
-  const onHandleDelete = (type, idx, index) =>
-    type === "inner" ? dispatch(deleteColumnContent(0, index, idx)) : null;
+  const onHandleDelete = (type, idx = null, index = null) =>
+    type === "inner"
+      ? dispatch(deleteColumnContent(0, index, idx))
+      : dispatch(deleteContent(0));
 
   const dropItem = (item) => {
     if (
@@ -263,7 +266,9 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
             } ${content.active ? "draft__blockEvent--active" : null}`}
             onClick={() => onSetActive(idx)}
           >
-            {component.hoverContent === idx && <SnapLeaflet />}
+            {component.hoverContent === idx && (
+              <SnapLeaflet onHandleDelete={(type) => onHandleDelete(type)} />
+            )}
             <div className={`draft__subBlockEvent`}>
               <table style={{ width: "100%" }}>
                 {component.contents.map((content, index) => (
