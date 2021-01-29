@@ -1,13 +1,15 @@
-import React, { useEffect } from "react";
+import React from "react";
 
-const BlockLayout = (_ref, content = "Normal Text") => (
-  <div>
-    {
-      <div>
-        {require(`../atoms/${_ref}.js`).default({ content, edit: "false" })}
-      </div>
-    }
-  </div>
-);
+const BlockLayout = (_ref, onHandleChange, content) => {
+  return (
+    <div>
+      {
+        <div>
+          {require(`../atoms/${_ref}.js`).default({ onHandleChange, content })}
+        </div>
+      }
+    </div>
+  )
+}
 
-export default BlockLayout;
+export default BlockLayout

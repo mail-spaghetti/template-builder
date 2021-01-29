@@ -1,176 +1,111 @@
-const componentsReducerDefaultState = {
-  activeContent: 1,
-  activeSubcontent: 1,
-  component: null,
-  text: {
-    marginTop: "15",
-    marginBottom: "15",
-    marginLeft: "15",
-    marginRight: "15",
-    mobile: false,
-    desktop: true,
-  },
-  image: {
-    file: null,
-    link: null,
-    info: null,
-    align: "center",
-    marginTop: "15",
-    marginBottom: "15",
-    marginLeft: "15",
-    marginRight: "15",
-    mobile: false,
-    desktop: true,
-  },
-  gif: {
-    file: null,
-    sourceURL: {
-      link: {
-        icon: "Link",
-        input: "http://",
-      },
-    },
-    gifURL: {
-      link: {
-        icon: "Link",
-        input: "http://",
-      },
-    },
-    gifText: {
-      link: {
-        icon: "Alt",
-        input: "Alt",
-      },
-    },
-    align: "left",
-    marginTop: "15",
-    marginBottom: "15",
-    marginLeft: "15",
-    marginRight: "15",
-    mobile: true,
-    desktop: false,
-  },
-  button: {
-    file: null,
-    link: null,
-    align: "left",
-    buttonURL: {
-      link: {
-        icon: "Link",
-        input: "http://www.google.com",
-      },
-    },
-    properties: {
-      buttonColor: "#D5D42",
-      buttonTextColor: "#FFFFFF",
-      borderRadius: "5",
-    },
-    marginTop: "15",
-    marginBottom: "15",
-    marginLeft: "15",
-    marginRight: "15",
-    mobile: true,
-    desktop: false,
-  },
-  divider: {
-    style: "1px solid #D7D7D7",
-    background: null,
-    verticalMargin: "15",
-    horizontalMargin: "0",
-    mobile: true,
-    desktop: false,
-  },
-  spacer: {
-    background: null,
-    height: "15",
-    mobile: true,
-    desktop: false,
-  },
-  video: {
-    properties: {
-      url: null,
-      text: "Alt text",
-    },
-    imageSize: "300",
-    margin: "15",
-    mobile: true,
-    desktop: false,
-  },
-};
+import { COMPONENT_INITIAL_STATE, INITIAL_DRAFT_CONTENT } from "../utils";
+
+const componentsReducerDefaultState = COMPONENT_INITIAL_STATE;
 
 const componentsReducer = (
   state = componentsReducerDefaultState,
-  { type, activeContent, payload, block, prop }
+  { type, activeContent, activeSubcontent, payload, block, prop }
 ) => {
+  let existingContents = state.contents.slice();
   switch (type) {
+    case "SET_INACTIVE_CONTENT":
+      existingContents = existingContents.map((content) => {
+        content.active = false;
+        return content;
+      });
+      return { ...state, contents: existingContents };
     case "SET_ACTIVE_CONTENT":
-      return { ...state, activeContent };
-    case "SET_MARGIN_TOP":
+      existingContents[activeContent].active = true;
+      return { ...state, contents: existingContents };
+    case "SET_HOVER_CONTENT":
+      return { ...state, hoverContent: payload };
+    case "SET_HOVER_SUBCONTENT":
       return {
         ...state,
-        [block]: {
-          ...state[block],
-          marginTop: (parseInt(state[block].marginTop) + payload).toString(),
+        hoverSubcontent: {
+          rowIndex: payload.rowIndex,
+          columnIndex: payload.columnIndex,
         },
       };
-    case "SET_MARGIN_BOTTOM":
+    case "UNSET_HOVER_CONTENT":
+      return { ...state, hoverContent: null };
+    case "UNSET_HOVER_SUBCONTENT":
       return {
         ...state,
-        [block]: {
-          ...state[block],
-          marginBottom: (
-            parseInt(state[block].marginBottom) + payload
-          ).toString(),
+        hoverSubcontent: {
+          rowIndex: null,
+          columnIndex: null,
         },
       };
-    case "SET_MARGIN_LEFT":
-      return {
-        ...state,
-        [block]: {
-          ...state[block],
-          marginLeft: (parseInt(state[block].marginLeft) + payload).toString(),
-        },
-      };
-    case "SET_MARGIN_RIGHT":
-      return {
-        ...state,
-        [block]: {
-          ...state[block],
-          marginRight: (
-            parseInt(state[block].marginRight) + payload
-          ).toString(),
-        },
-      };
-    case "SHOW_DESKTOP":
-      return {
-        ...state,
-        [block]: {
-          ...state[block],
-          desktop: !state[block].desktop,
-        },
-      };
-    case "SHOW_MOBILE":
-      return {
-        ...state,
-        [block]: {
-          ...state[block],
-          mobile: !state[block].mobile,
-        },
-      };
-    case "SET_URL":
-      return {
-        ...state,
-        [block]: {
-          ...state[block],
-          [prop]: {
-            ...state[block][prop],
-            link: {
-              ...state[block][prop].link,
-              input: payload,
+    case "INCREMENT_COLUMNS":
+      existingContents = existingContents.map((content) => {
+        if (content.active)
+          content.columns = [
+            ...content.columns,
+            {
+              rows: [
+                {
+                  active: false,
+                  content: null,
+                },
+              ],
             },
-          },
-        },
+          ];
+        return content;
+      });
+      return { ...state, contents: existingContents };
+    case "DECREMENT_COLUMNS":
+      existingContents.map((content) => {
+        if (content.active) content.columns.pop();
+        return content;
+      });
+    case "INSERT_CONTENT_ABOVE":
+      var existingColumn =
+        existingContents[payload.index].columns[payload.column];
+      existingColumn.rows.splice(payload.row - 1, 0, {
+        active: true,
+        content: payload.content.text,
+        component: payload.content.component,
+        value: payload.content.value,
+      });
+      return { ...state, contents: existingContents };
+    case "INSERT_CONTENT":
+      existingContents[payload.index].columns[payload.column].rows[
+        payload.row
+      ] = {
+        active: true,
+        content: payload.content.text,
+        component: payload.content.component,
+        value: payload.content.value,
       };
+      return { ...state, contents: existingContents };
+    case "INSERT_CONTENT_BELOW":
+      var existingColumn =
+        existingContents[payload.index].columns[payload.column];
+      existingColumn.rows.splice(payload.row + 1, 0, {
+        active: true,
+        content: payload.content.text,
+        component: payload.content.component,
+        value: payload.content.value,
+      });
+      return { ...state, contents: existingContents };
+    case "DELETE_COLUMN_CONTENT":
+      var existingColumn =
+        existingContents[payload.index].columns[payload.column];
+      existingColumn.rows.splice(payload.row, 1);
+      if (existingColumn.rows.length === 0)
+        existingColumn.rows = [
+          {
+            active: false,
+            content: null,
+          },
+        ];
+      return { ...state, contents: existingContents };
+    case "DELETE_CONTENT":
+      existingContents[payload] = JSON.parse(
+        JSON.stringify(INITIAL_DRAFT_CONTENT)
+      );
+      return { ...state, contents: existingContents };
     default:
       return state;
   }
