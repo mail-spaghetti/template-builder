@@ -8,7 +8,7 @@ const Gif = ({ onHandleChange, content }) => (
     onDrop={(e) => onHandleChange(e, "GIF")}
   >
     {content ? (
-      <img src={content} />
+      <img style={{width: "250px"}} src={content} />
     ) : (
       <div>
         <ImageRed />

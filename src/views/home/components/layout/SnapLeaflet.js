@@ -5,7 +5,7 @@ import Copy from "../../../../utils/icons/Copy";
 import Delete from "../../../../utils/icons/Delete";
 import Move from "../../../../utils/icons/Move";
 
-const SnapLeaflet = ({ _leaflet = "outer" }) => (
+const SnapLeaflet = ({ _leaflet = "outer", onHandleDelete }) => (
   <Fragment>
     <div
       className={`draft__snap draft__snap--1 ${
@@ -15,7 +15,7 @@ const SnapLeaflet = ({ _leaflet = "outer" }) => (
       <span>
         <Add />
       </span>
-      <span>
+      <span onClick={() => onHandleDelete(_leaflet)}>
         <Delete />
       </span>
     </div>

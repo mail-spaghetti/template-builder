@@ -5,7 +5,6 @@ import {
   addContent,
   setActiveContent,
   insertContent,
-  setActiveSubContent,
   setActive,
   setInactiveContent,
   setHoverContent,
@@ -33,7 +32,6 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
         if (dhY > 0) setMousePos(true);
         else if (dhY < 0) setMousePos(false);
       }, 0.15);
-      setHoverClient(monitor.getClientOffset());
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
@@ -45,19 +43,14 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   const [activeSubcontent, setActiveSubContent] = useState(0);
   const [rowIndex, setRowIndex] = useState(0);
   const [columnIndex, setColumnIndex] = useState(0);
-  const [hoverClient, setHoverClient] = useState(null);
   const [topClient, setTopClient] = useState(false);
   const [bottomClient, setBottomClient] = useState(false);
   const [mousePos, setMousePos] = useState(null);
-  const [hoverSubIndex, setHoverSubIndex] = useState({
-    row: null,
-    column: null,
-  });
 
   const ref = useRef(null);
 
   const getDropRef = (index) => {
-    if (index === activeSubcontent) return dropRef;
+    if (index === columnIndex) return dropRef;
   };
 
   const onSetActive = (index) => dispatch(setActive({ activeContent: index }));
@@ -122,7 +115,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     dispatch(insertContent(content, activeSubcontent, rowIndex, columnIndex));
   };
 
-  const setColumns = (content, idx) => {
+  const setColumns = (content, activeIdx) => {
     return (
       <Fragment>
         {content.columns.map((column, index) => {
@@ -134,12 +127,11 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
               ref={getDropRef(index)}
             >
               {column.rows.map((row, idx) => {
-                // console.log(idx, columnIndex, rowIndex, index)
                 return (
                   <Fragment key={idx}>
                     <div
                       onDragOver={(e) => {
-                        if (activeSubcontent === idx) setDragOverProps(e, idx);
+                        if (rowIndex === idx) setDragOverProps(e, idx);
                       }}
                       onDragLeave={() => {
                         setTopClient(false);
@@ -186,7 +178,6 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
               ? "draft__contents--green"
               : null
           }`}
-          /*onDrop={() => console.log("")}*/
           onMouseOver={() =>
             dispatch(setHoverSubcontent({ rowIndex: idx, columnIndex: index }))
           }
@@ -233,10 +224,8 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   };
 
   const setDragOverProps = (e, idx) => {
-    const clientBox = ref.current.getBoundingClientRect();
     const mouseVal = mousePos;
     //  delay to prevent the jumping effect
-    const middlePos = (clientBox.bottom - clientBox.top) / 2;
     setTimeout(() => {
       const dMouseVal = mouseVal === mousePos;
       if (dMouseVal) {
