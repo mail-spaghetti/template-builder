@@ -19,6 +19,7 @@ import {
   copyRowContent,
   insertItem,
 } from "../../../../actions/components.action";
+import { setSelected, setType } from "../../../../actions/options.action";
 import Drop from "../../../../utils/icons/Drop";
 import { DEFAULT_LEAF_VALUE, ITEMS } from "../../data";
 import { getDefaultLeafValue } from "../../data/helper";
@@ -101,6 +102,8 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
       setTopClient(false);
       setBottomClient(false);
     }, 150);
+    dispatch(setType({ type: item.icon }));
+    dispatch(setSelected({ selected: true }));
   };
 
   const toBase64 = (file) =>
