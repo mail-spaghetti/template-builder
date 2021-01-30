@@ -38,14 +38,14 @@ export const setActiveSubContent = ({ activeSubcontent = 1 }) => ({
   activeSubcontent,
 });
 
-export const setActivateRow = (index, column, row) => (dispatch) => {
+export const setActivateRow = (index, row, column) => (dispatch) => {
   dispatch(setRowsInactive());
-  // dispatch(setRowActive(index, column, row));
+  dispatch(setRowActive(index, column, row));
 };
 
 export const setRowsInactive = () => ({
   type: "SET_ROWS_INACTIVE",
-})
+});
 
 export const setRowActive = (index, column, row) => ({
   type: "SET_ACTIVE_ROW",
@@ -82,6 +82,22 @@ export const insertContent = (content, index, row, column) => ({
     row,
   },
 });
+
+export const insertItem = (position, content, index, row, column) => (
+  dispatch
+) => {
+  dispatch(setRowsInactive());
+  switch (position) {
+    case "above":
+      dispatch(insertContentAbove(content, index, row, column));
+      break;
+    case "below":
+      dispatch(insertContentBelow(content, index, row, column));
+      break;
+    default:
+      dispatch(insertContent(content, index, row, column));
+  }
+};
 
 export const insertContentBelow = (content, index, row, column) => ({
   type: "INSERT_CONTENT_BELOW",

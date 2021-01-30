@@ -17,6 +17,7 @@ import {
   deleteColumnContent,
   deleteContent,
   copyRowContent,
+  insertItem,
 } from "../../../../actions/components.action";
 import Drop from "../../../../utils/icons/Drop";
 import { DEFAULT_LEAF_VALUE, ITEMS } from "../../data";
@@ -61,7 +62,8 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
 
   const onHandleHoverColumn = (index) => setActiveSubContent(index);
 
-  const onSetActiveRow = (index, idx) => dispatch(setActivateRow(0, idx, index));
+  const onSetActiveRow = (index, idx) =>
+    dispatch(setActivateRow(0, idx, index));
 
   const onHandleUnset = () => dispatch(unsetHoverContent());
 
@@ -85,14 +87,16 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     ) {
       if (topClient)
         dispatch(
-          insertContentAbove(item, activeMainContent, rowIndex, columnIndex)
+          insertItem("above", item, activeMainContent, rowIndex, columnIndex)
         );
       else if (bottomClient)
         dispatch(
-          insertContentBelow(item, activeMainContent, rowIndex, columnIndex)
+          insertItem("below", item, activeMainContent, rowIndex, columnIndex)
         );
     } else
-      dispatch(insertContent(item, activeMainContent, rowIndex, columnIndex));
+      dispatch(
+        insertItem(null, item, activeMainContent, rowIndex, columnIndex)
+      );
     setTimeout(() => {
       setTopClient(false);
       setBottomClient(false);
@@ -187,7 +191,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
         <div
           className={`draft__contents ${
             content.content ? "draft__contents--white" : null
-          } ${
+          } ${content.active ? "draft__contents--green" : null} ${
             component.hoverSubcontent.rowIndex === idx &&
             component.hoverSubcontent.columnIndex === index
               ? "draft__contents--green"

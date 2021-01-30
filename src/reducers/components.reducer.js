@@ -28,6 +28,8 @@ const componentsReducer = (
       return { ...state, contents: existingContents };
     case "SET_ACTIVE_ROW":
       var existingColumns = existingContents[payload.index].columns;
+      existingColumns[payload.column].rows[payload.row].active = true;
+      return { ...state, contents: existingContents };
     case "SET_HOVER_CONTENT":
       return { ...state, hoverContent: payload };
     case "SET_HOVER_SUBCONTENT":
