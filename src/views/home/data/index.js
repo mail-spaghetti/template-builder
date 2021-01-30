@@ -39,7 +39,7 @@ export const CARDS = [
   {
     text: "BUTTON",
     icon: "Button",
-    component: "DraftButton",
+    component: "Draftbutton",
     value: "Choose Image",
   },
   {
