@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import {
   addContent,
   setActiveContent,
+  setActivateRow,
   insertContent,
   setActive,
   setInactiveContent,
@@ -15,7 +16,10 @@ import {
   insertContentAbove,
   deleteColumnContent,
   deleteContent,
+  copyRowContent,
+  insertItem,
 } from "../../../../actions/components.action";
+import { setSelected, setType } from "../../../../actions/options.action";
 import Drop from "../../../../utils/icons/Drop";
 import { DEFAULT_LEAF_VALUE, ITEMS } from "../../data";
 import { getDefaultLeafValue } from "../../data/helper";
@@ -59,7 +63,11 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
 
   const onHandleHoverColumn = (index) => setActiveSubContent(index);
 
+  const onSetActiveRow = (index, idx) =>
+    dispatch(setActivateRow(0, idx, index));
+
   const onHandleUnset = () => dispatch(unsetHoverContent());
+
   const handleDragLeave = () => {
     setTopClient(false);
     setBottomClient(false);
@@ -70,6 +78,9 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
       ? dispatch(deleteColumnContent(0, index, idx))
       : dispatch(deleteContent(0));
 
+  const onHandleCopy = (type, idx = null, index = null) =>
+    type === "inner" ? dispatch(copyRowContent(0, idx, index)) : null;
+
   const dropItem = (item) => {
     if (
       component.contents[activeMainContent].columns[columnIndex].rows[rowIndex]
@@ -77,18 +88,22 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     ) {
       if (topClient)
         dispatch(
-          insertContentAbove(item, activeMainContent, rowIndex, columnIndex)
+          insertItem("above", item, activeMainContent, rowIndex, columnIndex)
         );
       else if (bottomClient)
         dispatch(
-          insertContentBelow(item, activeMainContent, rowIndex, columnIndex)
+          insertItem("below", item, activeMainContent, rowIndex, columnIndex)
         );
     } else
-      dispatch(insertContent(item, activeMainContent, rowIndex, columnIndex));
+      dispatch(
+        insertItem(null, item, activeMainContent, rowIndex, columnIndex)
+      );
     setTimeout(() => {
       setTopClient(false);
       setBottomClient(false);
     }, 150);
+    dispatch(setType({ type: item.icon }));
+    dispatch(setSelected({ selected: true }));
   };
 
   const toBase64 = (file) =>
@@ -179,7 +194,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
         <div
           className={`draft__contents ${
             content.content ? "draft__contents--white" : null
-          } ${
+          } ${content.active ? "draft__contents--green" : null} ${
             component.hoverSubcontent.rowIndex === idx &&
             component.hoverSubcontent.columnIndex === index
               ? "draft__contents--green"
@@ -193,6 +208,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
             setColumnIndex(index);
           }}
           onMouseLeave={() => dispatch(unsetHoverSubcontent())}
+          onClick={() => onSetActiveRow(index, idx)}
           style={{ background: index === activeSubcontent ? background : null }}
         >
           <div>
@@ -201,6 +217,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
                 <SnapLeaflet
                   _leaflet="inner"
                   onHandleDelete={(type) => onHandleDelete(type, index, idx)}
+                  onHandleCopy={(type) => onHandleCopy(type, index, idx)}
                 />
               )}
             {setContent(content)}

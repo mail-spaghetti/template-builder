@@ -38,6 +38,24 @@ export const setActiveSubContent = ({ activeSubcontent = 1 }) => ({
   activeSubcontent,
 });
 
+export const setActivateRow = (index, row, column) => (dispatch) => {
+  dispatch(setRowsInactive());
+  dispatch(setRowActive(index, column, row));
+};
+
+export const setRowsInactive = () => ({
+  type: "SET_ROWS_INACTIVE",
+});
+
+export const setRowActive = (index, column, row) => ({
+  type: "SET_ACTIVE_ROW",
+  payload: {
+    index,
+    column,
+    row,
+  },
+});
+
 export const addContent = (content) => {
   return {
     type: "ADD_CONTENT",
@@ -65,6 +83,22 @@ export const insertContent = (content, index, row, column) => ({
   },
 });
 
+export const insertItem = (position, content, index, row, column) => (
+  dispatch
+) => {
+  dispatch(setRowsInactive());
+  switch (position) {
+    case "above":
+      dispatch(insertContentAbove(content, index, row, column));
+      break;
+    case "below":
+      dispatch(insertContentBelow(content, index, row, column));
+      break;
+    default:
+      dispatch(insertContent(content, index, row, column));
+  }
+};
+
 export const insertContentBelow = (content, index, row, column) => ({
   type: "INSERT_CONTENT_BELOW",
   payload: {
@@ -77,6 +111,15 @@ export const insertContentBelow = (content, index, row, column) => ({
 
 export const deleteColumnContent = (index, row, column) => ({
   type: "DELETE_COLUMN_CONTENT",
+  payload: {
+    index,
+    row,
+    column,
+  },
+});
+
+export const copyRowContent = (index, column, row) => ({
+  type: "COPY_ROW_CONTENT",
   payload: {
     index,
     row,
