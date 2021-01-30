@@ -6,7 +6,7 @@ class ScrollTop extends Component {
     const unlisten = this.props.history.listen(() => window.scrollTo(0, 0));
   };
 
-  componentDidUnMount = () => unlisten();
+  componentWillUnmount = () => unlisten();
   render() {
     return null;
   }

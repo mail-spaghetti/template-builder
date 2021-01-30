@@ -1,3 +1,10 @@
+import { modifyColumns } from "./components.action";
+
+export const modifyColumnStructure = (value) => (dispatch) => {
+  dispatch(changeColumns(value));
+  dispatch(modifyColumns(value));
+};
+
 export const changeColumns = (value = 1) => ({
   type: "CHANGE_COLUMNS",
   payload: value,
@@ -9,7 +16,7 @@ export const changePadding = (value = 1) => ({
 });
 
 export const setMobileStack = () => ({
-  type: "SET_MOBILE_STACK"
+  type: "SET_MOBILE_STACK",
 });
 
 export const setIndependentBorder = () => ({

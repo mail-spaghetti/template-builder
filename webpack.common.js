@@ -9,6 +9,9 @@ module.exports = {
     filename: "bundle.js",
   },
   module: {
+    noParse: function (content) {
+      return /express/.test(content);
+    },
     rules: [
       { test: /\.js$/, exclude: /node_modules/, use: "babel-loader" },
       {

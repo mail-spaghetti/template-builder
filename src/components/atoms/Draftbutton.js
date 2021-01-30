@@ -1,7 +1,9 @@
-import React from 'react';
+import React from "react";
 
-const DraftButton = () => (
-    <button className="btn btn--draft">Choose Image</button>
-)
+const DraftButton = ({ content = "Choose Image", onHandleChange }) => (
+  <button onClick={onHandleChange} className="btn btn--draft">
+    {content}
+  </button>
+);
 
 export default DraftButton;
