@@ -185,6 +185,11 @@ export const setBackground = (value) => ({
   payload: value,
 });
 
+export const setBorderTop = (value) => ({
+  type: "SET_BORDER_TOP",
+  payload: value,
+});
+
 export const showDestkop = ({ block }) => ({
   type: "SHOW_DESKTOP",
   block,

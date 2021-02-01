@@ -71,7 +71,7 @@ const Paper = ({
                 );
               else if (idx === 1) {
                 return (
-                  <div className="paper__borderWrapper">
+                  <div key={idx} className="paper__borderWrapper">
                     {BORDER_SETTINGS.map((border, idx) =>
                       displayBorder(border, idx)
                     )}

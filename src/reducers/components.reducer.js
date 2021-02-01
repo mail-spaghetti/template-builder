@@ -19,6 +19,13 @@ const defaultProperties = {
     mobile: false,
     desktop: true,
   },
+  DIVIDER: {
+    marginTop: 15,
+    marginBottom: 15,
+    marginLeft: 15,
+    marginRight: 15,
+    borderTop: "1px solid #ffffff",
+  },
   SPACER: {
     height: 45,
     background: "#ffffff",
@@ -221,6 +228,13 @@ const componentsReducer = (
           state.activeRow.rowIndex
         ];
       existingRow.value.properties.height += payload;
+      return { ...state, contents: existingContents };
+    case "SET_BORDER_TOP":
+      var existingRow =
+        existingContents[0].columns[state.activeRow.columnIndex].rows[
+          state.activeRow.rowIndex
+        ];
+      existingRow.value.properties.borderTop = payload;
       return { ...state, contents: existingContents };
     case "SET_BACKGROUND":
       var existingRow =

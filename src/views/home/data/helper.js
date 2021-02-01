@@ -1,5 +1,6 @@
 import {
   setBackground,
+  setBorderTop,
   setHeight,
   setMarginBottom,
   setMarginLeft,
@@ -17,6 +18,7 @@ export const funcMap = {
   left: (value, block) => setMarginLeft(value, block),
   height: (value) => setHeight(value),
   background: (value) => setBackground(value),
+  borderTop: (value) => setBorderTop(value),
   mobile: (block) => showMobile({ block }),
   desktop: (block) => showDestkop({ block }),
   linkInput: (value, prop, block) => setURL(value, block, prop),

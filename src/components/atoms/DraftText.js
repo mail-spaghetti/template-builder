@@ -2,10 +2,10 @@ import React from "react";
 
 const DraftText = ({ onHandleChange, content }) => {
   const inlineStyle = {
-    marginTop: content.properties.marginTop,
-    marginRight: content.properties.marginRight,
-    marginBottom: content.properties.marginBottom,
-    marginLeft: content.properties.marginLeft,
+    marginTop: content?.properties.marginTop,
+    marginRight: content?.properties.marginRight,
+    marginBottom: content?.properties.marginBottom,
+    marginLeft: content?.properties.marginLeft,
   };
   return (
     <p
