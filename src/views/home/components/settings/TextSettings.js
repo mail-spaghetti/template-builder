@@ -8,9 +8,10 @@ import MarginSet from "../../../../components/organisms/MarginSet";
 import { funcMap } from "../../data/helper";
 
 const TextSettings = ({ type, component, dispatch }) => {
-  const { properties } = component.contents[0].columns[
-      component.activeRow.rowIndex
-    ].rows[component.activeRow.columnIndex].value,
+  const properties =
+      component?.contents[0]?.columns[component.activeRow.columnIndex]?.rows[
+        component.activeRow.rowIndex
+      ].value.properties,
     block = type.toLowerCase();
 
   const onHandleMarginSet = (value, position) =>

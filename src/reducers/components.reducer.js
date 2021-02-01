@@ -100,7 +100,9 @@ const componentsReducer = (
         component: payload.content.component,
         value: {
           content: payload.content.value,
-          properties: defaultProperties[payload.content.text],
+          properties: JSON.parse(
+            JSON.stringify(defaultProperties[payload.content.text])
+          ),
         },
       });
       return { ...state, contents: existingContents };
@@ -113,7 +115,9 @@ const componentsReducer = (
         component: payload.content.component,
         value: {
           content: payload.content.value,
-          properties: defaultProperties[payload.content.text],
+          properties: JSON.parse(
+            JSON.stringify(defaultProperties[payload.content.text])
+          ),
         },
       };
       return { ...state, contents: existingContents };
@@ -126,7 +130,9 @@ const componentsReducer = (
         component: payload.content.component,
         value: {
           content: payload.content.value,
-          properties: defaultProperties[payload.content.text],
+          properties: JSON.parse(
+            JSON.stringify(defaultProperties[payload.content.text])
+          ),
         },
       });
       return { ...state, contents: existingContents };
@@ -169,6 +175,12 @@ const componentsReducer = (
           state.activeRow.rowIndex
         ];
       existingRow.value.properties.marginTop += payload;
+      console.log(
+        "er",
+        existingContents,
+        state.activeRow.columnIndex,
+        state.activeRow.rowIndex
+      );
       return { ...state, contents: existingContents };
     case "SET_MARGIN_RIGHT":
       var existingRow =
