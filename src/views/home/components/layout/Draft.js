@@ -79,10 +79,12 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     setBottomClient(false);
   };
 
-  const onHandleDelete = (type, idx = null, index = null) =>
+  const onHandleDelete = (type, idx = null, index = null) => {
+    dispatch(setSelected({ selected: false }));
     type === "inner"
       ? dispatch(deleteColumnContent(0, index, idx))
       : dispatch(deleteContent(0));
+  };
 
   const onHandleCopy = (type, idx = null, index = null) =>
     type === "inner" ? dispatch(copyRowContent(0, idx, index)) : null;
@@ -101,10 +103,11 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
         dispatch(
           insertItem("below", item, activeMainContent, rowIndex, columnIndex)
         );
-    } else
+    } else {
       dispatch(
         insertItem(null, item, activeMainContent, rowIndex, columnIndex)
       );
+    }
     setTimeout(() => {
       setTopClient(false);
       setBottomClient(false);

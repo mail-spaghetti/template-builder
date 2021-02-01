@@ -11,6 +11,18 @@ const defaultProperties = {
     mobile: false,
     desktop: true,
   },
+  IMAGE: {
+    marginTop: 15,
+    marginBottom: 15,
+    marginLeft: 15,
+    marginRight: 15,
+    mobile: false,
+    desktop: true,
+  },
+  SPACER: {
+    height: 15,
+    background: "#fff",
+  },
 };
 
 const componentsReducer = (
@@ -142,7 +154,7 @@ const componentsReducer = (
           payload.row
         ];
       existingRow.value.content = payload.content;
-      return { ...state, contents: existingContents };
+      return { ...state, contents: existingContents.slice() };
     case "DELETE_COLUMN_CONTENT":
       var existingColumn =
         existingContents[payload.index].columns[payload.column];

@@ -50,7 +50,7 @@ export const CARDS = [
   {
     text: "SPACER",
     icon: "Spacer",
-    component: "DraftInput",
+    component: "DraftSpacer",
   },
   {
     text: "SOCIAL",
