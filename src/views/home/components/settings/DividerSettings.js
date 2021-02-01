@@ -1,8 +1,8 @@
 import React from "react";
+
 import HorizontalRule from "../../../../components/atoms/HorizontalRule";
 import Text from "../../../../components/atoms/Text";
 import Paper from "../../../../components/molecules/Paper";
-import Slider from "../../../../components/molecules/Slider";
 import DisplaySlider from "../../../../components/organisms/DisplaySlider";
 import Knob from "../../../../components/organisms/Knob";
 import { funcMap } from "../../data/helper";
@@ -25,6 +25,9 @@ const DividerSettings = ({ type, component, dispatch }) => {
     dispatch(funcMap[prop](borderArr.join(" ")));
   };
 
+  const onHandleMarginSet = (value, position) =>
+    dispatch(funcMap[position](value));
+
   return (
     <div className="u-padding-light">
       <Text content="Style" />
@@ -43,11 +46,19 @@ const DividerSettings = ({ type, component, dispatch }) => {
       <div className="row u-margin-top-small u-margin-bottom-none">
         <div className="col-1-of-2">
           <Text content="Top & Bottom" />
-          <Knob className="u-margin-top-light" />
+          <Knob
+            content={marginTop}
+            className="u-margin-top-light"
+            onHandleClick={(val) => onHandleMarginSet(val, "vertical")}
+          />
         </div>
         <div className="col-1-of-2">
           <Text content="Left & Right" />
-          <Knob className="u-margin-top-light" />
+          <Knob
+            content={marginLeft}
+            className="u-margin-top-light"
+            onHandleClick={(val) => onHandleMarginSet(val, "horizontal")}
+          />
         </div>
       </div>
       <HorizontalRule />

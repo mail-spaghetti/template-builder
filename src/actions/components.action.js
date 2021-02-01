@@ -155,6 +155,16 @@ export const modifyColumns = (value) => {
   return { type: "DECREMENT_COLUMNS" };
 };
 
+export const setMarginVertical = (value = 1) => (dispatch) => {
+  dispatch(setMarginTop(value));
+  dispatch(setMarginBottom(value));
+};
+
+export const setMarginHorizontal = (value = 1) => (dispatch) => {
+  dispatch(setMarginRight(value));
+  dispatch(setMarginLeft(value));
+};
+
 export const setMarginTop = (value = 1) => ({
   type: "SET_MARGIN_TOP",
   payload: value,

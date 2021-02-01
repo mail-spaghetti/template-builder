@@ -72,7 +72,6 @@ const Paper = ({
         return (
           <Fragment key={index}>
             {properties[value].split(" ").map((property, idx) => {
-              console.log(property, idx);
               if (idx === 0)
                 return (
                   <Text key={idx} className="paper__text" content={property} />

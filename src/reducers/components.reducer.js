@@ -20,10 +20,10 @@ const defaultProperties = {
     desktop: true,
   },
   DIVIDER: {
-    marginTop: 15,
-    marginBottom: 15,
-    marginLeft: 15,
-    marginRight: 15,
+    marginTop: 5,
+    marginBottom: 5,
+    marginLeft: 0,
+    marginRight: 0,
     borderTop: "1px solid #ffffff",
   },
   SPACER: {
@@ -194,12 +194,6 @@ const componentsReducer = (
           state.activeRow.rowIndex
         ];
       existingRow.value.properties.marginTop += payload;
-      console.log(
-        "er",
-        existingContents,
-        state.activeRow.columnIndex,
-        state.activeRow.rowIndex
-      );
       return { ...state, contents: existingContents };
     case "SET_MARGIN_RIGHT":
       var existingRow =
