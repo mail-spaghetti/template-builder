@@ -1,11 +1,25 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
+import { SketchPicker } from "react-color";
 
 import { BORDER_SETTINGS } from "../../views/home/data";
 import Input from "../atoms/Input";
 
 import Text from "../atoms/Text";
 
-const Paper = ({ properties, className, onHandleInputChange }) => {
+const Paper = ({
+  properties,
+  className,
+  onHandleInputChange,
+  onHandleColor,
+}) => {
+  const [colorPopup, setColorPopup] = useState(false);
+
+  const onSetFalse = (e) => {
+    if (e.target.id === "paper") setColorPopup(false);
+  };
+
+  const onColorChange = (color) => onHandleColor(color.hex);
+
   const displayBorder = (border, index) => (
     <div className={`paper__border paper--${border}`} key={index}>
       &nbsp;
@@ -31,6 +45,7 @@ const Paper = ({ properties, className, onHandleInputChange }) => {
       case "color":
         return (
           <div
+            onClick={() => setColorPopup(() => !colorPopup)}
             key={index}
             className="paper__bgColor"
             style={{ background: properties[value] }}
@@ -47,7 +62,6 @@ const Paper = ({ properties, className, onHandleInputChange }) => {
           />
         );
       case "border":
-        console.log(properties[value]);
         return (
           <Fragment key={index}>
             {properties[value].split(" ").map((property, idx) => {
@@ -70,9 +84,17 @@ const Paper = ({ properties, className, onHandleInputChange }) => {
     }
   };
   return (
-    <div className={`paper ${className}`}>
+    <div className={`paper ${className}`} id="paper" onClick={onSetFalse}>
       {Object.keys(properties).map((property, idx) =>
         getPropertyPrinted(property, idx)
+      )}
+      {colorPopup && (
+        <div className="paper__colorPicker">
+          <SketchPicker
+            color={properties.color}
+            onChange={onColorChange}
+          />
+        </div>
       )}
     </div>
   );

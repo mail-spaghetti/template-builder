@@ -180,6 +180,11 @@ export const setHeight = (value = 1) => ({
   payload: value,
 });
 
+export const setBackground = (value) => ({
+  type: "SET_BACKGROUND",
+  payload: value,
+});
+
 export const showDestkop = ({ block }) => ({
   type: "SHOW_DESKTOP",
   block,

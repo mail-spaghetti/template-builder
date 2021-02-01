@@ -8,12 +8,11 @@ import Knob from "../../../../components/organisms/Knob";
 import { funcMap } from "../../data/helper";
 
 const SpacerSettings = ({ type, component, dispatch }) => {
-  console.log(type);
   const { height, background } = component?.contents[0]?.columns[
     component.activeRow.columnIndex
   ]?.rows[component.activeRow.rowIndex].value.properties;
 
-  const onHandleHeight = (val) => dispatch(funcMap["height"](val));
+  const onHandleProperties = (val, prop) => dispatch(funcMap[prop](val));
   return (
     <div className="u-padding-light">
       <div className="row u-margin-bottom-none">
@@ -21,9 +20,10 @@ const SpacerSettings = ({ type, component, dispatch }) => {
           <Text content="Background" />
           <Paper
             className="u-margin-top-light"
+            onHandleColor={(val)=>onHandleProperties(val, 'background')}
             properties={{
-              color: "#FFFFFF",
-              text: "#FFFFFF",
+              color: background,
+              text: background,
             }}
           />
         </div>
@@ -32,7 +32,7 @@ const SpacerSettings = ({ type, component, dispatch }) => {
           <Knob
             className="u-margin-top-light"
             content={`${height}px`}
-            onHandleClick={onHandleHeight}
+            onHandleClick={(val) => onHandleProperties(val, "height")}
           />
         </div>
       </div>

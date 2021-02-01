@@ -20,8 +20,8 @@ const defaultProperties = {
     desktop: true,
   },
   SPACER: {
-    height: 15,
-    background: "#fff",
+    height: 45,
+    background: "#ffffff",
   },
 };
 
@@ -221,6 +221,13 @@ const componentsReducer = (
           state.activeRow.rowIndex
         ];
       existingRow.value.properties.height += payload;
+      return { ...state, contents: existingContents };
+    case "SET_BACKGROUND":
+      var existingRow =
+        existingContents[0].columns[state.activeRow.columnIndex].rows[
+          state.activeRow.rowIndex
+        ];
+      existingRow.value.properties.background = payload;
       return { ...state, contents: existingContents };
     default:
       return state;

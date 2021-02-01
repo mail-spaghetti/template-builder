@@ -1,7 +1,7 @@
 .paper {
+  position: relative;
   display: flex;
   align-items: center;
-  overflow: hidden;
   cursor: pointer;
   background: #fafafa;
   border: 1px solid #d0d0d0;
@@ -106,5 +106,12 @@
       color: $color-black;
       font-weight: bolder;
     }
+  }
+
+  &__colorPicker {
+    position: absolute;
+    top: 3.6rem;
+    left: -2.2rem;
+    z-index: 1;
   }
 }
