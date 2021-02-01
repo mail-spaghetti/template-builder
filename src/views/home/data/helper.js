@@ -1,4 +1,5 @@
 import {
+  setHeight,
   setMarginBottom,
   setMarginLeft,
   setMarginRight,
@@ -13,6 +14,7 @@ export const funcMap = {
   bottom: (value, block) => setMarginBottom(value, block),
   right: (value, block) => setMarginRight(value, block),
   left: (value, block) => setMarginLeft(value, block),
+  height: (value) => setHeight(value),
   mobile: (block) => showMobile({ block }),
   desktop: (block) => showDestkop({ block }),
   linkInput: (value, prop, block) => setURL(value, block, prop),

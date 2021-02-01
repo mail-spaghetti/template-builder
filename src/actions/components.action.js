@@ -175,6 +175,11 @@ export const setMarginLeft = (value = 1) => ({
   payload: value,
 });
 
+export const setHeight = (value = 1) => ({
+  type: "SET_HEIGHT",
+  payload: value,
+});
+
 export const showDestkop = ({ block }) => ({
   type: "SHOW_DESKTOP",
   block,
