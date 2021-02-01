@@ -10,6 +10,7 @@ const Paper = ({
   properties,
   className,
   onHandleInputChange,
+  onHandleBorderChange,
   onHandleColor,
 }) => {
   const [colorPopup, setColorPopup] = useState(false);
@@ -20,8 +21,14 @@ const Paper = ({
 
   const onColorChange = (color) => onHandleColor(color.hex);
 
-  const displayBorder = (border, index) => (
-    <div className={`paper__border paper--${border}`} key={index}>
+  const displayBorder = (border, currentBorder, index) => (
+    <div
+      onClick={() => onHandleBorderChange(border)}
+      className={`paper__border paper--${border} ${
+        currentBorder === border ? "paper__border--selected" : null
+      }`}
+      key={index}
+    >
       &nbsp;
     </div>
   );
@@ -65,6 +72,7 @@ const Paper = ({
         return (
           <Fragment key={index}>
             {properties[value].split(" ").map((property, idx) => {
+              console.log(property, idx);
               if (idx === 0)
                 return (
                   <Text key={idx} className="paper__text" content={property} />
@@ -73,7 +81,7 @@ const Paper = ({
                 return (
                   <div key={idx} className="paper__borderWrapper">
                     {BORDER_SETTINGS.map((border, idx) =>
-                      displayBorder(border, idx)
+                      displayBorder(border, property, idx)
                     )}
                   </div>
                 );
@@ -90,10 +98,7 @@ const Paper = ({
       )}
       {colorPopup && (
         <div className="paper__colorPicker">
-          <SketchPicker
-            color={properties.color}
-            onChange={onColorChange}
-          />
+          <SketchPicker color={properties.color} onChange={onColorChange} />
         </div>
       )}
     </div>

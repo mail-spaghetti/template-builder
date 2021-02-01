@@ -19,11 +19,10 @@ const DividerSettings = ({ type, component, dispatch }) => {
   ].value.properties;
 
   const onHandleBorder = (val, type, prop) => {
-    if (type === "color") {
-      let borderArr = borderTop.split(" ");
-      borderArr.splice(2, 1, val);
-      dispatch(funcMap[prop](borderArr.join(" ")));
-    }
+    let borderArr = borderTop.split(" ");
+    if (type === "color") borderArr.splice(2, 1, val);
+    else if (type === "type") borderArr.splice(1, 1, val);
+    dispatch(funcMap[prop](borderArr.join(" ")));
   };
 
   return (
@@ -32,6 +31,7 @@ const DividerSettings = ({ type, component, dispatch }) => {
       <Paper
         className="u-margin-top-light"
         onHandleColor={(val) => onHandleBorder(val, "color", "borderTop")}
+        onHandleBorderChange={(val) => onHandleBorder(val, "type", "borderTop")}
         properties={{
           color: borderTop.split(" ")[2],
           text: borderTop.split(" ")[2],
