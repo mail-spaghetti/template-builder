@@ -2,6 +2,17 @@ import { COMPONENT_INITIAL_STATE, INITIAL_DRAFT_CONTENT } from "../utils";
 
 const componentsReducerDefaultState = COMPONENT_INITIAL_STATE;
 
+const defaultProperties = {
+  text: {
+    marginTop: 15,
+    marginBottom: 15,
+    marginLeft: 15,
+    marginRight: 15,
+    mobile: false,
+    desktop: true,
+  },
+};
+
 const componentsReducer = (
   state = componentsReducerDefaultState,
   { type, activeContent, activeSubcontent, payload, block, prop }
@@ -89,7 +100,10 @@ const componentsReducer = (
         active: true,
         content: payload.content.text,
         component: payload.content.component,
-        value: payload.content.value,
+        value: {
+          content: payload.content.value,
+          properties: defaultProperties[payload.content.text.toLowerCase()],
+        },
       };
       return { ...state, contents: existingContents };
     case "INSERT_CONTENT_BELOW":
