@@ -10,13 +10,13 @@ const Gif = ({ onHandleChange, content }) => {
   };
   return (
     <div
-      className="draft__gif"
+      className={`${!content.content ? "draft__gif" : null}`}
       onDragOver={(e) => e.preventDefault()}
       onDrop={(e) => onHandleChange(e, "GIF")}
       style={inlineStyle}
     >
       {content.content ? (
-        <img style={{ width: "250px" }} src={content} />
+        <img style={{ width: "250px" }} src={content.content} />
       ) : (
         <div>
           <ImageRed />

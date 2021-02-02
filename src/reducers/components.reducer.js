@@ -247,6 +247,13 @@ const componentsReducer = (
         ];
       existingRow.value.properties.background = payload;
       return { ...state, contents: existingContents };
+    case "SET_URL":
+      var existingRow =
+        existingContents[0].columns[state.activeRow.columnIndex].rows[
+          state.activeRow.rowIndex
+        ];
+      existingRow.value.content = payload;
+      return { ...state, contents: existingContents };
     default:
       return state;
   }
