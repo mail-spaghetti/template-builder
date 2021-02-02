@@ -17,7 +17,7 @@ const DividerSettings = ({ type, component, dispatch }) => {
   } = component?.contents[0]?.columns[component.activeRow.columnIndex]?.rows[
     component.activeRow.rowIndex
   ].value.properties;
-
+  console.log(borderTop);
   const onHandleBorder = (val, type, prop) => {
     let borderArr = borderTop.split(" ");
     if (type === "color") borderArr.splice(2, 1, val);
@@ -36,8 +36,8 @@ const DividerSettings = ({ type, component, dispatch }) => {
         onHandleColor={(val) => onHandleBorder(val, "color", "borderTop")}
         onHandleBorderChange={(val) => onHandleBorder(val, "type", "borderTop")}
         properties={{
-          color: borderTop.split(" ")[2],
-          text: borderTop.split(" ")[2],
+          color: borderTop?.split(" ")[2],
+          text: borderTop?.split(" ")[2],
           border: borderTop,
         }}
       />
