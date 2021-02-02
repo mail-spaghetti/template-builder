@@ -43,7 +43,7 @@ const Paper = ({
             </div>
             <div className="paper__link--input">
               <Input
-                value={properties[value]}
+                value={properties[value].input}
                 placeholder="https://"
                 onInputChange={onHandleInputChange}
               />

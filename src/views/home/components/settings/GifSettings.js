@@ -10,8 +10,8 @@ import MarginSet from "../../../../components/organisms/MarginSet";
 import { funcMap } from "../../data/helper";
 
 const GifSettings = ({ type, component, dispatch }) => {
-  console.log(component);
   const { gif: gifSettings } = component;
+  console.log(component);
   const {
       mobile,
       desktop,
@@ -19,9 +19,10 @@ const GifSettings = ({ type, component, dispatch }) => {
     } = component?.contents[0]?.columns[component.activeRow.columnIndex]?.rows[
       component.activeRow.rowIndex
     ].value.properties,
-    gifURL = component?.contents[0]?.columns[component.activeRow.columnIndex]?.rows[
-      component.activeRow.rowIndex
-    ].value.content,
+    gifURL =
+      component?.contents[0]?.columns[component.activeRow.columnIndex]?.rows[
+        component.activeRow.rowIndex
+      ].value.content,
     block = type.toLowerCase();
 
   const onHandleMarginSet = (value, position) =>
@@ -42,7 +43,12 @@ const GifSettings = ({ type, component, dispatch }) => {
       <HorizontalRule />
       <Text content="Source url" className="settings__heading" />
       <Paper
-        properties={gifSettings.sourceURL}
+        properties={{
+          link: {
+            input: gifURL,
+            icon: "Link",
+          },
+        }}
         className="u-padding-none"
         onHandleInputChange={(e) => onHandleInputChange(e, "sourceURL")}
       />
