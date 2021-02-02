@@ -2,6 +2,46 @@ import { COMPONENT_INITIAL_STATE, INITIAL_DRAFT_CONTENT } from "../utils";
 
 const componentsReducerDefaultState = COMPONENT_INITIAL_STATE;
 
+const defaultProperties = {
+  TEXT: {
+    marginTop: 15,
+    marginBottom: 15,
+    marginLeft: 15,
+    marginRight: 15,
+    mobile: false,
+    desktop: true,
+  },
+  IMAGE: {
+    marginTop: 15,
+    marginBottom: 15,
+    marginLeft: 15,
+    marginRight: 15,
+    mobile: false,
+    desktop: true,
+  },
+  GIF: {
+    marginTop: 15,
+    marginBottom: 15,
+    marginLeft: 15,
+    marginRight: 15,
+    mobile: false,
+    desktop: true,
+  },
+  DIVIDER: {
+    marginTop: 5,
+    marginBottom: 5,
+    marginLeft: 0,
+    marginRight: 0,
+    borderTop: "1px solid #ffffff",
+    mobile: false,
+    desktop: true,
+  },
+  SPACER: {
+    height: 45,
+    background: "#ffffff",
+  },
+};
+
 const componentsReducer = (
   state = componentsReducerDefaultState,
   { type, activeContent, activeSubcontent, payload, block, prop }
@@ -17,6 +57,14 @@ const componentsReducer = (
     case "SET_ACTIVE_CONTENT":
       existingContents[activeContent].active = true;
       return { ...state, contents: existingContents };
+    case "SET_ROW":
+      return {
+        ...state,
+        activeRow: {
+          rowIndex: payload.row,
+          columnIndex: payload.column,
+        },
+      };
     case "SET_ROWS_INACTIVE":
       existingContents = existingContents.map((contents) => ({
         ...contents,
@@ -79,7 +127,12 @@ const componentsReducer = (
         active: true,
         content: payload.content.text,
         component: payload.content.component,
-        value: payload.content.value,
+        value: {
+          content: payload.content.value,
+          properties: JSON.parse(
+            JSON.stringify(defaultProperties[payload.content.text])
+          ),
+        },
       });
       return { ...state, contents: existingContents };
     case "INSERT_CONTENT":
@@ -89,7 +142,12 @@ const componentsReducer = (
         active: true,
         content: payload.content.text,
         component: payload.content.component,
-        value: payload.content.value,
+        value: {
+          content: payload.content.value,
+          properties: JSON.parse(
+            JSON.stringify(defaultProperties[payload.content.text])
+          ),
+        },
       };
       return { ...state, contents: existingContents };
     case "INSERT_CONTENT_BELOW":
@@ -99,9 +157,21 @@ const componentsReducer = (
         active: true,
         content: payload.content.text,
         component: payload.content.component,
-        value: payload.content.value,
+        value: {
+          content: payload.content.value,
+          properties: JSON.parse(
+            JSON.stringify(defaultProperties[payload.content.text])
+          ),
+        },
       });
       return { ...state, contents: existingContents };
+    case "UPDATE_CONTENT":
+      var existingRow =
+        existingContents[payload.index].columns[payload.column].rows[
+          payload.row
+        ];
+      existingRow.value.content = payload.content;
+      return { ...state, contents: existingContents.slice() };
     case "DELETE_COLUMN_CONTENT":
       var existingColumn =
         existingContents[payload.index].columns[payload.column];
@@ -127,6 +197,62 @@ const componentsReducer = (
       existingContents[payload] = JSON.parse(
         JSON.stringify(INITIAL_DRAFT_CONTENT)
       );
+      return { ...state, contents: existingContents };
+    case "SET_MARGIN_TOP":
+      var existingRow =
+        existingContents[0].columns[state.activeRow.columnIndex].rows[
+          state.activeRow.rowIndex
+        ];
+      existingRow.value.properties.marginTop += payload;
+      return { ...state, contents: existingContents };
+    case "SET_MARGIN_RIGHT":
+      var existingRow =
+        existingContents[0].columns[state.activeRow.columnIndex].rows[
+          state.activeRow.rowIndex
+        ];
+      existingRow.value.properties.marginRight += payload;
+      return { ...state, contents: existingContents };
+    case "SET_MARGIN_BOTTOM":
+      var existingRow =
+        existingContents[0].columns[state.activeRow.columnIndex].rows[
+          state.activeRow.rowIndex
+        ];
+      existingRow.value.properties.marginBottom += payload;
+      return { ...state, contents: existingContents };
+    case "SET_MARGIN_LEFT":
+      var existingRow =
+        existingContents[0].columns[state.activeRow.columnIndex].rows[
+          state.activeRow.rowIndex
+        ];
+      existingRow.value.properties.marginLeft += payload;
+      return { ...state, contents: existingContents };
+    case "SET_HEIGHT":
+      var existingRow =
+        existingContents[0].columns[state.activeRow.columnIndex].rows[
+          state.activeRow.rowIndex
+        ];
+      existingRow.value.properties.height += payload;
+      return { ...state, contents: existingContents };
+    case "SET_BORDER_TOP":
+      var existingRow =
+        existingContents[0].columns[state.activeRow.columnIndex].rows[
+          state.activeRow.rowIndex
+        ];
+      existingRow.value.properties.borderTop = payload;
+      return { ...state, contents: existingContents };
+    case "SET_BACKGROUND":
+      var existingRow =
+        existingContents[0].columns[state.activeRow.columnIndex].rows[
+          state.activeRow.rowIndex
+        ];
+      existingRow.value.properties.background = payload;
+      return { ...state, contents: existingContents };
+    case "SET_URL":
+      var existingRow =
+        existingContents[0].columns[state.activeRow.columnIndex].rows[
+          state.activeRow.rowIndex
+        ];
+      existingRow.value.content = payload;
       return { ...state, contents: existingContents };
     default:
       return state;

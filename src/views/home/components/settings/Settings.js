@@ -1,14 +1,16 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { connect } from "react-redux";
 
-const Settings = ({ selection, type, ...rest }) => (
-  <Fragment>
-    {require(`./${selection.replace(" Settings", "")}Settings.js`).default({
-      type: type || selection,
-      ...rest,
-    })}
-  </Fragment>
-);
+const Settings = ({ selection, type, ...rest }) => {
+  return (
+    <Fragment>
+      {require(`./${selection.replace(" Settings", "")}Settings.js`).default({
+        type: type || selection,
+        ...rest,
+      })}
+    </Fragment>
+  );
+};
 
 const mapStateToProps = (state) => ({
   selection: state.option.selection,

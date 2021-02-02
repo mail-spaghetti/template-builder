@@ -18,6 +18,8 @@ import {
   deleteContent,
   copyRowContent,
   insertItem,
+  updateContent,
+  setActiveRow,
 } from "../../../../actions/components.action";
 import { setSelected, setType } from "../../../../actions/options.action";
 import Drop from "../../../../utils/icons/Drop";
@@ -63,8 +65,12 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
 
   const onHandleHoverColumn = (index) => setActiveSubContent(index);
 
-  const onSetActiveRow = (index, idx) =>
+  const onSetActiveRow = (index, idx) => {
+    setRowIndex(idx);
+    setColumnIndex(index);
+    dispatch(setActiveRow(idx, index));
     dispatch(setActivateRow(0, idx, index));
+  };
 
   const onHandleUnset = () => dispatch(unsetHoverContent());
 
@@ -73,15 +79,18 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     setBottomClient(false);
   };
 
-  const onHandleDelete = (type, idx = null, index = null) =>
+  const onHandleDelete = (type, idx = null, index = null) => {
+    dispatch(setSelected({ selected: false }));
     type === "inner"
       ? dispatch(deleteColumnContent(0, index, idx))
       : dispatch(deleteContent(0));
+  };
 
   const onHandleCopy = (type, idx = null, index = null) =>
     type === "inner" ? dispatch(copyRowContent(0, idx, index)) : null;
 
   const dropItem = (item) => {
+    onSetActiveRow(rowIndex, columnIndex);
     if (
       component.contents[activeMainContent].columns[columnIndex].rows[rowIndex]
         ?.component
@@ -94,10 +103,11 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
         dispatch(
           insertItem("below", item, activeMainContent, rowIndex, columnIndex)
         );
-    } else
+    } else {
       dispatch(
         insertItem(null, item, activeMainContent, rowIndex, columnIndex)
       );
+    }
     setTimeout(() => {
       setTopClient(false);
       setBottomClient(false);
@@ -134,7 +144,9 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
         };
     }
 
-    dispatch(insertContent(content, activeSubcontent, rowIndex, columnIndex));
+    dispatch(
+      updateContent(content.value, activeSubcontent, rowIndex, columnIndex)
+    );
   };
 
   const setColumns = (content, activeIdx) => {

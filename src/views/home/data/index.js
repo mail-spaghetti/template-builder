@@ -35,6 +35,7 @@ export const CARDS = [
     text: "GIF",
     icon: "Gif",
     component: "Gif",
+    value: "https://media.giphy.com/media/vaiL8rQ5x22KRConmu/giphy.gif",
   },
   {
     text: "BUTTON",
@@ -50,7 +51,7 @@ export const CARDS = [
   {
     text: "SPACER",
     icon: "Spacer",
-    component: "DraftInput",
+    component: "DraftSpacer",
   },
   {
     text: "SOCIAL",
