@@ -10,11 +10,18 @@ import MarginSet from "../../../../components/organisms/MarginSet";
 import { funcMap } from "../../data/helper";
 
 const GifSettings = ({ type, component, dispatch }) => {
-  const { gif: gifSettings } = component,
+  const { gif: gifSettings } = component;
+  const {
+      mobile,
+      desktop,
+      ...marginSettings
+    } = component?.contents[0]?.columns[component.activeRow.columnIndex]?.rows[
+      component.activeRow.rowIndex
+    ].value.properties,
     block = type.toLowerCase();
 
   const onHandleMarginSet = (value, position) =>
-    dispatch(funcMap[position](value, block));
+    dispatch(funcMap[position](value));
 
   const onHandleSliderChange = (position) => dispatch(funcMap[position](block));
 
@@ -49,7 +56,7 @@ const GifSettings = ({ type, component, dispatch }) => {
       />
       <HorizontalRule />
       <Text content="Margin" className="settings__heading" />
-      <MarginSet {...gifSettings} onHandleMarginSet={onHandleMarginSet} />
+      <MarginSet {...marginSettings} onHandleMarginSet={onHandleMarginSet} />
       <HorizontalRule />
       <DisplaySlider
         {...gifSettings}

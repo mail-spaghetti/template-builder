@@ -19,12 +19,22 @@ const defaultProperties = {
     mobile: false,
     desktop: true,
   },
+  GIF: {
+    marginTop: 15,
+    marginBottom: 15,
+    marginLeft: 15,
+    marginRight: 15,
+    mobile: false,
+    desktop: true,
+  },
   DIVIDER: {
     marginTop: 5,
     marginBottom: 5,
     marginLeft: 0,
     marginRight: 0,
     borderTop: "1px solid #ffffff",
+    mobile: false,
+    desktop: true,
   },
   SPACER: {
     height: 45,
