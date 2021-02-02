@@ -1,13 +1,34 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
+import { SketchPicker } from "react-color";
 
 import { BORDER_SETTINGS } from "../../views/home/data";
 import Input from "../atoms/Input";
 
 import Text from "../atoms/Text";
 
-const Paper = ({ properties, className, onHandleInputChange }) => {
-  const displayBorder = (border, index) => (
-    <div className={`paper__border paper--${border}`} key={index}>
+const Paper = ({
+  properties,
+  className,
+  onHandleInputChange,
+  onHandleBorderChange,
+  onHandleColor,
+}) => {
+  const [colorPopup, setColorPopup] = useState(false);
+
+  const onSetFalse = (e) => {
+    if (e.target.id === "paper") setColorPopup(false);
+  };
+
+  const onColorChange = (color) => onHandleColor(color.hex);
+
+  const displayBorder = (border, currentBorder, index) => (
+    <div
+      onClick={() => onHandleBorderChange(border)}
+      className={`paper__border paper--${border} ${
+        currentBorder === border ? "paper__border--selected" : null
+      }`}
+      key={index}
+    >
       &nbsp;
     </div>
   );
@@ -23,6 +44,7 @@ const Paper = ({ properties, className, onHandleInputChange }) => {
             <div className="paper__link--input">
               <Input
                 value={properties[value].input}
+                placeholder="https://"
                 onInputChange={onHandleInputChange}
               />
             </div>
@@ -31,6 +53,7 @@ const Paper = ({ properties, className, onHandleInputChange }) => {
       case "color":
         return (
           <div
+            onClick={() => setColorPopup(() => !colorPopup)}
             key={index}
             className="paper__bgColor"
             style={{ background: properties[value] }}
@@ -47,7 +70,6 @@ const Paper = ({ properties, className, onHandleInputChange }) => {
           />
         );
       case "border":
-        console.log(properties[value]);
         return (
           <Fragment key={index}>
             {properties[value].split(" ").map((property, idx) => {
@@ -57,9 +79,9 @@ const Paper = ({ properties, className, onHandleInputChange }) => {
                 );
               else if (idx === 1) {
                 return (
-                  <div className="paper__borderWrapper">
+                  <div key={idx} className="paper__borderWrapper">
                     {BORDER_SETTINGS.map((border, idx) =>
-                      displayBorder(border, idx)
+                      displayBorder(border, property, idx)
                     )}
                   </div>
                 );
@@ -70,9 +92,14 @@ const Paper = ({ properties, className, onHandleInputChange }) => {
     }
   };
   return (
-    <div className={`paper ${className}`}>
+    <div className={`paper ${className}`} id="paper" onClick={onSetFalse}>
       {Object.keys(properties).map((property, idx) =>
         getPropertyPrinted(property, idx)
+      )}
+      {colorPopup && (
+        <div className="paper__colorPicker">
+          <SketchPicker color={properties.color} onChange={onColorChange} />
+        </div>
       )}
     </div>
   );

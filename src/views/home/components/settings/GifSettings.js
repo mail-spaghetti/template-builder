@@ -10,11 +10,23 @@ import MarginSet from "../../../../components/organisms/MarginSet";
 import { funcMap } from "../../data/helper";
 
 const GifSettings = ({ type, component, dispatch }) => {
-  const { gif: gifSettings } = component,
+  const { gif: gifSettings } = component;
+  console.log(component);
+  const {
+      mobile,
+      desktop,
+      ...marginSettings
+    } = component?.contents[0]?.columns[component.activeRow.columnIndex]?.rows[
+      component.activeRow.rowIndex
+    ].value.properties,
+    gifURL =
+      component?.contents[0]?.columns[component.activeRow.columnIndex]?.rows[
+        component.activeRow.rowIndex
+      ].value.content,
     block = type.toLowerCase();
 
   const onHandleMarginSet = (value, position) =>
-    dispatch(funcMap[position](value, block));
+    dispatch(funcMap[position](value));
 
   const onHandleSliderChange = (position) => dispatch(funcMap[position](block));
 
@@ -31,7 +43,12 @@ const GifSettings = ({ type, component, dispatch }) => {
       <HorizontalRule />
       <Text content="Source url" className="settings__heading" />
       <Paper
-        properties={gifSettings.sourceURL}
+        properties={{
+          link: {
+            input: gifURL,
+            icon: "Link",
+          },
+        }}
         className="u-padding-none"
         onHandleInputChange={(e) => onHandleInputChange(e, "sourceURL")}
       />
@@ -49,7 +66,7 @@ const GifSettings = ({ type, component, dispatch }) => {
       />
       <HorizontalRule />
       <Text content="Margin" className="settings__heading" />
-      <MarginSet {...gifSettings} onHandleMarginSet={onHandleMarginSet} />
+      <MarginSet {...marginSettings} onHandleMarginSet={onHandleMarginSet} />
       <HorizontalRule />
       <DisplaySlider
         {...gifSettings}

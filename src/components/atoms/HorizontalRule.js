@@ -1,9 +1,20 @@
 import React from "react";
 
-const HorizontalRule = () => (
-  <div className="form__rule">
-    <div className="form__rule--line">&nbsp;</div>
-  </div>
-);
+const HorizontalRule = ({ content }) => {
+  const inlineStyle = {
+    marginTop: content?.properties.marginTop,
+    marginRight: content?.properties.marginRight,
+    marginBottom: content?.properties.marginBottom,
+    marginLeft: content?.properties.marginLeft,
+    borderTop: content?.properties.borderTop,
+  };
+  return (
+    <div className="form__rule">
+      <div className="form__rule--line" style={inlineStyle}>
+        &nbsp;
+      </div>
+    </div>
+  );
+};
 
 export default HorizontalRule;

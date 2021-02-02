@@ -38,6 +38,14 @@ export const setActiveSubContent = ({ activeSubcontent = 1 }) => ({
   activeSubcontent,
 });
 
+export const setActiveRow = (row, column) => ({
+  type: "SET_ROW",
+  payload: {
+    row,
+    column,
+  },
+});
+
 export const setActivateRow = (index, row, column) => (dispatch) => {
   dispatch(setRowsInactive());
   dispatch(setRowActive(index, column, row));
@@ -75,6 +83,16 @@ export const insertContentAbove = (content, index, row, column) => ({
 
 export const insertContent = (content, index, row, column) => ({
   type: "INSERT_CONTENT",
+  payload: {
+    content,
+    index,
+    column,
+    row,
+  },
+});
+
+export const updateContent = (content, index, row, column) => ({
+  type: "UPDATE_CONTENT",
   payload: {
     content,
     index,
@@ -137,28 +155,49 @@ export const modifyColumns = (value) => {
   return { type: "DECREMENT_COLUMNS" };
 };
 
-export const setMarginTop = (value = 1, block) => ({
+export const setMarginVertical = (value = 1) => (dispatch) => {
+  dispatch(setMarginTop(value));
+  dispatch(setMarginBottom(value));
+};
+
+export const setMarginHorizontal = (value = 1) => (dispatch) => {
+  dispatch(setMarginRight(value));
+  dispatch(setMarginLeft(value));
+};
+
+export const setMarginTop = (value = 1) => ({
   type: "SET_MARGIN_TOP",
   payload: value,
-  block,
 });
 
-export const setMarginBottom = (value = 1, block) => ({
+export const setMarginBottom = (value = 1) => ({
   type: "SET_MARGIN_BOTTOM",
   payload: value,
-  block,
 });
 
-export const setMarginRight = (value = 1, block) => ({
+export const setMarginRight = (value = 1) => ({
   type: "SET_MARGIN_RIGHT",
   payload: value,
-  block,
 });
 
-export const setMarginLeft = (value = 1, block) => ({
+export const setMarginLeft = (value = 1) => ({
   type: "SET_MARGIN_LEFT",
   payload: value,
-  block,
+});
+
+export const setHeight = (value = 1) => ({
+  type: "SET_HEIGHT",
+  payload: value,
+});
+
+export const setBackground = (value) => ({
+  type: "SET_BACKGROUND",
+  payload: value,
+});
+
+export const setBorderTop = (value) => ({
+  type: "SET_BORDER_TOP",
+  payload: value,
 });
 
 export const showDestkop = ({ block }) => ({
