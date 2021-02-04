@@ -24,6 +24,7 @@
     box-sizing: border-box;
     cursor: pointer;
     overflow: hidden;
+    backface-visibility: hidden;
     > * {
       transition: all .2s;
       padding: 0.3rem 1.2rem;
