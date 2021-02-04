@@ -3,7 +3,9 @@ import React, { useEffect } from "react";
 import Button from "../../../../components/atoms/Button";
 import HorizontalRule from "../../../../components/atoms/HorizontalRule";
 import Text from "../../../../components/atoms/Text";
+import Align from "../../../../components/molecules/Align";
 import Paper from "../../../../components/molecules/Paper";
+import Slider from "../../../../components/molecules/Slider";
 import DisplaySlider from "../../../../components/organisms/DisplaySlider";
 import Knob from "../../../../components/organisms/Knob";
 import MarginSet from "../../../../components/organisms/MarginSet";
@@ -37,10 +39,21 @@ const ButtonSettings = ({ type, component, dispatch }) => {
         className="u-padding-none"
       />
       <HorizontalRule />
+      <Text content="Align" className="settings__heading" />
+      <div className="row u-margin-bottom-none">
+        <div className="col-2-of-3">
+          <Align />
+        </div>
+        <div className="col-1-of-3 u-display-flex-between u-translate-y-1">
+          <Text content="Full Width" />
+          <Slider />
+        </div>
+      </div>
+      <HorizontalRule />
       <Text content="Properties" className="settings__heading" />
       <div className="row">
         <div className="col-1-of-2">
-          <Text content="Background color" />
+          <Text content="Button color" />
           <Paper
             className="u-margin-top-light"
             properties={{

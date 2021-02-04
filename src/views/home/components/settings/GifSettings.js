@@ -3,6 +3,7 @@ import React from "react";
 import Button from "../../../../components/atoms/Button";
 import HorizontalRule from "../../../../components/atoms/HorizontalRule";
 import Text from "../../../../components/atoms/Text";
+import Align from "../../../../components/molecules/Align";
 import Paper from "../../../../components/molecules/Paper";
 import DisplaySlider from "../../../../components/organisms/DisplaySlider";
 import MarginSet from "../../../../components/organisms/MarginSet";
@@ -52,6 +53,9 @@ const GifSettings = ({ type, component, dispatch }) => {
         className="u-padding-none"
         onHandleInputChange={(e) => onHandleInputChange(e, "sourceURL")}
       />
+      <HorizontalRule />
+      <Text content="Align" className="settings__heading" />
+      <Align />
       <HorizontalRule />
       <Text content="Gif Properites" className="settings__heading" />
       <Paper
