@@ -40,6 +40,20 @@ const defaultProperties = {
     height: 45,
     background: "#ffffff",
   },
+  BUTTON: {
+    marginTop: 5,
+    marginBottom: 5,
+    marginLeft: 0,
+    marginRight: 0,
+    link: "http://www.google.com",
+    align: null,
+    fullWidth: false,
+    background: "#d54d42",
+    color: "#ffffff",
+    borderRadius: 5,
+    mobile: false,
+    desktop: true,
+  },
 };
 
 const componentsReducer = (
