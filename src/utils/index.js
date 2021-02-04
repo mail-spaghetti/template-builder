@@ -151,3 +151,15 @@ export const COMPONENT_INITIAL_STATE = {
     desktop: false,
   },
 };
+
+export const ALIGN_ICONS = [
+  {
+    name: "LeftAlign",
+  },
+  {
+    name: "CenterAlign",
+  },
+  {
+    name: "RightAlign",
+  },
+];

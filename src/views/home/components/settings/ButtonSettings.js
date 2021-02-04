@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import Button from "../../../../components/atoms/Button";
 import HorizontalRule from "../../../../components/atoms/HorizontalRule";
 import Text from "../../../../components/atoms/Text";
+import Align from "../../../../components/molecules/Align";
 import Paper from "../../../../components/molecules/Paper";
 import DisplaySlider from "../../../../components/organisms/DisplaySlider";
 import Knob from "../../../../components/organisms/Knob";
@@ -36,6 +37,9 @@ const ButtonSettings = ({ type, component, dispatch }) => {
         onHandleInputChange={(e) => onHandleInputChange(e, "buttonURL")}
         className="u-padding-none"
       />
+      <HorizontalRule />
+      <Text content="Align" className="settings__heading" />
+      <Align />
       <HorizontalRule />
       <Text content="Properties" className="settings__heading" />
       <div className="row">

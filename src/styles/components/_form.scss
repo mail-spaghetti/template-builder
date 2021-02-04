@@ -15,6 +15,31 @@
     }
   }
 
+  &__align {
+    display: inline-block;
+    border: 1px solid #d0d0d0;
+    border-radius: 0.5rem;
+    background: #fafafa;
+    height: 4.2rem;
+    box-sizing: border-box;
+    cursor: pointer;
+    overflow: hidden;
+    > * {
+      transition: all .2s;
+      padding: 0.3rem 1.2rem;
+      display: inline-block;
+      border: 1px solid transparent;
+      &:not(:last-child) {
+        border-right: 1px solid #ededed;
+      }
+
+      &:hover {
+        background: darken(#fafafa, 3%);
+        border: 1px solid #d0d0d0;
+      }
+    }
+  }
+
   &__slider {
     position: relative;
     width: 4rem;
