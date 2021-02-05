@@ -58,20 +58,23 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
       if (!refStruct.current) return;
       setHoverType("struct");
       const hoveredRect = refStruct.current.getBoundingClientRect();
+      const hoveredMiddle = (hoveredRect.bottom - hoveredRect.top) / 2;
       const mouseYPosition = monitor.getClientOffset().y - hoveredRect.top;
       if (structClient.top || structClient.bottom) {
         if (
           structClient.bottom &&
-          mouseYPosition <= hoveredRect.height - structure.verticalPadding + 25
+          mouseYPosition <=
+            hoveredRect.height - structure.verticalPadding + 25 &&
+          mouseYPosition > hoveredMiddle
         )
           setStructClient({ top: true, bottom: null });
         else if (
           structClient.top &&
-          mouseYPosition >= 0 - structure.verticalPadding
+          mouseYPosition >= 0 - structure.verticalPadding &&
+          mouseYPosition < hoveredMiddle
         )
           setStructClient({ top: null, bottom: true });
       } else {
-        const hoveredMiddle = (hoveredRect.bottom - hoveredRect.top) / 2;
         if (mouseYPosition >= hoveredMiddle)
           setStructClient(() => ({ top: null, bottom: true }));
         else setStructClient(() => ({ top: true, bottom: null }));
@@ -122,6 +125,12 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     setStructClient({ top: null, bottom: null });
     dispatch(unsetHoverContent());
   };
+
+  const unSetClient = () => {
+    setTimeout(()=>{
+      setStructClient({ top: null, bottom: null });
+    }, 50)
+  }
 
   const handleDragLeave = () => {
     setTopClient(false);
@@ -337,7 +346,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
       <div>
         {component.contents.map((content, idx) => (
           <Fragment key={idx}>
-            <div ref={dropStructure}>
+            <div ref={dropStructure} onDrop={unSetClient}>
               {structClient.top && (
                 <div className="draft__subBlockEvent--top">&nbsp;</div>
               )}
