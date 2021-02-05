@@ -72,6 +72,7 @@ export const CARDS = [
 
 export const ITEMS = {
   BLOCK: "block",
+  STRUCTURE: "structure",
 };
 
 export const STRUCTURE_INDICES = [

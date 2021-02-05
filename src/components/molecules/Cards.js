@@ -3,6 +3,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import Text from "../atoms/Text";
 
 const Cards = ({ type = "card", ...rest }) => {
+  const { text, icon, struct } = rest;
   const [component, setComponent] = useState(null);
   useEffect(() => {
     if (icon) {
@@ -10,8 +11,7 @@ const Cards = ({ type = "card", ...rest }) => {
       setComponent(Components.default);
     }
   }, []);
-
-  const { text, icon, struct } = rest;
+  
   return (
     <Fragment>
       {type === "card" ? (
