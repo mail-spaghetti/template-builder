@@ -7,7 +7,7 @@ import { ITEMS } from "../../data";
 const Structs = ({ struct }) => {
   const [{ opacity }, dragRef] = useDrag({
     item: {
-      type: ITEMS.STRUCTURE,
+      type: ITEMS.BLOCK,
       content: struct,
     },
     collect: (monitor) => ({
