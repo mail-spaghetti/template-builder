@@ -34,6 +34,8 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
       dropItem(item.content);
     },
     hover: (item, monitor) => {
+      if (Object.keys(item.content).includes("columns")) setHoverType("struct");
+      else setHoverType("block");
       let hY = monitor.getClientOffset()?.y;
       setTimeout(() => {
         const dhY = monitor.getClientOffset()?.y - hY;
@@ -54,6 +56,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   const [topClient, setTopClient] = useState(false);
   const [bottomClient, setBottomClient] = useState(false);
   const [mousePos, setMousePos] = useState(null);
+  const [hoverType, setHoverType] = useState(null);
 
   const ref = useRef(null);
 
@@ -63,7 +66,9 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
 
   const onSetActive = (index) => dispatch(setActive({ activeContent: index }));
 
-  const onHandleHoverColumn = (index) => setActiveSubContent(index);
+  const onHandleHoverColumn = (e, index) => {
+    return setActiveSubContent(index);
+  };
 
   const onSetActiveRow = (index, idx) => {
     setRowIndex(idx);
@@ -156,8 +161,9 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
           return (
             <td
               key={index}
+              id="sub"
               style={{ padding: "0 10px" }}
-              onDragOver={() => onHandleHoverColumn(index)}
+              onDragOver={(e) => onHandleHoverColumn(e, index, ref)}
               ref={getDropRef(index)}
             >
               {column.rows.map((row, idx) => {
@@ -268,16 +274,16 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     setTimeout(() => {
       const dMouseVal = mouseVal === mousePos;
       if (dMouseVal) {
-        if (mouseVal) {
+        if (mouseVal && hoverType === "block") {
           setTopClient(false);
           setBottomClient(true);
-        } else if (!mouseVal) {
+        } else if (!mouseVal && hoverType === "block") {
           setTopClient(true);
           setBottomClient(false);
         }
       }
     }, 150);
-    dispatch(setHoverContent({ index: idx }));
+    if (hoverType === "block") dispatch(setHoverContent({ index: idx }));
   };
 
   return (
@@ -301,7 +307,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
             <div className={`draft__subBlockEvent`}>
               <table style={{ width: "100%" }}>
                 {component.contents.map((content, index) => (
-                  <tbody key={index}>
+                  <tbody key={index} id="main">
                     <tr>{setColumns(content, idx)}</tr>
                   </tbody>
                 ))}

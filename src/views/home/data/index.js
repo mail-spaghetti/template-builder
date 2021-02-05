@@ -21,49 +21,58 @@ export const ATTACHMENT_TYPES = ["PDF", "PNG", "JPEG"];
 
 export const CARDS = [
   {
+    
     text: "TEXT",
     icon: "Text",
     component: "DraftText",
     value: "This is your new text block with first paragraph",
   },
   {
+    
     text: "IMAGE",
     icon: "Image",
     component: "Gif",
   },
   {
+    
     text: "GIF",
     icon: "Gif",
     component: "Gif",
     value: "https://media.giphy.com/media/vaiL8rQ5x22KRConmu/giphy.gif",
   },
   {
+    
     text: "BUTTON",
     icon: "Button",
     component: "Draftbutton",
     value: "Choose Image",
   },
   {
+    
     text: "DIVIDER",
     icon: "Divider",
     component: "HorizontalRule",
   },
   {
+    
     text: "SPACER",
     icon: "Spacer",
     component: "DraftSpacer",
   },
   {
+    
     text: "SOCIAL",
     icon: "Social",
     component: "DraftInput",
   },
   {
+    
     text: "VIDEO",
     icon: "Video",
     component: "DraftVideo",
   },
   {
+    
     text: "HTML",
     icon: "Code",
     component: "DraftInput",
