@@ -99,6 +99,20 @@
     &--active {
       border: 1px solid #00bd1e;
     }
+    &--top {
+      height: 15rem;
+      background: lighten(#d54d42, 40%);
+      border: 1px dashed #d54d42;
+      border-bottom: none;
+      width: 100%;
+    }
+    &--bottom {
+      height: 15rem;
+      background: lighten(#d54d42, 40%);
+      border: 1px dashed #d54d42;
+      border-top: none;
+      width: 100%;
+    }
   }
 
   &__subBlocks {
