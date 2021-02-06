@@ -1,4 +1,4 @@
-import { modifyColumns } from "./components.action";
+import { modifyColumns } from "./componentsAction";
 
 export const modifyColumnStructure = (value) => (dispatch) => {
   dispatch(changeColumns(value));

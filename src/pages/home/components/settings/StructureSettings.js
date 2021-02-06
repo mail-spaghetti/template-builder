@@ -1,13 +1,13 @@
 import React from "react";
 
-import { setSelected } from "../../../../actions/options.action";
+import { setSelected } from "../../../../actions/optionsAction";
 import {
   changePadding,
   modifyColumnStructure,
   setIndependentBorder,
   setMobileStack,
   setSelectedColumn,
-} from "../../../../actions/structure.action";
+} from "../../../../actions/structureAction";
 import Button from "../../../../common/components/atoms/Button";
 import HorizontalRule from "../../../../common/components/atoms/HorizontalRule";
 import Text from "../../../../common/components/atoms/Text";

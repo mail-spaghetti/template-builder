@@ -15,8 +15,8 @@ import {
   updateContent,
   setActiveRow,
   insertMainContent,
-} from "../../../../actions/components.action";
-import { setSelected, setType } from "../../../../actions/options.action";
+} from "../../../../actions/componentsAction";
+import { setSelected, setType } from "../../../../actions/optionsAction";
 import Drop from "../../../../utils/icons/Drop";
 import { DEFAULT_LEAF_VALUE, ITEMS } from "../../data";
 import SnapLeaflet from "./SnapLeaflet";

@@ -11,7 +11,7 @@ import {
   setURL,
   showDestkop,
   showMobile,
-} from "../../../actions/components.action";
+} from "../../../actions/componentsAction";
 
 export const funcMap = {
   top: (value, block) => setMarginTop(value, block),

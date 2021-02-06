@@ -5,7 +5,7 @@ import {
   changeSelection,
   setSelected,
   setType,
-} from "../../../actions/options.action";
+} from "../../../actions/optionsAction";
 import { OPTIONS } from "../data";
 import Blocks from "./blocks/Blocks";
 import Options from "./options/Options";

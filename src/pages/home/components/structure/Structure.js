@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import Structs from "./Structs";
 import { STRUCTURE_INDICES, STRUCT_HEADER } from "../../data";
-import { setSelected, setType } from "../../../../actions/options.action";
+import { setSelected, setType } from "../../../../actions/optionsAction";
 import Settings from "../settings/Settings";
 
 const Structure = ({ dispatch, selected, type }) => {

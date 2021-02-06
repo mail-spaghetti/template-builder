@@ -3,7 +3,7 @@ import React from "react";
 import Text from "../../../../common/components/atoms/Text";
 import LeftArrow from "../../../../utils/icons/LeftArrow";
 
-import { setSelected } from "../../../../actions/options.action";
+import { setSelected } from "../../../../actions/optionsAction";
 
 const ComponentsSettings = ({ type, ...rest }) => {
   const onHandleSettingsExit = () => rest.dispatch(setSelected({ selected: false }));
