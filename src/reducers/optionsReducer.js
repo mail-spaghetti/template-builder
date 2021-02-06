@@ -1,4 +1,4 @@
-import { OPTIONS } from "../pages/home/data";
+import { OPTIONS } from "../pages/HomePage/data";
 
 const optionsReducerDefaultState = {
   selection: OPTIONS[0],

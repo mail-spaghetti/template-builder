@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { SketchPicker } from "react-color";
 
-import { BORDER_SETTINGS } from "../../../pages/home/data";
+import { BORDER_SETTINGS } from "../../../pages/HomePage/data";
 import Input from "../atoms/Input";
 
 import Text from "../atoms/Text";

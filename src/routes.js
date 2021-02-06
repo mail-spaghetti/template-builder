@@ -6,10 +6,9 @@ import {
   useLocation,
 } from "react-router-dom";
 
+import { Home as HomeView, Header as HeaderView } from "./pages";
 
-import { Home as HomeView, Header as HeaderView } from "../pages";
-
-const AppRoutes = () => (
+const Routes = () => (
   <Router>
     <HeaderView />
     <Switch>
@@ -18,4 +17,4 @@ const AppRoutes = () => (
   </Router>
 );
 
-export default AppRoutes;
+export default Routes;
