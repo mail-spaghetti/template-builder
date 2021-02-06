@@ -35,6 +35,7 @@ export const INITIAL_DRAFT_ROW = [
 
 export const INITIAL_DRAFT_COLUMN = [
   {
+    width: 100,
     rows: INITIAL_DRAFT_ROW.slice(),
   },
 ];

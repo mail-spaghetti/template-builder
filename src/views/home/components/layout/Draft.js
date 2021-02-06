@@ -151,9 +151,9 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
 
   const dropContent = (item) => {
     if (structClient.top) {
-      dispatch(insertMainContent("above", component.hoverContent));
+      dispatch(insertMainContent("above", component.hoverContent, item));
     } else if (structClient.bottom) {
-      dispatch(insertMainContent("below", component.hoverContent));
+      dispatch(insertMainContent("below", component.hoverContent, item));
     } else return;
   };
 
@@ -379,7 +379,9 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
                   <tbody id="main">
                     <tr>
                       {content.columns.map((content, index) => (
-                        <th key={index}>{setColumns(content, index)}</th>
+                        <th width={`${content.width}%`} key={index}>
+                          {setColumns(content, index)}
+                        </th>
                       ))}
                     </tr>
                   </tbody>

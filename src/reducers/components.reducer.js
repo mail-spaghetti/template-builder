@@ -1,4 +1,8 @@
-import { COMPONENT_INITIAL_STATE, INITIAL_DRAFT_CONTENT } from "../utils";
+import {
+  COMPONENT_INITIAL_STATE,
+  INITIAL_DRAFT_CONTENT,
+  INITIAL_DRAFT_ROW,
+} from "../utils";
 
 const componentsReducerDefaultState = COMPONENT_INITIAL_STATE;
 
@@ -64,18 +68,32 @@ const componentsReducer = (
   let existingContents = state.contents.slice();
   switch (type) {
     case "INSERT_MAIN_CONTENT_ABOVE":
-      existingContents.splice(
-        payload,
-        0,
-        JSON.parse(JSON.stringify(INITIAL_DRAFT_CONTENT))
-      );
+      var contents = payload.structure.columns.map((column) => {
+        return {
+          width: parseFloat(
+            ((column / payload.structure.parts) * 100).toFixed(2)
+          ),
+          rows: INITIAL_DRAFT_ROW.slice(),
+        };
+      });
+      existingContents.splice(payload.index, 0, {
+        ...JSON.parse(JSON.stringify(INITIAL_DRAFT_CONTENT)),
+        columns: contents,
+      });
       return { ...state, contents: existingContents };
     case "INSERT_MAIN_CONTENT_BELOW":
-      existingContents.splice(
-        payload + 1,
-        0,
-        JSON.parse(JSON.stringify(INITIAL_DRAFT_CONTENT))
-      );
+      var contents = payload.structure.columns.map((column) => {
+        return {
+          width: parseFloat(
+            ((column / payload.structure.parts) * 100).toFixed(2)
+          ),
+          rows: INITIAL_DRAFT_ROW.slice(),
+        };
+      });
+      existingContents.splice(payload.index + 1, 0, {
+        ...JSON.parse(JSON.stringify(INITIAL_DRAFT_CONTENT)),
+        columns: contents,
+      });
       return { ...state, contents: existingContents };
     case "SET_INACTIVE_CONTENT":
       existingContents = existingContents.map((content) => {
