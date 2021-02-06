@@ -1,5 +1,5 @@
 import React from "react";
-import { INPUT_PLACEHOLDER } from "../../views/home/data";
+import { INPUT_PLACEHOLDER } from "../../pages/home/data";
 
 const DraftInput = () => (
   <input

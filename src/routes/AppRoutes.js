@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 
-import { Home as HomeView, Header as HeaderView } from "../views";
+import { Home as HomeView, Header as HeaderView } from "../pages";
 
 const AppRoutes = () => (
   <Router>
