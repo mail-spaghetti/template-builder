@@ -217,7 +217,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     );
   };
 
-  const setColumns = (column, index) => {
+  const setColumns = (column, index, mainContentIndex) => {
     return (
       <Fragment>
         <div
@@ -248,7 +248,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
                     columnIndex === index && (
                       <div className="draft__contents--new">&nbsp;</div>
                     )}
-                  {setRows(row, index, idx)}
+                  {setRows(row, index, idx, mainContentIndex)}
                   {bottomClient &&
                     rowIndex === idx &&
                     columnIndex === index &&
@@ -264,13 +264,14 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     );
   };
 
-  const setRows = (content, index, idx) => {
+  const setRows = (content, index, idx, mainContentIndex) => {
     return (
       <div ref={activeSubcontent === idx ? ref : null}>
         <div
           className={`draft__contents ${
             content.content ? "draft__contents--white" : null
           } ${content.active ? "draft__contents--green" : null} ${
+            component.hoverContent === mainContentIndex &&
             component.hoverSubcontent.rowIndex === idx &&
             component.hoverSubcontent.columnIndex === index
               ? "draft__contents--green"
@@ -288,7 +289,8 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
           style={{ background: index === activeSubcontent ? background : null }}
         >
           <div>
-            {component.hoverSubcontent.rowIndex === idx &&
+            {component.hoverContent === mainContentIndex &&
+              component.hoverSubcontent.rowIndex === idx &&
               component.hoverSubcontent.columnIndex === index && (
                 <SnapLeaflet
                   _leaflet="inner"
@@ -380,7 +382,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
                     <tr>
                       {content.columns.map((content, index) => (
                         <th width={`${content.width}%`} key={index}>
-                          {setColumns(content, index)}
+                          {setColumns(content, index, idx)}
                         </th>
                       ))}
                     </tr>
