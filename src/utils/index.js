@@ -26,20 +26,25 @@ export const FONT_STYLES = [
   },
 ];
 
+export const INITIAL_DRAFT_ROW = [
+  {
+    active: false,
+    content: null,
+  },
+];
+
+export const INITIAL_DRAFT_COLUMN = [
+  {
+    width: 100,
+    rows: INITIAL_DRAFT_ROW.slice(),
+  },
+];
+
 export const INITIAL_DRAFT_CONTENT = {
   active: false,
   verticalPadding: "10",
   bgColor: "#d7d7d7",
-  columns: [
-    {
-      rows: [
-        {
-          active: false,
-          content: null,
-        },
-      ],
-    },
-  ],
+  columns: INITIAL_DRAFT_COLUMN.slice(),
 };
 
 export const COMPONENT_INITIAL_STATE = {
@@ -151,3 +156,15 @@ export const COMPONENT_INITIAL_STATE = {
     desktop: false,
   },
 };
+
+export const ALIGN_ICONS = [
+  {
+    name: "LeftAlign",
+  },
+  {
+    name: "CenterAlign",
+  },
+  {
+    name: "RightAlign",
+  },
+];

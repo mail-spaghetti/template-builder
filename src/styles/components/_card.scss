@@ -16,12 +16,13 @@
   &__blockWrapper {
     display: inline-block;
     width: 100%;
+    cursor: move;
+    z-index: 1;
   }
 
   &__struct {
     padding: 1rem;
     width: 16.5rem;
-    cursor: pointer;
     &:hover {
       box-shadow: 0.1rem 0rem 1rem rgba($color-black, 0.1);
       border: 1px solid $color-grey-light;

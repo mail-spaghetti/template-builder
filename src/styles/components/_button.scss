@@ -40,7 +40,7 @@
       min-width: unset;
       width: 7.5rem;
       height: 3.6rem;
-      background: #F0F0F0;
+      background: #f0f0f0;
       padding: unset;
       border-radius: 0.3rem;
     }
@@ -67,9 +67,10 @@
 
   &--draft {
     color: $color-white;
-    background: #D54D42;
+    background: #d54d42;
     min-width: 13.8rem;
     min-height: 3.9rem;
     font-size: 1.4rem;
+    cursor: default;
   }
 }
