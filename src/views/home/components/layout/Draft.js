@@ -1,19 +1,13 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { Fragment, useRef, useState } from "react";
 import { useDrop } from "react-dnd";
 import { connect } from "react-redux";
 import {
-  addContent,
-  setActiveContent,
   setActivateRow,
-  insertContent,
   setActive,
-  setInactiveContent,
   setHoverContent,
   unsetHoverContent,
   setHoverSubcontent,
   unsetHoverSubcontent,
-  insertContentBelow,
-  insertContentAbove,
   deleteColumnContent,
   deleteContent,
   copyRowContent,
@@ -25,7 +19,6 @@ import {
 import { setSelected, setType } from "../../../../actions/options.action";
 import Drop from "../../../../utils/icons/Drop";
 import { DEFAULT_LEAF_VALUE, ITEMS } from "../../data";
-import { getDefaultLeafValue } from "../../data/helper";
 import SnapLeaflet from "./SnapLeaflet";
 
 const Layout = ({ height, component, structure, blockType, dispatch }) => {
@@ -116,11 +109,11 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     return setActiveSubContent(index);
   };
 
-  const onSetActiveRow = (index, idx) => {
+  const onSetActiveRow = (mainIndex, index, idx) => {
     setRowIndex(idx);
     setColumnIndex(index);
     dispatch(setActiveRow(idx, index));
-    dispatch(setActivateRow(0, idx, index));
+    dispatch(setActivateRow(mainIndex, idx, index));
   };
 
   const onHandleUnset = () => {
@@ -158,7 +151,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   };
 
   const dropItem = (item) => {
-    onSetActiveRow(rowIndex, columnIndex);
+    onSetActiveRow(component.hoverContent, rowIndex, columnIndex);
     if (
       component.contents[activeMainContent].columns[columnIndex].rows[rowIndex]
         ?.component
@@ -285,7 +278,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
             setColumnIndex(index);
           }}
           onMouseLeave={() => dispatch(unsetHoverSubcontent())}
-          onClick={() => onSetActiveRow(index, idx)}
+          onClick={onSetActiveRow.bind(this, component.hoverContent, index, idx)}
           style={{ background: index === activeSubcontent ? background : null }}
         >
           <div>
