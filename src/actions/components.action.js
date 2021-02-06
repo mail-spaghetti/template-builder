@@ -155,6 +155,27 @@ export const modifyColumns = (value) => {
   return { type: "DECREMENT_COLUMNS" };
 };
 
+export const insertMainContent = (position, index) => (dispatch) => {
+  switch (position) {
+    case "above":
+      dispatch(insertMainContentAbove(index));
+      break;
+    case "below":
+      dispatch(insertMainContentBelow(index));
+      break;
+  }
+};
+
+export const insertMainContentAbove = (index) => ({
+  type: "INSERT_MAIN_CONTENT_ABOVE",
+  payload: index,
+});
+
+export const insertMainContentBelow = (index) => ({
+  type: "INSERT_MAIN_CONTENT_BELOW",
+  payload: index,
+});
+
 export const setMarginVertical = (value = 1) => (dispatch) => {
   dispatch(setMarginTop(value));
   dispatch(setMarginBottom(value));

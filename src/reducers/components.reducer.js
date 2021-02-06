@@ -45,7 +45,7 @@ const defaultProperties = {
     marginBottom: 5,
     marginLeft: 0,
     marginRight: 0,
-    align: 'center',
+    align: "center",
     link: "https://www.google.com",
     align: null,
     fullWidth: false,
@@ -63,6 +63,20 @@ const componentsReducer = (
 ) => {
   let existingContents = state.contents.slice();
   switch (type) {
+    case "INSERT_MAIN_CONTENT_ABOVE":
+      existingContents.splice(
+        payload,
+        0,
+        JSON.parse(JSON.stringify(INITIAL_DRAFT_CONTENT))
+      );
+      return { ...state, contents: existingContents };
+    case "INSERT_MAIN_CONTENT_BELOW":
+      existingContents.splice(
+        payload + 1,
+        0,
+        JSON.parse(JSON.stringify(INITIAL_DRAFT_CONTENT))
+      );
+      return { ...state, contents: existingContents };
     case "SET_INACTIVE_CONTENT":
       existingContents = existingContents.map((content) => {
         content.active = false;

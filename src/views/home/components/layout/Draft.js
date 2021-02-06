@@ -20,6 +20,7 @@ import {
   insertItem,
   updateContent,
   setActiveRow,
+  insertMainContent,
 } from "../../../../actions/components.action";
 import { setSelected, setType } from "../../../../actions/options.action";
 import Drop from "../../../../utils/icons/Drop";
@@ -51,8 +52,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   const [{ isOverStruct, backgroundStruct }, dropStructure] = useDrop({
     accept: ITEMS.STRUCTURE,
     drop: (item, monitor) => {
-      // dropItem(item.content);
-      console.log(item.content);
+      dropContent(item.content);
     },
     hover: (item, monitor) => {
       if (!refStruct.current) return;
@@ -61,19 +61,21 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
       const hoveredMiddle = (hoveredRect.bottom - hoveredRect.top) / 2;
       const mouseYPosition = monitor.getClientOffset().y - hoveredRect.top;
       if (structClient.top || structClient.bottom) {
-        if (
-          structClient.bottom &&
-          mouseYPosition <=
-            hoveredRect.height - structure.verticalPadding + 25 &&
-          mouseYPosition > hoveredMiddle
-        )
-          setStructClient({ top: true, bottom: null });
-        else if (
-          structClient.top &&
-          mouseYPosition >= 0 - structure.verticalPadding &&
-          mouseYPosition < hoveredMiddle
-        )
-          setStructClient({ top: null, bottom: true });
+        setTimeout(() => {
+          if (
+            structClient.bottom &&
+            mouseYPosition <=
+              hoveredRect.height - structure.verticalPadding + 25 &&
+            mouseYPosition > hoveredMiddle
+          )
+            setStructClient({ top: true, bottom: null });
+          else if (
+            structClient.top &&
+            mouseYPosition >= 0 - structure.verticalPadding &&
+            mouseYPosition < hoveredMiddle
+          )
+            setStructClient({ top: null, bottom: true });
+        }, 150);
       } else {
         if (mouseYPosition >= hoveredMiddle)
           setStructClient(() => ({ top: null, bottom: true }));
@@ -146,6 +148,14 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
 
   const onHandleCopy = (type, idx = null, index = null) =>
     type === "inner" ? dispatch(copyRowContent(0, idx, index)) : null;
+
+  const dropContent = (item) => {
+    if (structClient.top) {
+      dispatch(insertMainContent("above", component.hoverContent));
+    } else if (structClient.bottom) {
+      dispatch(insertMainContent("below", component.hoverContent));
+    } else return;
+  };
 
   const dropItem = (item) => {
     onSetActiveRow(rowIndex, columnIndex);
