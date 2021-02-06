@@ -127,10 +127,10 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   };
 
   const unSetClient = () => {
-    setTimeout(()=>{
+    setTimeout(() => {
       setStructClient({ top: null, bottom: null });
-    }, 50)
-  }
+    }, 50);
+  };
 
   const handleDragLeave = () => {
     setTopClient(false);
@@ -207,54 +207,49 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     );
   };
 
-  const setColumns = (content, activeIdx) => {
+  const setColumns = (column, index) => {
     return (
       <Fragment>
-        {content.columns.map((column, index) => {
-          return (
-            <td
-              key={index}
-              id="sub"
-              style={{ padding: "0 10px" }}
-              onDragOver={(e) => onHandleHoverColumn(e, index, ref)}
-              ref={getDropRef(index)}
-            >
-              {column.rows.map((row, idx) => {
-                return (
-                  <Fragment key={idx}>
-                    <div
-                      onDragOver={(e) => {
-                        if (rowIndex === idx) setDragOverProps(e, idx);
-                      }}
-                      onDragLeave={() => {
-                        setTopClient(false);
-                        setBottomClient(false);
-                      }}
-                      onMouseLeave={() => {
-                        setTopClient(false);
-                        setBottomClient(false);
-                      }}
-                    >
-                      {topClient &&
-                        !!row.component &&
-                        rowIndex === idx &&
-                        columnIndex === index && (
-                          <div className="draft__contents--new">&nbsp;</div>
-                        )}
-                      {setRows(row, index, idx)}
-                      {bottomClient &&
-                        rowIndex === idx &&
-                        columnIndex === index &&
-                        !!row.component && (
-                          <div className="draft__contents--new">&nbsp;</div>
-                        )}
-                    </div>
-                  </Fragment>
-                );
-              })}
-            </td>
-          );
-        })}
+        <div
+          id="sub"
+          style={{ padding: "0 10px" }}
+          onDragOver={(e) => onHandleHoverColumn(e, index, ref)}
+          ref={getDropRef(index)}
+        >
+          {column.rows.map((row, idx) => {
+            return (
+              <Fragment key={idx}>
+                <div
+                  onDragOver={(e) => {
+                    if (rowIndex === idx) setDragOverProps(e, idx);
+                  }}
+                  onDragLeave={() => {
+                    setTopClient(false);
+                    setBottomClient(false);
+                  }}
+                  onMouseLeave={() => {
+                    setTopClient(false);
+                    setBottomClient(false);
+                  }}
+                >
+                  {topClient &&
+                    !!row.component &&
+                    rowIndex === idx &&
+                    columnIndex === index && (
+                      <div className="draft__contents--new">&nbsp;</div>
+                    )}
+                  {setRows(row, index, idx)}
+                  {bottomClient &&
+                    rowIndex === idx &&
+                    columnIndex === index &&
+                    !!row.component && (
+                      <div className="draft__contents--new">&nbsp;</div>
+                    )}
+                </div>
+              </Fragment>
+            );
+          })}
+        </div>
       </Fragment>
     );
   };
@@ -345,48 +340,46 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     <section className="section-draft" onDragLeave={handleDragLeave}>
       <div>
         {component.contents.map((content, idx) => (
-          <Fragment key={idx}>
-            <div ref={dropStructure} onDrop={unSetClient}>
-              {structClient.top && (
-                <div className="draft__subBlockEvent--top">&nbsp;</div>
+          <div key={idx} ref={dropStructure} onDrop={unSetClient}>
+            {structClient.top && (
+              <div className="draft__subBlockEvent--top">&nbsp;</div>
+            )}
+            <div
+              id="main"
+              onMouseOver={() => dispatch(setHoverContent({ index: idx }))}
+              onDragOver={() => {
+                setMainContentProps(idx);
+                dispatch(setHoverContent({ index: idx }));
+              }}
+              onMouseLeave={onHandleUnset}
+              key={idx}
+              style={{ padding: `${structure.verticalPadding}px 50px` }}
+              className={`draft__blockEvent ${
+                component.hoverContent === idx
+                  ? "draft__blockEvent--hover"
+                  : null
+              } ${content.active ? "draft__blockEvent--active" : null}`}
+              onClick={() => onSetActive(idx)}
+            >
+              {component.hoverContent === idx && (
+                <SnapLeaflet onHandleDelete={(type) => onHandleDelete(type)} />
               )}
-              <div
-                id="main"
-                onMouseOver={() => dispatch(setHoverContent({ index: idx }))}
-                onDragOver={() => {
-                  setMainContentProps(idx);
-                  dispatch(setHoverContent({ index: idx }));
-                }}
-                onMouseLeave={onHandleUnset}
-                key={idx}
-                style={{ padding: `${structure.verticalPadding}px 50px` }}
-                className={`draft__blockEvent ${
-                  component.hoverContent === idx
-                    ? "draft__blockEvent--hover"
-                    : null
-                } ${content.active ? "draft__blockEvent--active" : null}`}
-                onClick={() => onSetActive(idx)}
-              >
-                {component.hoverContent === idx && (
-                  <SnapLeaflet
-                    onHandleDelete={(type) => onHandleDelete(type)}
-                  />
-                )}
-                <div className={`draft__subBlockEvent`}>
-                  <table style={{ width: "100%" }} ref={refStruct}>
-                    {component.contents.map((content, index) => (
-                      <tbody key={index} id="main">
-                        <tr>{setColumns(content, idx)}</tr>
-                      </tbody>
-                    ))}
-                  </table>
-                </div>
+              <div className={`draft__subBlockEvent`}>
+                <table style={{ width: "100%" }} ref={refStruct}>
+                  <tbody id="main">
+                    <tr>
+                      {content.columns.map((content, index) => (
+                        <th key={index}>{setColumns(content, index)}</th>
+                      ))}
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              {structClient.bottom && (
-                <div className="draft__subBlockEvent--bottom">&nbsp;</div>
-              )}
             </div>
-          </Fragment>
+            {structClient.bottom && (
+              <div className="draft__subBlockEvent--bottom">&nbsp;</div>
+            )}
+          </div>
         ))}
       </div>
     </section>
