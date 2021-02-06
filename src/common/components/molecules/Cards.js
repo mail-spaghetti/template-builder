@@ -7,7 +7,7 @@ const Cards = ({ type = "card", ...rest }) => {
   const [component, setComponent] = useState(null);
   useEffect(() => {
     if (icon) {
-      const Components = require(`../../utils/icons/${icon}.js`);
+      const Components = require(`../../../utils/icons/${icon}.js`);
       setComponent(Components.default);
     }
   }, []);

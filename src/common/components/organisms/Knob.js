@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 
-import Minus from "../../utils/icons/Minus";
-import Plus from "../../utils/icons/Plus";
+import Minus from "../../../utils/icons/Minus";
+import Plus from "../../../utils/icons/Plus";
 import Text from "../atoms/Text";
 
 const Knob = ({ className, content = 0, onHandleClick }) => {

@@ -1,12 +1,13 @@
 import React from "react";
 
-import Text from "../../../../components/atoms/Text";
-import Knob from "../../../../components/organisms/Knob";
-import Slider from "../../../../components/molecules/Slider";
-import HorizontalRule from "../../../../components/atoms/HorizontalRule";
-import Paper from "../../../../components/molecules/Paper";
-import BaseLineLocale from "../../../../components/organisms/BaselineLocale";
-import Checker from "../../../../components/molecules/Checker";
+import HorizontalRule from "../../../../common/components/atoms/HorizontalRule";
+import Text from "../../../../common/components/atoms/Text";
+import Checker from "../../../../common/components/molecules/Checker";
+import Paper from "../../../../common/components/molecules/Paper";
+import Slider from "../../../../common/components/molecules/Slider";
+import BaseLineLocale from "../../../../common/components/organisms/BaselineLocale";
+import Knob from "../../../../common/components/organisms/Knob";
+
 import { ATTACHMENT_TYPES } from "../../data";
 
 const PageSettings = ({ type, dispatch, settings }) => {

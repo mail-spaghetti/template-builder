@@ -2,7 +2,7 @@ import React from "react";
 import { useDrag } from "react-dnd";
 import { setSelected, setType } from "../../../../actions/options.action";
 
-import Card from "../../../../components/molecules/Cards";
+import Card from "../../../../common/components/molecules/Cards";
 import { ITEMS } from "../../data";
 
 const Block = ({ block, dispatch }) => {

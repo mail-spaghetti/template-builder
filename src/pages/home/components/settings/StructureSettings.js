@@ -8,13 +8,14 @@ import {
   setMobileStack,
   setSelectedColumn,
 } from "../../../../actions/structure.action";
-import Button from "../../../../components/atoms/Button";
-import HorizontalRule from "../../../../components/atoms/HorizontalRule";
-import Text from "../../../../components/atoms/Text";
-import Paper from "../../../../components/molecules/Paper";
-import Slider from "../../../../components/molecules/Slider";
-import Knob from "../../../../components/organisms/Knob";
+import Button from "../../../../common/components/atoms/Button";
+import HorizontalRule from "../../../../common/components/atoms/HorizontalRule";
+import Text from "../../../../common/components/atoms/Text";
+import Paper from "../../../../common/components/molecules/Paper";
+import Slider from "../../../../common/components/molecules/Slider";
+import Knob from "../../../../common/components/organisms/Knob";
 import LeftArrow from "../../../../utils/icons/LeftArrow";
+
 import { BORDER_TYPES, COLUMN_TYPES, IMAGE_WARNING } from "../../data";
 
 const StructureSettings = ({ type, structure, settings, dispatch }) => {

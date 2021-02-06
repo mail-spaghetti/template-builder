@@ -1,11 +1,11 @@
 import React from "react";
 
-import Button from "../../../../components/atoms/Button";
-import HorizontalRule from "../../../../components/atoms/HorizontalRule";
-import Text from "../../../../components/atoms/Text";
-import Paper from "../../../../components/molecules/Paper";
-import DisplaySlider from "../../../../components/organisms/DisplaySlider";
-import MarginSet from "../../../../components/organisms/MarginSet";
+import Button from "../../../../common/components/atoms/Button";
+import HorizontalRule from "../../../../common/components/atoms/HorizontalRule";
+import Text from "../../../../common/components/atoms/Text";
+import Paper from "../../../../common/components/molecules/Paper";
+import DisplaySlider from "../../../../common/components/organisms/DisplaySlider";
+import MarginSet from "../../../../common/components/organisms/MarginSet";
 
 const ImageSettings = () => (
   <div className="u-padding-light settings__scroll">

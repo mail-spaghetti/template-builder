@@ -1,9 +1,10 @@
 import React from "react";
 
-import HorizontalRule from "../../../../components/atoms/HorizontalRule";
-import Text from "../../../../components/atoms/Text";
-import DisplaySlider from "../../../../components/organisms/DisplaySlider";
-import MarginSet from "../../../../components/organisms/MarginSet";
+import HorizontalRule from "../../../../common/components/atoms/HorizontalRule";
+import Text from "../../../../common/components/atoms/Text";
+import DisplaySlider from "../../../../common/components/organisms/DisplaySlider";
+import MarginSet from "../../../../common/components/organisms/MarginSet";
+
 
 const HtmlSettings = () => (
   <div className="u-padding-light">

@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
 
-import Button from "../../../../components/atoms/Button";
-import HorizontalRule from "../../../../components/atoms/HorizontalRule";
-import Text from "../../../../components/atoms/Text";
-import Align from "../../../../components/molecules/Align";
-import Paper from "../../../../components/molecules/Paper";
-import Slider from "../../../../components/molecules/Slider";
-import DisplaySlider from "../../../../components/organisms/DisplaySlider";
-import Knob from "../../../../components/organisms/Knob";
-import MarginSet from "../../../../components/organisms/MarginSet";
+import Button from "../../../../common/components/atoms/Button";
+import HorizontalRule from "../../../../common/components/atoms/HorizontalRule";
+import Text from "../../../../common/components/atoms/Text";
+import Align from "../../../../common/components/molecules/Align";
+import Paper from "../../../../common/components/molecules/Paper";
+import Slider from "../../../../common/components/molecules/Slider";
+import DisplaySlider from "../../../../common/components/organisms/DisplaySlider";
+import Knob from "../../../../common/components/organisms/Knob";
+import MarginSet from "../../../../common/components/organisms/MarginSet";
+
+
 
 import { funcMap } from "../../data/helper";
 

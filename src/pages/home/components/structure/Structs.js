@@ -1,7 +1,7 @@
 import React from "react";
 import { useDrag } from "react-dnd";
 
-import Cards from "../../../../components/molecules/Cards";
+import Cards from "../../../../common/components/molecules/Cards";
 import { ITEMS } from "../../data";
 
 const Structs = ({ struct }) => {

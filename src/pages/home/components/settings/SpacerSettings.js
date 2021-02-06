@@ -1,10 +1,11 @@
 import React from "react";
 
-import HorizontalRule from "../../../../components/atoms/HorizontalRule";
-import Text from "../../../../components/atoms/Text";
-import Paper from "../../../../components/molecules/Paper";
-import DisplaySlider from "../../../../components/organisms/DisplaySlider";
-import Knob from "../../../../components/organisms/Knob";
+import HorizontalRule from "../../../../common/components/atoms/HorizontalRule";
+import Text from "../../../../common/components/atoms/Text";
+import Paper from "../../../../common/components/molecules/Paper";
+import DisplaySlider from "../../../../common/components/organisms/DisplaySlider";
+import Knob from "../../../../common/components/organisms/Knob";
+
 import { funcMap } from "../../data/helper";
 
 const SpacerSettings = ({ type, component, dispatch }) => {

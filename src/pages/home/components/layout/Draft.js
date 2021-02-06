@@ -299,7 +299,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   };
 
   const setContent = (content) => {
-    const blocklayout = require("../../../../components/molecules/BlockLayout");
+    const blocklayout = require("../../../../common/components/molecules/BlockLayout");
     switch (content.content) {
       case null:
         return (

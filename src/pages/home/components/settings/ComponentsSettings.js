@@ -1,6 +1,6 @@
 import React from "react";
 
-import Text from "../../../../components/atoms/Text";
+import Text from "../../../../common/components/atoms/Text";
 import LeftArrow from "../../../../utils/icons/LeftArrow";
 
 import { setSelected } from "../../../../actions/options.action";

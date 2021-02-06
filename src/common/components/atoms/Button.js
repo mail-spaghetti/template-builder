@@ -5,7 +5,7 @@ const Button = (props) => {
 
   useEffect(() => {
     if (props.icon) {
-      const Components = require(`../../utils/icons/${props.icon}.js`);
+      const Components = require(`../../../utils/icons/${props.icon}.js`);
       setComponent(Components.default);
     }
   }, []);

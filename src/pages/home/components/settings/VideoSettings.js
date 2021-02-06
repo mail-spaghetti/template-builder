@@ -1,10 +1,10 @@
 import React from "react";
-import HorizontalRule from "../../../../components/atoms/HorizontalRule";
-import Text from "../../../../components/atoms/Text";
-import Paper from "../../../../components/molecules/Paper";
-import Slider from "../../../../components/molecules/Slider";
-import DisplaySlider from "../../../../components/organisms/DisplaySlider";
-import Knob from "../../../../components/organisms/Knob";
+import HorizontalRule from "../../../../common/components/atoms/HorizontalRule";
+import Text from "../../../../common/components/atoms/Text";
+import Paper from "../../../../common/components/molecules/Paper";
+import DisplaySlider from "../../../../common/components/organisms/DisplaySlider";
+import Knob from "../../../../common/components/organisms/Knob";
+
 
 const VideoSettings = () => (
   <div className="u-padding-light">

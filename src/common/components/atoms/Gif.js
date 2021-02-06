@@ -1,5 +1,6 @@
 import React from "react";
-import ImageRed from "../../utils/icons/ImageRed";
+
+import ImageRed from "../../../utils/icons/ImageRed";
 
 const Gif = ({ onHandleChange, content }) => {
   const inlineStyle = {

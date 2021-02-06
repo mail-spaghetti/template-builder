@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { SketchPicker } from "react-color";
 
-import { BORDER_SETTINGS } from "../../pages/home/data";
+import { BORDER_SETTINGS } from "../../../pages/home/data";
 import Input from "../atoms/Input";
 
 import Text from "../atoms/Text";
@@ -39,7 +39,7 @@ const Paper = ({
         return (
           <div key={index} className="paper__link">
             <div className="paper__link--icon">
-              {require(`../../utils/icons/${properties[value].icon}`).default()}
+              {require(`../../../utils/icons/${properties[value].icon}`).default()}
             </div>
             <div className="paper__link--input">
               <Input

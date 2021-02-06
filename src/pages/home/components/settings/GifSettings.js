@@ -1,18 +1,17 @@
 import React from "react";
 
-import Button from "../../../../components/atoms/Button";
-import HorizontalRule from "../../../../components/atoms/HorizontalRule";
-import Text from "../../../../components/atoms/Text";
-import Align from "../../../../components/molecules/Align";
-import Paper from "../../../../components/molecules/Paper";
-import DisplaySlider from "../../../../components/organisms/DisplaySlider";
-import MarginSet from "../../../../components/organisms/MarginSet";
+import Button from "../../../../common/components/atoms/Button";
+import HorizontalRule from "../../../../common/components/atoms/HorizontalRule";
+import Text from "../../../../common/components/atoms/Text";
+import Align from "../../../../common/components/molecules/Align";
+import Paper from "../../../../common/components/molecules/Paper";
+import DisplaySlider from "../../../../common/components/organisms/DisplaySlider";
+import MarginSet from "../../../../common/components/organisms/MarginSet";
 
 import { funcMap } from "../../data/helper";
 
 const GifSettings = ({ type, component, dispatch }) => {
   const { gif: gifSettings } = component;
-  console.log(component);
   const {
       mobile,
       desktop,
