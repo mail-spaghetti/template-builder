@@ -271,6 +271,30 @@ const componentsReducer = (
     case "SET_STRUCTURE_BACKGROUND":
       existingContents[activeContentIndex].background = payload;
       return { ...state, contents: existingContents };
+    case "SET_STRUCTURE_BORDER_TOP":
+      var borderTop = existingContents[activeContentIndex].borderTop.split(" ");
+      borderTop[payload.index] = payload.value;
+      borderTop = borderTop.join(" ");
+      existingContents[activeContentIndex].borderTop = borderTop;
+      return { ...state, contents: existingContents };
+    case "SET_STRUCTURE_BORDER_BOTTOM":
+      var borderBottom = existingContents[activeContentIndex].borderBottom.split(" ");
+      borderBottom[payload.index] = payload.value;
+      borderBottom = borderBottom.join(" ");
+      existingContents[activeContentIndex].borderBottom = borderBottom;
+      return { ...state, contents: existingContents };
+    case "SET_STRUCTURE_BORDER_RIGHT":
+      var borderRight = existingContents[activeContentIndex].borderRight.split(" ");
+      borderRight[payload.index] = payload.value;
+      borderRight = borderRight.join(" ");
+      existingContents[activeContentIndex].borderRight = borderRight;
+      return { ...state, contents: existingContents };
+    case "SET_STRUCTURE_BORDER_LEFT":
+      var borderLeft = existingContents[activeContentIndex].borderLeft.split(" ");
+      borderLeft[payload.index] = payload.value;
+      borderLeft = borderLeft.join(" ");
+      existingContents[activeContentIndex].borderLeft = borderLeft;
+      return { ...state, contents: existingContents };
     default:
       return state;
   }

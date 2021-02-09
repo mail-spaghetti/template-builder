@@ -26,10 +26,8 @@ const StructureSettings = ({
   settings,
   dispatch,
 }) => {
-  console.log(structure, component);
   const contentIndex = component.currentActiveBlock.contentIndex;
   const activeContent = component.contents[contentIndex];
-  console.log(activeContent);
   const onHandleSettingsExit = () => dispatch(setSelected({ selected: false }));
 
   const onHandleColumnChange = (column) => dispatch(setSelectedColumn(column));
@@ -56,7 +54,9 @@ const StructureSettings = ({
     }
   };
 
-  const onHandleProperties = (value, prop) => dispatch(funcMap[prop](value))
+  const onHandleProperties = (value, prop, index = 0) => {
+    dispatch(funcMap[prop](value, index));
+  };
 
   return (
     <div className="settings">
@@ -100,7 +100,9 @@ const StructureSettings = ({
               </div>
               <div className="u-margin-top-light">
                 <Paper
-                  onHandleColor={(val) => onHandleProperties(val, 'structBackground')}
+                  onHandleColor={(val) =>
+                    onHandleProperties(val, "structBackground")
+                  }
                   properties={{
                     color: activeContent.background,
                     text: activeContent.background,
@@ -142,34 +144,58 @@ const StructureSettings = ({
           </div>
         </div>
         <div>
-          {BORDER_TYPES.map((border, idx) => (
-            <div key={idx}>
-              <Text
-                className="u-margin-top-light"
-                content={border
-                  .split("-")
-                  .map((b) => b[0].toUpperCase() + b.substring(1))
-                  .join(" ")}
-              />
-              <Paper
-                properties={{
-                  color: structure.backgroundColor,
-                  text: structure.backgroundColor,
-                  border:
-                    structure[
+          {BORDER_TYPES.map((border, idx) => {
+            return (
+              <div key={idx}>
+                <Text
+                  className="u-margin-top-light"
+                  content={border
+                    .split("-")
+                    .map((b) => b[0].toUpperCase() + b.substring(1))
+                    .join(" ")}
+                />
+                <Paper
+                  onHandleColor={(val) =>
+                    onHandleProperties(val, "struct-" + border, 2)
+                  }
+                  properties={{
+                    color: activeContent[
                       border
                         .split("-")
                         .map((b, idx) => {
-                          return idx > 0
-                            ? b[0].toUpperCase() + b.substring(1)
-                            : b;
+                          if (idx > 0)
+                            return b[0].toUpperCase() + b.substring(1);
+                          return b;
                         })
                         .join("")
-                    ],
-                }}
-              />
-            </div>
-          ))}
+                    ].split(" ")[2],
+
+                    text: activeContent[
+                      border
+                        .split("-")
+                        .map((b, idx) => {
+                          if (idx > 0)
+                            return b[0].toUpperCase() + b.substring(1);
+                          return b;
+                        })
+                        .join("")
+                    ].split(" ")[2],
+                    border:
+                      structure[
+                        border
+                          .split("-")
+                          .map((b, idx) => {
+                            return idx > 0
+                              ? b[0].toUpperCase() + b.substring(1)
+                              : b;
+                          })
+                          .join("")
+                      ],
+                  }}
+                />
+              </div>
+            );
+          })}
         </div>
         <HorizontalRule />
         <div>

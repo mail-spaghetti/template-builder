@@ -432,7 +432,16 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
                   />
                 )}
                 <div className={`draft__subBlockEvent`}>
-                  <table style={{ width: "100%" }} ref={refStruct}>
+                  <table
+                    style={{
+                      width: "100%",
+                      borderTop: content.borderTop,
+                      borderBottom: content.borderBottom,
+                      borderRight: content.borderRight,
+                      borderLeft: content.borderLeft,
+                    }}
+                    ref={refStruct}
+                  >
                     <tbody>
                       <tr>
                         {content.columns.map((content, index) => (

@@ -194,3 +194,35 @@ export const changeStructureBackground = ({ background }) => ({
   type: "SET_STRUCTURE_BACKGROUND",
   payload: background,
 });
+
+export const changeStructBorderTop = ({ value, index }) => ({
+  type: "SET_STRUCTURE_BORDER_TOP",
+  payload: {
+    value,
+    index,
+  },
+});
+
+export const changeStructBorderBottom = ({ value, index }) => ({
+  type: "SET_STRUCTURE_BORDER_BOTTOM",
+  payload: {
+    value,
+    index,
+  },
+});
+
+export const changeStructBorderRight = ({ value, index }) => ({
+  type: "SET_STRUCTURE_BORDER_RIGHT",
+  payload: {
+    value,
+    index,
+  },
+});
+
+export const changeStructBorderLeft = ({ value, index }) => ({
+  type: "SET_STRUCTURE_BORDER_LEFT",
+  payload: {
+    value,
+    index,
+  },
+});

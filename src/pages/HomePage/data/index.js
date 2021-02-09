@@ -8,7 +8,6 @@ export const IMAGE_WARNING =
 export const STRUCT_HEADER = "Columns";
 export const BORDER_SETTINGS = ["solid", "dashed", "dotted"];
 export const BORDER_TYPES = [
-  "border",
   "border-top",
   "border-bottom",
   "border-left",

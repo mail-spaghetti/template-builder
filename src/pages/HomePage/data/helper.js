@@ -1,4 +1,8 @@
 import {
+  changeStructBorderBottom,
+  changeStructBorderLeft,
+  changeStructBorderRight,
+  changeStructBorderTop,
   changeStructureBackground,
   setBackground,
   setBorderTop,
@@ -28,6 +32,10 @@ export const funcMap = {
   desktop: (block) => showDestkop({ block }),
   linkInput: (value, prop, block) => setURL(value, block, prop),
   structBackground: (background) => changeStructureBackground({ background }),
+  "struct-border-top": (value, index) => changeStructBorderTop({ value, index }),
+  "struct-border-bottom": (value, index) => changeStructBorderBottom({ value, index }),
+  "struct-border-right": (value, index) => changeStructBorderRight({ value, index }),
+  "struct-border-left": (value, index) => changeStructBorderLeft({ value, index }),
 };
 
 export const getDefaultLeafValue = () => ({
