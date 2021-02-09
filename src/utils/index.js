@@ -41,9 +41,14 @@ export const INITIAL_DRAFT_COLUMN = [
 ];
 
 export const INITIAL_DRAFT_CONTENT = {
-  active: false,
-  verticalPadding: "10",
+  background: "#d7d7d7",
+  verticalPadding: 10,
   bgColor: "#d7d7d7",
+  mobileStack: false,
+  borderTop: "1px solid #d7d7d7",
+  borderBottom: "1px solid #d7d7d7",
+  borderRight: "1px solid #d7d7d7",
+  borderLeft: "1px solid #d7d7d7",
   columns: INITIAL_DRAFT_COLUMN.slice(),
 };
 

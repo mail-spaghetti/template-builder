@@ -1,8 +1,8 @@
 import React from "react";
+import { changeStructurePadding } from "../../../../actions/componentsAction";
 
 import { setSelected } from "../../../../actions/optionsAction";
 import {
-  changePadding,
   modifyColumnStructure,
   setIndependentBorder,
   setMobileStack,
@@ -17,8 +17,19 @@ import Knob from "../../../../common/components/organisms/Knob";
 import LeftArrow from "../../../../utils/icons/LeftArrow";
 
 import { BORDER_TYPES, COLUMN_TYPES, IMAGE_WARNING } from "../../data";
+import { funcMap } from "../../data/helper";
 
-const StructureSettings = ({ type, structure, settings, dispatch }) => {
+const StructureSettings = ({
+  type,
+  component,
+  structure,
+  settings,
+  dispatch,
+}) => {
+  console.log(structure, component);
+  const contentIndex = component.currentActiveBlock.contentIndex;
+  const activeContent = component.contents[contentIndex];
+  console.log(activeContent);
   const onHandleSettingsExit = () => dispatch(setSelected({ selected: false }));
 
   const onHandleColumnChange = (column) => dispatch(setSelectedColumn(column));
@@ -32,7 +43,8 @@ const StructureSettings = ({ type, structure, settings, dispatch }) => {
       dispatch(modifyColumnStructure(status));
   };
 
-  const onChangeVerticalPadding = (status) => dispatch(changePadding(status));
+  const onChangeVerticalPadding = (status) =>
+    dispatch(changeStructurePadding({ value: status }));
 
   const onSliderChange = (type) => {
     switch (type) {
@@ -43,6 +55,8 @@ const StructureSettings = ({ type, structure, settings, dispatch }) => {
         dispatch(setMobileStack());
     }
   };
+
+  const onHandleProperties = (value, prop) => dispatch(funcMap[prop](value))
 
   return (
     <div className="settings">
@@ -61,7 +75,10 @@ const StructureSettings = ({ type, structure, settings, dispatch }) => {
         <div>
           <Text content="Columns" />
           <div className="u-margin-top-light">
-            <Knob onHandleClick={onChangeColumn} content={structure.columns} />
+            <Knob
+              onHandleClick={onChangeColumn}
+              content={activeContent.columns.length}
+            />
           </div>
         </div>
         <div className="u-margin-top-small">
@@ -73,7 +90,7 @@ const StructureSettings = ({ type, structure, settings, dispatch }) => {
               <div className="u-margin-top-light">
                 <Knob
                   onHandleClick={onChangeVerticalPadding}
-                  content={`${structure.verticalPadding}px`}
+                  content={`${activeContent.verticalPadding}px`}
                 />
               </div>
             </div>
@@ -83,9 +100,10 @@ const StructureSettings = ({ type, structure, settings, dispatch }) => {
               </div>
               <div className="u-margin-top-light">
                 <Paper
+                  onHandleColor={(val) => onHandleProperties(val, 'structBackground')}
                   properties={{
-                    color: structure.backgroundColor,
-                    text: structure.backgroundColor,
+                    color: activeContent.background,
+                    text: activeContent.background,
                   }}
                 />
               </div>

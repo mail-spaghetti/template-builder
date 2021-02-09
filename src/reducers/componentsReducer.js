@@ -265,6 +265,12 @@ const componentsReducer = (
         ];
       existingRow.value.content = payload;
       return { ...state, contents: existingContents };
+    case "SET_STRUCTURE_PADDING":
+      existingContents[activeContentIndex].verticalPadding += payload;
+      return { ...state, contents: existingContents };
+    case "SET_STRUCTURE_BACKGROUND":
+      existingContents[activeContentIndex].background = payload;
+      return { ...state, contents: existingContents };
     default:
       return state;
   }

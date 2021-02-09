@@ -10,7 +10,7 @@ const HorizontalRule = ({ content }) => {
   };
   return (
     <div className="form__rule" id="block">
-      <div className="form__rule--line" style={inlineStyle}>
+      <div id="block" className="form__rule--line" style={inlineStyle}>
         &nbsp;
       </div>
     </div>

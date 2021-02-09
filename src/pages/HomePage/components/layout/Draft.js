@@ -198,6 +198,13 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
 
   const setActiveContent = (e, contentIndex) => {
     if (e.target.id !== "block") {
+      dispatch(
+        setCurrentActiveBlock({
+          contentIndex,
+          columnIndex: null,
+          rowIndex: null,
+        })
+      );
       setActiveElements((prevState) => ({ ...prevState, contentIndex }));
       dispatch(changeSelection({ selection: OPTIONS[1] }));
       dispatch(setType({ type: OPTIONS[1] }));
@@ -209,13 +216,9 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     text[0].toUpperCase() + text.substring(1).toLowerCase();
 
   const activateRow = (e, contentIndex, columnIndex, rowIndex, item) => {
-    console.log(e.target.id);
     if (e.target.id === "block") {
       setActiveRowContent(contentIndex, columnIndex, rowIndex);
       dispatch(setCurrentActiveBlock({ contentIndex, columnIndex, rowIndex }));
-      dispatch(setSelected({ selected: false }));
-      dispatch(setType({ type: null }));
-      dispatch(changeSelection({ selection: OPTIONS[0] }));
       dispatch(setType({ type: OPTIONS[0] }));
       dispatch(setType({ type: setTextFormat(item.content) }));
       dispatch(setSelected({ selected: true }));
@@ -409,7 +412,10 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
               )}
               <div
                 key={idx}
-                style={{ padding: `${structure.verticalPadding}px 50px` }}
+                style={{
+                  padding: `${content.verticalPadding}px 50px`,
+                  background: `${content.background}`,
+                }}
                 className={`draft__blockEvent ${
                   hoverElements.contentIndex === idx
                     ? "draft__blockEvent--hover"

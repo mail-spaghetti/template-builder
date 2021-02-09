@@ -184,3 +184,13 @@ export const setURL = (value, block, prop) => ({
   block,
   prop,
 });
+
+export const changeStructurePadding = ({ value = 1 }) => ({
+  type: "SET_STRUCTURE_PADDING",
+  payload: value,
+});
+
+export const changeStructureBackground = ({ background }) => ({
+  type: "SET_STRUCTURE_BACKGROUND",
+  payload: background,
+});

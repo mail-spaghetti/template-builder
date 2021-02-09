@@ -1,4 +1,5 @@
 import {
+  changeStructureBackground,
   setBackground,
   setBorderTop,
   setHeight,
@@ -26,6 +27,7 @@ export const funcMap = {
   mobile: (block) => showMobile({ block }),
   desktop: (block) => showDestkop({ block }),
   linkInput: (value, prop, block) => setURL(value, block, prop),
+  structBackground: (background) => changeStructureBackground({ background }),
 };
 
 export const getDefaultLeafValue = () => ({
