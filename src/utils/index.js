@@ -48,16 +48,10 @@ export const INITIAL_DRAFT_CONTENT = {
 };
 
 export const COMPONENT_INITIAL_STATE = {
-  activeContent: null,
-  hoverContent: null,
-  hoverSubcontent: {
-    rowIndex: null,
+  currentActiveBlock: {
+    contentIndex: null,
     columnIndex: null,
-  },
-  activeSubcontent: null,
-  activeRow: {
     rowIndex: null,
-    columnIndex: null,
   },
   component: null,
   contents: [JSON.parse(JSON.stringify(INITIAL_DRAFT_CONTENT))],

@@ -2,12 +2,6 @@ import React, { Fragment, useRef, useState } from "react";
 import { useDrop } from "react-dnd";
 import { connect } from "react-redux";
 import {
-  setActivateRow,
-  setActive,
-  setHoverContent,
-  unsetHoverContent,
-  setHoverSubcontent,
-  unsetHoverSubcontent,
   deleteColumnContent,
   deleteContent,
   copyRowContent,
@@ -16,6 +10,7 @@ import {
   setActiveRow,
   insertMainContent,
   setActiveContent,
+  setCurrentActiveBlock,
 } from "../../../../actions/componentsAction";
 import { setSelected, setType } from "../../../../actions/optionsAction";
 import Drop from "../../../../utils/icons/Drop";
@@ -181,8 +176,6 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     } else {
       dispatch(insertItem(null, item, contentIndex, rowIndex, columnIndex));
     }
-    dispatch(setType({ type: item.icon }));
-    dispatch(setSelected({ selected: true }));
   };
 
   const setHoverContent = (contentIndex, type) => {
@@ -204,13 +197,15 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   const setActiveContent = (contentIndex) =>
     setActiveElements((prevState) => ({ ...prevState, contentIndex }));
 
-  const setTextFormat = (text) => text[0].toUpperCase() + text.substring(1).toLowerCase();
+  const setTextFormat = (text) =>
+    text[0].toUpperCase() + text.substring(1).toLowerCase();
 
   const activateRow = (contentIndex, columnIndex, rowIndex, item) => {
     setActiveRowContent(contentIndex, columnIndex, rowIndex);
+    dispatch(setCurrentActiveBlock({ contentIndex, columnIndex, rowIndex }));
     dispatch(setType({ type: setTextFormat(item.content) }));
     dispatch(setSelected({ selected: true }));
-  }
+  };
 
   const setActiveRowContent = (contentIndex, columnIndex, rowIndex) =>
     setActiveElements(() => ({ contentIndex, columnIndex, rowIndex }));

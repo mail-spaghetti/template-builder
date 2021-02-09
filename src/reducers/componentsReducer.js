@@ -63,10 +63,24 @@ const defaultProperties = {
 
 const componentsReducer = (
   state = componentsReducerDefaultState,
-  { type, activeContent, activeSubcontent, payload, block, prop }
+  { type, payload, contentIndex, columnIndex, rowIndex }
 ) => {
   let existingContents = state.contents.slice();
+  const {
+    contentIndex: activeContentIndex,
+    columnIndex: activeColumnIndex,
+    rowIndex: activeRowIndex,
+  } = state.currentActiveBlock;
   switch (type) {
+    case "SET_CURRENT_ACTIVE_BLOCK":
+      return {
+        ...state,
+        currentActiveBlock: {
+          contentIndex,
+          columnIndex,
+          rowIndex,
+        },
+      };
     case "INSERT_MAIN_CONTENT_ABOVE":
       var contents = payload.structure.columns.map((column) => {
         return {
@@ -95,56 +109,6 @@ const componentsReducer = (
         columns: contents,
       });
       return { ...state, contents: existingContents };
-    case "SET_INACTIVE_CONTENT":
-      existingContents = existingContents.map((content) => {
-        content.active = false;
-        return content;
-      });
-      return { ...state, contents: existingContents };
-    case "SET_ACTIVE_CONTENT":
-      existingContents[activeContent].active = true;
-      return { ...state, contents: existingContents };
-    case "SET_ROW":
-      return {
-        ...state,
-        activeRow: {
-          rowIndex: payload.row,
-          columnIndex: payload.column,
-        },
-      };
-    case "SET_ROWS_INACTIVE":
-      existingContents = existingContents.map((contents) => ({
-        ...contents,
-        columns: contents.columns.map((columns) => ({
-          ...columns,
-          rows: columns.rows.map((row) => ({ ...row, active: false })),
-        })),
-      }));
-      return { ...state, contents: existingContents };
-    case "SET_ACTIVE_ROW":
-      var existingColumns = existingContents[payload.index].columns;
-      existingColumns[payload.column].rows[payload.row].active = true;
-      return { ...state, contents: existingContents };
-    case "SET_HOVER_CONTENT":
-      return { ...state, hoverContent: payload };
-    case "SET_HOVER_SUBCONTENT":
-      return {
-        ...state,
-        hoverSubcontent: {
-          rowIndex: payload.rowIndex,
-          columnIndex: payload.columnIndex,
-        },
-      };
-    case "UNSET_HOVER_CONTENT":
-      return { ...state, hoverContent: null };
-    case "UNSET_HOVER_SUBCONTENT":
-      return {
-        ...state,
-        hoverSubcontent: {
-          rowIndex: null,
-          columnIndex: null,
-        },
-      };
     case "INCREMENT_COLUMNS":
       existingContents = existingContents.map((content) => {
         if (content.active)
@@ -247,57 +211,57 @@ const componentsReducer = (
       return { ...state, contents: existingContents };
     case "SET_MARGIN_TOP":
       var existingRow =
-        existingContents[0].columns[state.activeRow.columnIndex].rows[
-          state.activeRow.rowIndex
+        existingContents[activeContentIndex].columns[activeColumnIndex].rows[
+          activeRowIndex
         ];
       existingRow.value.properties.marginTop += payload;
       return { ...state, contents: existingContents };
     case "SET_MARGIN_RIGHT":
       var existingRow =
-        existingContents[0].columns[state.activeRow.columnIndex].rows[
-          state.activeRow.rowIndex
+        existingContents[activeContentIndex].columns[activeColumnIndex].rows[
+          activeRowIndex
         ];
       existingRow.value.properties.marginRight += payload;
       return { ...state, contents: existingContents };
     case "SET_MARGIN_BOTTOM":
       var existingRow =
-        existingContents[0].columns[state.activeRow.columnIndex].rows[
-          state.activeRow.rowIndex
+        existingContents[activeContentIndex].columns[activeColumnIndex].rows[
+          activeRowIndex
         ];
       existingRow.value.properties.marginBottom += payload;
       return { ...state, contents: existingContents };
     case "SET_MARGIN_LEFT":
       var existingRow =
-        existingContents[0].columns[state.activeRow.columnIndex].rows[
-          state.activeRow.rowIndex
+        existingContents[activeContentIndex].columns[activeColumnIndex].rows[
+          activeRowIndex
         ];
       existingRow.value.properties.marginLeft += payload;
       return { ...state, contents: existingContents };
     case "SET_HEIGHT":
       var existingRow =
-        existingContents[0].columns[state.activeRow.columnIndex].rows[
-          state.activeRow.rowIndex
+        existingContents[activeContentIndex].columns[activeColumnIndex].rows[
+          activeRowIndex
         ];
       existingRow.value.properties.height += payload;
       return { ...state, contents: existingContents };
     case "SET_BORDER_TOP":
       var existingRow =
-        existingContents[0].columns[state.activeRow.columnIndex].rows[
-          state.activeRow.rowIndex
-        ];
+        existingContents[activeContentIndex].columns[
+          state.activeRow.columnIndex
+        ].rows[activeRowIndex];
       existingRow.value.properties.borderTop = payload;
       return { ...state, contents: existingContents };
     case "SET_BACKGROUND":
       var existingRow =
-        existingContents[0].columns[state.activeRow.columnIndex].rows[
-          state.activeRow.rowIndex
+        existingContents[activeContentIndex].columns[activeColumnIndex].rows[
+          activeRowIndex
         ];
       existingRow.value.properties.background = payload;
       return { ...state, contents: existingContents };
     case "SET_URL":
       var existingRow =
-        existingContents[0].columns[state.activeRow.columnIndex].rows[
-          state.activeRow.rowIndex
+        existingContents[activeContentIndex].columns[activeColumnIndex].rows[
+          activeRowIndex
         ];
       existingRow.value.content = payload;
       return { ...state, contents: existingContents };

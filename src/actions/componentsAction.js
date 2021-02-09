@@ -1,67 +1,12 @@
-export const setActiveContent = ({ activeContent = 1 }) => ({
-  type: "SET_ACTIVE_CONTENT",
-  activeContent,
-});
-
-export const setInactiveContent = () => ({
-  type: "SET_INACTIVE_CONTENT",
-});
-
-export const setHoverContent = ({ index }) => ({
-  type: "SET_HOVER_CONTENT",
-  payload: index,
-});
-
-export const setHoverSubcontent = ({ rowIndex, columnIndex }) => ({
-  type: "SET_HOVER_SUBCONTENT",
-  payload: {
-    rowIndex,
-    columnIndex,
-  },
-});
-
-export const unsetHoverContent = () => ({
-  type: "UNSET_HOVER_CONTENT",
-});
-
-export const unsetHoverSubcontent = () => ({
-  type: "UNSET_HOVER_SUBCONTENT",
-});
-
-export const setActive = ({ activeContent = 1 }) => (dispatch) => {
-  dispatch(setInactiveContent());
-  dispatch(setActiveContent({ activeContent }));
-};
-
-export const setActiveSubContent = ({ activeSubcontent = 1 }) => ({
-  type: "SET_ACTIVE_SUBCONTENT",
-  activeSubcontent,
-});
-
-export const setActiveRow = (row, column) => ({
-  type: "SET_ROW",
-  payload: {
-    row,
-    column,
-  },
-});
-
-export const setActivateRow = (index, row, column) => (dispatch) => {
-  dispatch(setRowsInactive());
-  dispatch(setRowActive(index, column, row));
-};
-
-export const setRowsInactive = () => ({
-  type: "SET_ROWS_INACTIVE",
-});
-
-export const setRowActive = (index, column, row) => ({
-  type: "SET_ACTIVE_ROW",
-  payload: {
-    index,
-    column,
-    row,
-  },
+export const setCurrentActiveBlock = ({
+  contentIndex,
+  columnIndex,
+  rowIndex,
+}) => ({
+  type: "SET_CURRENT_ACTIVE_BLOCK",
+  contentIndex,
+  columnIndex,
+  rowIndex,
 });
 
 export const addContent = (content) => {
@@ -104,7 +49,6 @@ export const updateContent = (content, index, row, column) => ({
 export const insertItem = (position, content, index, row, column) => (
   dispatch
 ) => {
-  dispatch(setRowsInactive());
   switch (position) {
     case "above":
       dispatch(insertContentAbove(content, index, row, column));
