@@ -9,9 +9,10 @@ import Knob from "../../../../common/components/organisms/Knob";
 import { funcMap } from "../../data/helper";
 
 const SpacerSettings = ({ type, component, dispatch }) => {
-  const { height, background } = component?.contents[0]?.columns[
-    component.activeRow.columnIndex
-  ]?.rows[component.activeRow.rowIndex].value.properties;
+  const { contentIndex, columnIndex, rowIndex } = component.currentActiveBlock;
+  const { height, background } = component?.contents[contentIndex]?.columns[
+    columnIndex
+  ]?.rows[rowIndex].value.properties;
 
   const onHandleProperties = (val, prop) => dispatch(funcMap[prop](val));
   return (
@@ -21,7 +22,7 @@ const SpacerSettings = ({ type, component, dispatch }) => {
           <Text content="Background" />
           <Paper
             className="u-margin-top-light"
-            onHandleColor={(val)=>onHandleProperties(val, 'background')}
+            onHandleColor={(val) => onHandleProperties(val, "background")}
             properties={{
               color: background,
               text: background,

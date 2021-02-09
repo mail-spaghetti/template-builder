@@ -7,14 +7,16 @@ import {
   copyRowContent,
   insertItem,
   updateContent,
-  setActiveRow,
   insertMainContent,
-  setActiveContent,
   setCurrentActiveBlock,
 } from "../../../../actions/componentsAction";
-import { setSelected, setType } from "../../../../actions/optionsAction";
+import {
+  changeSelection,
+  setSelected,
+  setType,
+} from "../../../../actions/optionsAction";
 import Drop from "../../../../utils/icons/Drop";
-import { DEFAULT_LEAF_VALUE, ITEMS } from "../../data";
+import { DEFAULT_LEAF_VALUE, ITEMS, OPTIONS } from "../../data";
 import SnapLeaflet from "./SnapLeaflet";
 
 const Layout = ({ height, component, structure, blockType, dispatch }) => {
@@ -194,17 +196,30 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
       });
   };
 
-  const setActiveContent = (contentIndex) =>
-    setActiveElements((prevState) => ({ ...prevState, contentIndex }));
+  const setActiveContent = (e, contentIndex) => {
+    if (e.target.id !== "block") {
+      setActiveElements((prevState) => ({ ...prevState, contentIndex }));
+      dispatch(changeSelection({ selection: OPTIONS[1] }));
+      dispatch(setType({ type: OPTIONS[1] }));
+      dispatch(setSelected({ selected: true }));
+    }
+  };
 
   const setTextFormat = (text) =>
     text[0].toUpperCase() + text.substring(1).toLowerCase();
 
-  const activateRow = (contentIndex, columnIndex, rowIndex, item) => {
-    setActiveRowContent(contentIndex, columnIndex, rowIndex);
-    dispatch(setCurrentActiveBlock({ contentIndex, columnIndex, rowIndex }));
-    dispatch(setType({ type: setTextFormat(item.content) }));
-    dispatch(setSelected({ selected: true }));
+  const activateRow = (e, contentIndex, columnIndex, rowIndex, item) => {
+    console.log(e.target.id);
+    if (e.target.id === "block") {
+      setActiveRowContent(contentIndex, columnIndex, rowIndex);
+      dispatch(setCurrentActiveBlock({ contentIndex, columnIndex, rowIndex }));
+      dispatch(setSelected({ selected: false }));
+      dispatch(setType({ type: null }));
+      dispatch(changeSelection({ selection: OPTIONS[0] }));
+      dispatch(setType({ type: OPTIONS[0] }));
+      dispatch(setType({ type: setTextFormat(item.content) }));
+      dispatch(setSelected({ selected: true }));
+    }
   };
 
   const setActiveRowContent = (contentIndex, columnIndex, rowIndex) =>
@@ -305,9 +320,10 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
           idx,
           false
         )}
-        onClick={activateRow.bind(this, contentIndex, index, idx, content)}
+        onClick={(e) => activateRow(e, contentIndex, index, idx, content)}
         onDragOver={setDragOverProps.bind(this, contentIndex, index, idx)}
         ref={ref}
+        id="block"
         className={`draft__contents ${
           content.content ? "draft__contents--white" : null
         } ${
@@ -384,8 +400,9 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
                 setHoverContent(idx, true);
                 setRowClient({ top: null, bottom: null });
               }}
+              id="main"
               onMouseOut={setHoverContent.bind(this, idx, false)}
-              onClick={setActiveContent.bind(this, idx)}
+              onClick={(e) => setActiveContent(e, idx)}
             >
               {structClient.top && dragPosition.contentIndex === idx && (
                 <div className="draft__subBlockEvent--top">&nbsp;</div>

@@ -9,18 +9,19 @@ import Knob from "../../../../common/components/organisms/Knob";
 import { funcMap } from "../../data/helper";
 
 const DividerSettings = ({ type, component, dispatch }) => {
+  const { contentIndex, columnIndex, rowIndex } = component.currentActiveBlock;
   const {
     borderTop,
     marginTop,
     marginBottom,
     marginLeft,
     marginRight,
-  } = component?.contents[0]?.columns[component.activeRow.columnIndex]?.rows[
-    component.activeRow.rowIndex
+  } = component?.contents[contentIndex]?.columns[columnIndex]?.rows[
+    rowIndex
   ].value.properties;
-  console.log(borderTop);
   const onHandleBorder = (val, type, prop) => {
     let borderArr = borderTop.split(" ");
+    console.log(borderArr, prop);
     if (type === "color") borderArr.splice(2, 1, val);
     else if (type === "type") borderArr.splice(1, 1, val);
     dispatch(funcMap[prop](borderArr.join(" ")));

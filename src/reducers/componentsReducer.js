@@ -246,9 +246,9 @@ const componentsReducer = (
       return { ...state, contents: existingContents };
     case "SET_BORDER_TOP":
       var existingRow =
-        existingContents[activeContentIndex].columns[
-          state.activeRow.columnIndex
-        ].rows[activeRowIndex];
+        existingContents[activeContentIndex].columns[activeColumnIndex].rows[
+          activeRowIndex
+        ];
       existingRow.value.properties.borderTop = payload;
       return { ...state, contents: existingContents };
     case "SET_BACKGROUND":

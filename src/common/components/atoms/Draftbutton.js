@@ -16,6 +16,7 @@ const DraftButton = ({ content = "Choose Image", onHandleChange }) => {
   return (
     <a
       contentEditable="true"
+      id="block"
       suppressContentEditableWarning={true}
       onClick={onHandleChange}
       href={link}

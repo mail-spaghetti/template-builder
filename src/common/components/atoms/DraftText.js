@@ -9,7 +9,7 @@ const DraftText = ({ onHandleChange, content }) => {
   };
   return (
     <p
-      id="draftText"
+      id="block"
       onBlur={onHandleChange}
       suppressContentEditableWarning={true}
       contentEditable={true}

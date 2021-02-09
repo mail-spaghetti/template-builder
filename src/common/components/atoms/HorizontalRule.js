@@ -9,7 +9,7 @@ const HorizontalRule = ({ content }) => {
     borderTop: content?.properties.borderTop,
   };
   return (
-    <div className="form__rule">
+    <div className="form__rule" id="block">
       <div className="form__rule--line" style={inlineStyle}>
         &nbsp;
       </div>
