@@ -72,12 +72,11 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
       const hoveredRect = ref.current.getBoundingClientRect();
       const hoveredMiddle = (hoveredRect.bottom - hoveredRect.top) / 2;
       const mouseYPosition = monitor.getClientOffset().y - hoveredRect.top;
-      console.log(hoveredMiddle, mouseYPosition);
       if (rowClient.top || rowClient.bottom) {
         setTimeout(() => {
           if (
             rowClient.bottom &&
-            mouseYPosition <= hoveredRect.height - 10 + 88 &&
+            mouseYPosition <= hoveredRect.height &&
             mouseYPosition > hoveredMiddle
           )
             setRowClient({ top: true, bottom: null });
@@ -205,6 +204,14 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   const setActiveContent = (contentIndex) =>
     setActiveElements((prevState) => ({ ...prevState, contentIndex }));
 
+  const setTextFormat = (text) => text[0].toUpperCase() + text.substring(1).toLowerCase();
+
+  const activateRow = (contentIndex, columnIndex, rowIndex, item) => {
+    setActiveRowContent(contentIndex, columnIndex, rowIndex);
+    dispatch(setType({ type: setTextFormat(item.content) }));
+    dispatch(setSelected({ selected: true }));
+  }
+
   const setActiveRowContent = (contentIndex, columnIndex, rowIndex) =>
     setActiveElements(() => ({ contentIndex, columnIndex, rowIndex }));
 
@@ -303,7 +310,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
           idx,
           false
         )}
-        onClick={setActiveRowContent.bind(this, contentIndex, index, idx)}
+        onClick={activateRow.bind(this, contentIndex, index, idx, content)}
         onDragOver={setDragOverProps.bind(this, contentIndex, index, idx)}
         ref={ref}
         className={`draft__contents ${
