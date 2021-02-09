@@ -72,17 +72,18 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
       const hoveredRect = ref.current.getBoundingClientRect();
       const hoveredMiddle = (hoveredRect.bottom - hoveredRect.top) / 2;
       const mouseYPosition = monitor.getClientOffset().y - hoveredRect.top;
+      console.log(hoveredMiddle, mouseYPosition);
       if (rowClient.top || rowClient.bottom) {
         setTimeout(() => {
           if (
             rowClient.bottom &&
-            mouseYPosition <= hoveredRect.height - 10 + 25 &&
+            mouseYPosition <= hoveredRect.height - 10 + 88 &&
             mouseYPosition > hoveredMiddle
           )
             setRowClient({ top: true, bottom: null });
           else if (
             rowClient.top &&
-            mouseYPosition >= 0 - 40 &&
+            mouseYPosition >= 0 - 88 &&
             mouseYPosition < hoveredMiddle
           )
             setRowClient({ top: null, bottom: true });
@@ -103,6 +104,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     accept: ITEMS.STRUCTURE,
     drop: (item, monitor) => {
       dropContent(item.content);
+      setStructClient(() => ({ top: null, bottom: null }));
     },
     hover: (item, monitor) => {
       if (!refStruct.current) return;
@@ -157,7 +159,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     } else if (structClient.bottom) {
       dispatch(insertMainContent("below", dragPosition.contentIndex, item));
     } else return;
-  }
+  };
 
   const dropItem = (item) => {
     const { contentIndex, columnIndex, rowIndex } = dragPosition;
@@ -190,8 +192,21 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
       setHoverElements((prevState) => ({ ...prevState, contentIndex: null }));
   };
 
+  const setHoverRowContent = (contentIndex, columnIndex, rowIndex, type) => {
+    if (type) setHoverElements({ contentIndex, columnIndex, rowIndex });
+    else
+      setHoverElements({
+        contentIndex: null,
+        columnIndex: null,
+        rowIndex: null,
+      });
+  };
+
   const setActiveContent = (contentIndex) =>
     setActiveElements((prevState) => ({ ...prevState, contentIndex }));
+
+  const setActiveRowContent = (contentIndex, columnIndex, rowIndex) =>
+    setActiveElements(() => ({ contentIndex, columnIndex, rowIndex }));
 
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -237,7 +252,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
 
   const getStructRef = (contentIndex) => {
     if (dragPosition.contentIndex === contentIndex) return dropStructure;
-  }
+  };
 
   const setColumns = (column, contentIndex, index) => {
     return (
@@ -248,6 +263,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
               <Fragment key={idx}>
                 <div ref={getDropRef(contentIndex, index, idx)}>
                   {rowClient.top &&
+                    dragPosition.contentIndex === contentIndex &&
                     dragPosition.columnIndex === index &&
                     dragPosition.rowIndex === idx &&
                     !!row.component && (
@@ -255,6 +271,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
                     )}
                   {setRows(row, index, idx, contentIndex)}
                   {rowClient.bottom &&
+                    dragPosition.contentIndex === contentIndex &&
                     dragPosition.columnIndex === index &&
                     dragPosition.rowIndex === idx &&
                     !!row.component && (
@@ -272,28 +289,52 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   const setRows = (content, index, idx, contentIndex) => {
     return (
       <div
+        onMouseOver={setHoverRowContent.bind(
+          this,
+          contentIndex,
+          index,
+          idx,
+          true
+        )}
+        onMouseOut={setHoverRowContent.bind(
+          this,
+          contentIndex,
+          index,
+          idx,
+          false
+        )}
+        onClick={setActiveRowContent.bind(this, contentIndex, index, idx)}
         onDragOver={setDragOverProps.bind(this, contentIndex, index, idx)}
         ref={ref}
         className={`draft__contents ${
           content.content ? "draft__contents--white" : null
-        } ${content.active ? "draft__contents--green" : null} ${
-          component.hoverContent === contentIndex &&
-          component.hoverSubcontent.rowIndex === idx &&
-          component.hoverSubcontent.columnIndex === index
+        } ${
+          hoverElements.contentIndex === contentIndex &&
+          hoverElements.rowIndex === idx &&
+          hoverElements.columnIndex === index
             ? "draft__contents--green"
+            : null
+        } ${
+          !!content.component &&
+          activeElements.contentIndex === contentIndex &&
+          activeElements.columnIndex === index &&
+          activeElements.rowIndex === idx
+            ? "draft__contents--active"
             : null
         }`}
         style={{
           background:
-            index === dragPosition.columnIndex && idx === dragPosition.rowIndex
+            contentIndex === dragPosition.contentIndex &&
+            index === dragPosition.columnIndex &&
+            idx === dragPosition.rowIndex
               ? background
               : null,
         }}
       >
         <div>
-          {component.hoverContent === contentIndex &&
-            component.hoverSubcontent.rowIndex === idx &&
-            component.hoverSubcontent.columnIndex === index && (
+          {hoverElements.contentIndex === contentIndex &&
+            hoverElements.rowIndex === idx &&
+            hoverElements.columnIndex === index && (
               <SnapLeaflet
                 _leaflet="inner"
                 onHandleDelete={(type) => onHandleDelete(type, index, idx)}
@@ -341,10 +382,10 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
                 setHoverContent(idx, true);
                 setRowClient({ top: null, bottom: null });
               }}
-              onMouseOut={setHoverContent.bind(this,idx, false)}
+              onMouseOut={setHoverContent.bind(this, idx, false)}
               onClick={setActiveContent.bind(this, idx)}
             >
-              {structClient.top && (
+              {structClient.top && dragPosition.contentIndex === idx && (
                 <div className="draft__subBlockEvent--top">&nbsp;</div>
               )}
               <div
@@ -379,7 +420,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
                   </table>
                 </div>
               </div>
-              {structClient.bottom && (
+              {structClient.bottom && dragPosition.contentIndex === idx && (
                 <div className="draft__subBlockEvent--bottom">&nbsp;</div>
               )}
             </div>

@@ -19,10 +19,14 @@
       border: 1px solid transparent;
     }
 
+    &--active {
+      border: 1px solid $color-green;
+      outline: 0.5rem solid lighten($color-green, 60%);
+      outline-offset: -0.6rem;
+    }
+
     &--green {
       border: 1px solid $color-green;
-      outline: 0.5rem solid rgba($color-green, 0.4);
-      outline-offset: -0.5rem;
       position: relative;
     }
 

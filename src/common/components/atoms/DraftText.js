@@ -17,9 +17,6 @@ const DraftText = ({ onHandleChange, content }) => {
         outline: "none",
         ...inlineStyle,
       }}
-      onMouseOver={() =>
-        setTimeout(() => document.getElementById("draftText").focus(), 0)
-      }
     >
       {content.content}
     </p>
