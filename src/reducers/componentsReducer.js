@@ -170,7 +170,7 @@ const componentsReducer = (
     case "INSERT_CONTENT_ABOVE":
       var existingColumn =
         existingContents[payload.index].columns[payload.column];
-      existingColumn.rows.splice(payload.row - 1, 0, {
+      existingColumn.rows.splice(payload.row, 0, {
         active: true,
         content: payload.content.text,
         component: payload.content.component,

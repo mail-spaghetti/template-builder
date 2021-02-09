@@ -1,7 +1,6 @@
 import React from "react";
 
 const DraftButton = ({ content = "Choose Image", onHandleChange }) => {
-  console.log(content);
   const inlineStyle = {
     display: content?.properties.fullWidth ? 'block': 'inline-block',
     marginTop: content?.properties.marginTop,
