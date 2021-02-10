@@ -227,6 +227,38 @@ export const changeStructBorderLeft = ({ value, index }) => ({
   },
 });
 
+export const changeMarginTop = ({ value, index }) => ({
+  type: "SET_COLUMN_MARGIN_TOP",
+  payload: {
+    value,
+    index,
+  },
+});
+
+export const changeMarginBottom = ({ value, index }) => ({
+  type: "SET_COLUMN_MARGIN_BOTTOM",
+  payload: {
+    value,
+    index,
+  },
+});
+
+export const changeMarginLeft = ({ value, index }) => ({
+  type: "SET_COLUMN_MARGIN_LEFT",
+  payload: {
+    value,
+    index,
+  },
+});
+
+export const changeMarginRight = ({ value, index }) => ({
+  type: "SET_COLUMN_MARGIN_RIGHT",
+  payload: {
+    value,
+    index,
+  },
+});
+
 export const changeColumnBackground = ({ background, index }) => ({
   type: "SET_COLUMN_BACKGROUND",
   payload: { index, background },

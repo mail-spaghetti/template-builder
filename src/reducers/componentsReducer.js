@@ -305,12 +305,34 @@ const componentsReducer = (
       existingContents[activeContentIndex].borderLeft = borderLeft;
       return { ...state, contents: existingContents };
     case "SET_COLUMN_BACKGROUND":
-      existingContents[activeContentIndex].columns[payload.index].background =
-        payload.background;
+      existingContents[activeContentIndex].columns[
+        payload.index - 1
+      ].background = payload.background;
       return { ...state, contents: existingContents };
     case "SET_COLUMN_RADIUS":
-      existingContents[activeContentIndex].columns[payload.index].borderRadius =
-        payload.radius;
+      existingContents[activeContentIndex].columns[
+        payload.index - 1
+      ].borderRadius += payload.radius;
+      return { ...state, contents: existingContents };
+    case "SET_COLUMN_MARGIN_TOP":
+      existingContents[activeContentIndex].columns[
+        payload.index - 1
+      ].marginTop += payload.value;
+      return { ...state, contents: existingContents };
+    case "SET_COLUMN_MARGIN_BOTTOM":
+      existingContents[activeContentIndex].columns[
+        payload.index - 1
+      ].marginBottom += payload.value;
+      return { ...state, contents: existingContents };
+    case "SET_COLUMN_MARGIN_LEFT":
+      existingContents[activeContentIndex].columns[
+        payload.index - 1
+      ].marginLeft += payload.value;
+      return { ...state, contents: existingContents };
+    case "SET_COLUMN_MARGIN_RIGHT":
+      existingContents[activeContentIndex].columns[
+        payload.index - 1
+      ].marginRight += payload.value;
       return { ...state, contents: existingContents };
     default:
       return state;

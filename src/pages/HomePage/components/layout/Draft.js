@@ -448,12 +448,13 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
                           <th
                             width={`${content.width}%`}
                             style={{
+                              overflow: "hidden",
                               background: content.background,
                               borderRadius: content.borderRadius,
-                              paddingTop: content.paddingTop,
-                              paddingbottom: content.paddingBottom,
-                              paddingRight: content.paddingRight,
-                              paddingLeft: content.paddingLeft,
+                              paddingTop: content.marginTop,
+                              paddingBottom: content.marginBottom,
+                              paddingRight: content.marginRight,
+                              paddingLeft: content.marginLeft,
                             }}
                             key={index}
                           >

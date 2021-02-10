@@ -14,6 +14,7 @@ import Text from "../../../../common/components/atoms/Text";
 import Paper from "../../../../common/components/molecules/Paper";
 import Slider from "../../../../common/components/molecules/Slider";
 import Knob from "../../../../common/components/organisms/Knob";
+import MarginSet from "../../../../common/components/organisms/MarginSet";
 import LeftArrow from "../../../../utils/icons/LeftArrow";
 
 import { BORDER_TYPES, COLUMN_TYPES, IMAGE_WARNING } from "../../data";
@@ -225,7 +226,7 @@ const StructureSettings = ({
             <div className="u-margin-top-light">
               <Paper
                 onHandleColor={(val) =>
-                  onHandleProperties(val, "columnBackground")
+                  onHandleProperties(val, "columnBackground", selectedColumn)
                 }
                 properties={{
                   color: activeContent.columns[selectedColumn - 1].background,
@@ -239,57 +240,28 @@ const StructureSettings = ({
               <Text content="Border Radius" />
             </div>
             <div className="u-margin-top-light">
-              <Knob />
+              <Knob
+                onHandleClick={(val) =>
+                  onHandleProperties(val, "columnRadius", selectedColumn)
+                }
+                content={activeContent.columns[selectedColumn - 1].borderRadius}
+              />
             </div>
           </div>
         </div>
         <HorizontalRule />
-        <div className="row u-margin-bottom-none">
-          <div className="col-1-of-2">
-            <div>
-              <Text content="Margin Top" />
-            </div>
-            <div className="u-margin-top-light">
-              <Knob />
-            </div>
-          </div>
-          <div className="col-1-of-2">
-            <div>
-              <Text content="Margin Bottom" />
-            </div>
-            <div className="u-margin-top-light">
-              <Knob />
-            </div>
-          </div>
-        </div>
-        <div className="row u-margin-bottom-none u-margin-top-light">
-          <div className="col-1-of-2">
-            <div>
-              <Text content="Margin Top" />
-            </div>
-            <div className="u-margin-top-light">
-              <Knob />
-            </div>
-          </div>
-          <div className="col-1-of-2">
-            <div>
-              <Text content="Margin Bottom" />
-            </div>
-            <div className="u-margin-top-light">
-              <Knob />
-            </div>
-          </div>
-        </div>
-        <div className="row u-margin-bottom-none u-margin-top-light">
+        <MarginSet
+          {...activeContent.columns[selectedColumn - 1]}
+          onHandleMarginSet={(val, prop) =>
+            onHandleProperties(val, `column-margin-${prop}`, selectedColumn)
+          }
+        />
+        <div className="row u-margin-bottom-none u-margin-top-small">
           <div className="col-1-of-3">&nbsp;</div>
           <div className="col-2-of-3">
             <div className="u-display-flex-between">
-              <span>
-                <Text content="Independent borders" />
-              </span>
-              <span>
-                <Slider />
-              </span>
+              <Text content="Independent borders" />
+              <Slider />
             </div>
           </div>
         </div>
