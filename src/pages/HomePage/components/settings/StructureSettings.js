@@ -17,7 +17,7 @@ import Knob from "../../../../common/components/organisms/Knob";
 import LeftArrow from "../../../../utils/icons/LeftArrow";
 
 import { BORDER_TYPES, COLUMN_TYPES, IMAGE_WARNING } from "../../data";
-import { funcMap } from "../../data/helper";
+import { funcMap, textCapitalize } from "../../data/helper";
 
 const StructureSettings = ({
   type,
@@ -26,6 +26,7 @@ const StructureSettings = ({
   settings,
   dispatch,
 }) => {
+  const selectedColumn = structure.selectedColumn;
   const contentIndex = component.currentActiveBlock.contentIndex;
   const activeContent = component.contents[contentIndex];
   const onHandleSettingsExit = () => dispatch(setSelected({ selected: false }));
@@ -54,9 +55,8 @@ const StructureSettings = ({
     }
   };
 
-  const onHandleProperties = (value, prop, index = 0) => {
+  const onHandleProperties = (value, prop, index = 0) =>
     dispatch(funcMap[prop](value, index));
-  };
 
   return (
     <div className="settings">
@@ -101,7 +101,7 @@ const StructureSettings = ({
               <div className="u-margin-top-light">
                 <Paper
                   onHandleColor={(val) =>
-                    onHandleProperties(val, "structBackground")
+                    onHandleProperties(val, "structBackground", selectedColumn)
                   }
                   properties={{
                     color: activeContent.background,
@@ -151,44 +151,35 @@ const StructureSettings = ({
                   className="u-margin-top-light"
                   content={border
                     .split("-")
-                    .map((b) => b[0].toUpperCase() + b.substring(1))
+                    .map((b) => textCapitalize(b))
                     .join(" ")}
                 />
                 <Paper
                   onHandleColor={(val) =>
                     onHandleProperties(val, "struct-" + border, 2)
                   }
+                  onHandleBorderChange={(val) =>
+                    onHandleProperties(val, "struct-" + border, 1)
+                  }
                   properties={{
                     color: activeContent[
                       border
                         .split("-")
-                        .map((b, idx) => {
-                          if (idx > 0)
-                            return b[0].toUpperCase() + b.substring(1);
-                          return b;
-                        })
+                        .map((b, idx) => (idx > 0 ? textCapitalize(b) : b))
                         .join("")
                     ].split(" ")[2],
 
                     text: activeContent[
                       border
                         .split("-")
-                        .map((b, idx) => {
-                          if (idx > 0)
-                            return b[0].toUpperCase() + b.substring(1);
-                          return b;
-                        })
+                        .map((b, idx) => (idx > 0 ? textCapitalize(b) : b))
                         .join("")
                     ].split(" ")[2],
                     border:
-                      structure[
+                      activeContent[
                         border
                           .split("-")
-                          .map((b, idx) => {
-                            return idx > 0
-                              ? b[0].toUpperCase() + b.substring(1)
-                              : b;
-                          })
+                          .map((b, idx) => (idx > 0 ? textCapitalize(b) : b))
                           .join("")
                       ],
                   }}
@@ -209,14 +200,15 @@ const StructureSettings = ({
           />
         </div>
         <HorizontalRule />
+        {/* Looping through active columns */}
         <div>
           <Text className="settings__heading" content="Column's properties" />
           <div className="settings__types u-margin-top-small">
-            {COLUMN_TYPES.map((type, idx) => (
+            {activeContent.columns.map((type, idx) => (
               <span key={idx}>
                 <Button
                   onHandleClick={() => onHandleColumnChange(idx + 1)}
-                  text={type}
+                  text={`Column ${idx + 1}`}
                   variant={`${
                     structure.selectedColumn === idx + 1
                       ? "tertiary"
@@ -229,14 +221,15 @@ const StructureSettings = ({
         </div>
         <div className="row u-margin-top-small u-margin-bottom-none">
           <div className="col-1-of-2">
-            <div>
-              <Text content="Background Color" />
-            </div>
+            <Text content="Background Color" />
             <div className="u-margin-top-light">
               <Paper
+                onHandleColor={(val) =>
+                  onHandleProperties(val, "columnBackground")
+                }
                 properties={{
-                  color: structure.backgroundColor,
-                  text: structure.backgroundColor,
+                  color: activeContent.columns[selectedColumn - 1].background,
+                  text: activeContent.columns[selectedColumn - 1].background,
                 }}
               />
             </div>
@@ -307,7 +300,7 @@ const StructureSettings = ({
                 className="u-margin-top-light"
                 content={border
                   .split("-")
-                  .map((b) => b[0].toUpperCase() + b.substring(1))
+                  .map((b) => textCapitalize(b))
                   .join(" ")}
               />
               <Paper
@@ -318,11 +311,7 @@ const StructureSettings = ({
                     structure[
                       border
                         .split("-")
-                        .map((b, idx) => {
-                          return idx > 0
-                            ? b[0].toUpperCase() + b.substring(1)
-                            : b;
-                        })
+                        .map((b, idx) => (idx > 0 ? textCapitalize(b) : b))
                         .join("")
                     ],
                 }}

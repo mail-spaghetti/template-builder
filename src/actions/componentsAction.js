@@ -226,3 +226,45 @@ export const changeStructBorderLeft = ({ value, index }) => ({
     index,
   },
 });
+
+export const changeColumnBackground = ({ background, index }) => ({
+  type: "SET_COLUMN_BACKGROUND",
+  payload: { index, background },
+});
+
+export const changeColumnRadius = ({ radius, index }) => ({
+  type: "SET_COLUMN_RADIUS",
+  payload: { radius, index },
+});
+
+export const changeColumnBorderTop = ({ value, index }) => ({
+  type: "SET_STRUCTURE_BORDER_TOP",
+  payload: {
+    value,
+    index,
+  },
+});
+
+export const changeColumnBorderBottom = ({ value, index }) => ({
+  type: "SET_STRUCTURE_BORDER_BOTTOM",
+  payload: {
+    value,
+    index,
+  },
+});
+
+export const changeColumnBorderRight = ({ value, index }) => ({
+  type: "SET_STRUCTURE_BORDER_RIGHT",
+  payload: {
+    value,
+    index,
+  },
+});
+
+export const changeColumnBorderLeft = ({ value, index }) => ({
+  type: "SET_STRUCTURE_BORDER_LEFT",
+  payload: {
+    value,
+    index,
+  },
+});

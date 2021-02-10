@@ -445,7 +445,18 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
                     <tbody>
                       <tr>
                         {content.columns.map((content, index) => (
-                          <th width={`${content.width}%`} key={index}>
+                          <th
+                            width={`${content.width}%`}
+                            style={{
+                              background: content.background,
+                              borderRadius: content.borderRadius,
+                              paddingTop: content.paddingTop,
+                              paddingbottom: content.paddingBottom,
+                              paddingRight: content.paddingRight,
+                              paddingLeft: content.paddingLeft,
+                            }}
+                            key={index}
+                          >
                             {setColumns(content, idx, index)}
                           </th>
                         ))}

@@ -1,5 +1,6 @@
 import {
   COMPONENT_INITIAL_STATE,
+  INITIAL_DRAFT_COLUMN_STYLING,
   INITIAL_DRAFT_CONTENT,
   INITIAL_DRAFT_ROW,
 } from "../utils";
@@ -87,6 +88,7 @@ const componentsReducer = (
           width: parseFloat(
             ((column / payload.structure.parts) * 100).toFixed(2)
           ),
+          ...JSON.parse(JSON.stringify(INITIAL_DRAFT_COLUMN_STYLING)),
           rows: INITIAL_DRAFT_ROW.slice(),
         };
       });
@@ -101,6 +103,7 @@ const componentsReducer = (
           width: parseFloat(
             ((column / payload.structure.parts) * 100).toFixed(2)
           ),
+          ...JSON.parse(JSON.stringify(INITIAL_DRAFT_COLUMN_STYLING)),
           rows: INITIAL_DRAFT_ROW.slice(),
         };
       });
@@ -278,22 +281,36 @@ const componentsReducer = (
       existingContents[activeContentIndex].borderTop = borderTop;
       return { ...state, contents: existingContents };
     case "SET_STRUCTURE_BORDER_BOTTOM":
-      var borderBottom = existingContents[activeContentIndex].borderBottom.split(" ");
+      var borderBottom = existingContents[
+        activeContentIndex
+      ].borderBottom.split(" ");
       borderBottom[payload.index] = payload.value;
       borderBottom = borderBottom.join(" ");
       existingContents[activeContentIndex].borderBottom = borderBottom;
       return { ...state, contents: existingContents };
     case "SET_STRUCTURE_BORDER_RIGHT":
-      var borderRight = existingContents[activeContentIndex].borderRight.split(" ");
+      var borderRight = existingContents[activeContentIndex].borderRight.split(
+        " "
+      );
       borderRight[payload.index] = payload.value;
       borderRight = borderRight.join(" ");
       existingContents[activeContentIndex].borderRight = borderRight;
       return { ...state, contents: existingContents };
     case "SET_STRUCTURE_BORDER_LEFT":
-      var borderLeft = existingContents[activeContentIndex].borderLeft.split(" ");
+      var borderLeft = existingContents[activeContentIndex].borderLeft.split(
+        " "
+      );
       borderLeft[payload.index] = payload.value;
       borderLeft = borderLeft.join(" ");
       existingContents[activeContentIndex].borderLeft = borderLeft;
+      return { ...state, contents: existingContents };
+    case "SET_COLUMN_BACKGROUND":
+      existingContents[activeContentIndex].columns[payload.index].background =
+        payload.background;
+      return { ...state, contents: existingContents };
+    case "SET_COLUMN_RADIUS":
+      existingContents[activeContentIndex].columns[payload.index].borderRadius =
+        payload.radius;
       return { ...state, contents: existingContents };
     default:
       return state;

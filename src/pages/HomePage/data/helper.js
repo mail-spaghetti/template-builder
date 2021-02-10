@@ -1,4 +1,10 @@
 import {
+  changeColumnBackground,
+  changeColumnBorderBottom,
+  changeColumnBorderLeft,
+  changeColumnBorderRight,
+  changeColumnBorderTop,
+  changeColumnRadius,
   changeStructBorderBottom,
   changeStructBorderLeft,
   changeStructBorderRight,
@@ -36,9 +42,17 @@ export const funcMap = {
   "struct-border-bottom": (value, index) => changeStructBorderBottom({ value, index }),
   "struct-border-right": (value, index) => changeStructBorderRight({ value, index }),
   "struct-border-left": (value, index) => changeStructBorderLeft({ value, index }),
+  columnBackground: (background, index) => changeColumnBackground({ background, index }),
+  columnRadius: (radius, index) => changeColumnRadius({ radius, index }),
+  "column-border-top": (value) => changeColumnBorderTop({ value }),
+  "column-border-bottom": (value) => changeColumnBorderBottom({ value }),
+  "column-border-right": (value) => changeColumnBorderRight({ value }),
+  "column-border-left": (value) => changeColumnBorderLeft({ value }),
 };
 
 export const getDefaultLeafValue = () => ({
   type: "default",
   content: null,
 });
+
+export const textCapitalize = (text) => text[0].toUpperCase() + text.substring(1).toLowerCase(); 

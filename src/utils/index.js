@@ -36,9 +36,32 @@ export const INITIAL_DRAFT_ROW = [
 export const INITIAL_DRAFT_COLUMN = [
   {
     width: 100,
+    background: "#ffffff",
+    borderRadius: 0,
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingLeft: 0,
+    paddingRight: 0,
+    borderTop: "1px solid #d7d7d7",
+    borderBottom: "1px solid #d7d7d7",
+    borderLeft: "1px solid #d7d7d7",
+    borderRight: "1px solid #d7d7d7",
     rows: INITIAL_DRAFT_ROW.slice(),
   },
 ];
+
+export const INITIAL_DRAFT_COLUMN_STYLING = {
+  background: "#ffffff",
+  borderRadius: 0,
+  paddingTop: 0,
+  paddingBottom: 0,
+  paddingLeft: 0,
+  paddingRight: 0,
+  borderTop: "1px solid #d7d7d7",
+  borderBottom: "1px solid #d7d7d7",
+  borderLeft: "1px solid #d7d7d7",
+  borderRight: "1px solid #d7d7d7",
+};
 
 export const INITIAL_DRAFT_CONTENT = {
   background: "#d7d7d7",
