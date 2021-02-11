@@ -1,7 +1,6 @@
 import React from "react";
 
 const DraftButton = ({ content = "Choose Image", onHandleChange }) => {
-  console.log(content);
   const inlineStyle = {
     display: content?.properties.fullWidth ? 'block': 'inline-block',
     marginTop: content?.properties.marginTop,
@@ -17,6 +16,7 @@ const DraftButton = ({ content = "Choose Image", onHandleChange }) => {
   return (
     <a
       contentEditable="true"
+      id="block"
       suppressContentEditableWarning={true}
       onClick={onHandleChange}
       href={link}

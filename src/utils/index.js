@@ -36,28 +36,50 @@ export const INITIAL_DRAFT_ROW = [
 export const INITIAL_DRAFT_COLUMN = [
   {
     width: 100,
+    background: "#ffffff",
+    borderRadius: 0,
+    marginTop: 0,
+    marginBottom: 0,
+    marginLeft: 0,
+    marginRight: 0,
+    borderTop: "1px solid #d7d7d7",
+    borderBottom: "1px solid #d7d7d7",
+    borderLeft: "1px solid #d7d7d7",
+    borderRight: "1px solid #d7d7d7",
     rows: INITIAL_DRAFT_ROW.slice(),
   },
 ];
 
+export const INITIAL_DRAFT_COLUMN_STYLING = {
+  background: "#ffffff",
+  borderRadius: 0,
+  marginTop: 0,
+  marginBottom: 0,
+  marginLeft: 0,
+  marginRight: 0,
+  borderTop: "1px solid #d7d7d7",
+  borderBottom: "1px solid #d7d7d7",
+  borderLeft: "1px solid #d7d7d7",
+  borderRight: "1px solid #d7d7d7",
+};
+
 export const INITIAL_DRAFT_CONTENT = {
-  active: false,
-  verticalPadding: "10",
+  background: "#d7d7d7",
+  verticalPadding: 10,
   bgColor: "#d7d7d7",
+  mobileStack: false,
+  borderTop: "1px solid #d7d7d7",
+  borderBottom: "1px solid #d7d7d7",
+  borderRight: "1px solid #d7d7d7",
+  borderLeft: "1px solid #d7d7d7",
   columns: INITIAL_DRAFT_COLUMN.slice(),
 };
 
 export const COMPONENT_INITIAL_STATE = {
-  activeContent: null,
-  hoverContent: null,
-  hoverSubcontent: {
-    rowIndex: null,
+  currentActiveBlock: {
+    contentIndex: null,
     columnIndex: null,
-  },
-  activeSubcontent: null,
-  activeRow: {
     rowIndex: null,
-    columnIndex: null,
   },
   component: null,
   contents: [JSON.parse(JSON.stringify(INITIAL_DRAFT_CONTENT))],

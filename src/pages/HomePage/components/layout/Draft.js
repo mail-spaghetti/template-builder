@@ -2,39 +2,93 @@ import React, { Fragment, useRef, useState } from "react";
 import { useDrop } from "react-dnd";
 import { connect } from "react-redux";
 import {
-  setActivateRow,
-  setActive,
-  setHoverContent,
-  unsetHoverContent,
-  setHoverSubcontent,
-  unsetHoverSubcontent,
   deleteColumnContent,
   deleteContent,
   copyRowContent,
   insertItem,
   updateContent,
-  setActiveRow,
   insertMainContent,
+  setCurrentActiveBlock,
 } from "../../../../actions/componentsAction";
-import { setSelected, setType } from "../../../../actions/optionsAction";
+import {
+  changeSelection,
+  setSelected,
+  setType,
+} from "../../../../actions/optionsAction";
 import Drop from "../../../../utils/icons/Drop";
-import { DEFAULT_LEAF_VALUE, ITEMS } from "../../data";
+import { DEFAULT_LEAF_VALUE, ITEMS, OPTIONS } from "../../data";
 import SnapLeaflet from "./SnapLeaflet";
 
 const Layout = ({ height, component, structure, blockType, dispatch }) => {
+  // Draft States
+  const [hoverType, setHoverType] = useState(null);
+  const [structClient, setStructClient] = useState({
+    top: null,
+    bottom: null,
+  });
+  const [rowClient, setRowClient] = useState({
+    top: null,
+    bottom: null,
+  });
+  const [dragPosition, setDragPosition] = useState({
+    contentIndex: null,
+    columnIndex: null,
+    rowIndex: null,
+  });
+
+  const [hoverElements, setHoverElements] = useState({
+    contentIndex: null,
+    columnIndex: null,
+    rowIndex: null,
+  });
+
+  const [activeElements, setActiveElements] = useState({
+    contentIndex: null,
+    columnIndex: null,
+    rowIndex: null,
+  });
+
+  const ref = useRef(null);
+  const refStruct = useRef(null);
   const [{ isOver, background }, dropRef] = useDrop({
     accept: ITEMS.BLOCK,
     drop: (item, monitor) => {
       dropItem(item.content);
+      setRowClient(() => ({ top: null, bottom: null }));
+      setTimeout(() => {
+        setRowClient(() => ({ top: null, bottom: null }));
+        setDragPosition(() => ({
+          contentIndex: null,
+          columnIndex: null,
+          rowIndex: null,
+        }));
+      }, 200);
     },
     hover: (item, monitor) => {
-      setHoverType("block");
-      let hY = monitor.getClientOffset()?.y;
-      setTimeout(() => {
-        const dhY = monitor.getClientOffset()?.y - hY;
-        if (dhY > 0) setMousePos(true);
-        else if (dhY < 0) setMousePos(false);
-      }, 0.15);
+      if (!ref.current) return;
+      const hoveredRect = ref.current.getBoundingClientRect();
+      const hoveredMiddle = (hoveredRect.bottom - hoveredRect.top) / 2;
+      const mouseYPosition = monitor.getClientOffset().y - hoveredRect.top;
+      if (rowClient.top || rowClient.bottom) {
+        setTimeout(() => {
+          if (
+            rowClient.bottom &&
+            mouseYPosition <= hoveredRect.height &&
+            mouseYPosition > hoveredMiddle
+          )
+            setRowClient({ top: true, bottom: null });
+          else if (
+            rowClient.top &&
+            mouseYPosition >= 0 - 88 &&
+            mouseYPosition < hoveredMiddle
+          )
+            setRowClient({ top: null, bottom: true });
+        }, 150);
+      } else {
+        if (mouseYPosition >= hoveredMiddle)
+          setRowClient(() => ({ top: null, bottom: true }));
+        else setRowClient(() => ({ top: true, bottom: null }));
+      }
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
@@ -46,6 +100,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     accept: ITEMS.STRUCTURE,
     drop: (item, monitor) => {
       dropContent(item.content);
+      setStructClient(() => ({ top: null, bottom: null }));
     },
     hover: (item, monitor) => {
       if (!refStruct.current) return;
@@ -81,57 +136,6 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     }),
   });
 
-  const [activeMainContent, setActiveMainContent] = useState(0);
-  const [activeSubcontent, setActiveSubContent] = useState(0);
-  const [rowIndex, setRowIndex] = useState(0);
-  const [columnIndex, setColumnIndex] = useState(0);
-  const [topClient, setTopClient] = useState(false);
-  const [bottomClient, setBottomClient] = useState(false);
-  const [structClient, setStructClient] = useState({
-    top: null,
-    bottom: null,
-  });
-  const [mousePos, setMousePos] = useState(null);
-  const [hoverType, setHoverType] = useState(null);
-
-  const ref = useRef(null);
-  const refStruct = useRef(null);
-
-  const getDropRef = (index) => {
-    if (hoverType === null) return dropRef;
-    else if (index === columnIndex && hoverType === "block") return dropRef;
-    else if (hoverType === "struct" || !hoverType) return dropRef;
-  };
-
-  const onSetActive = (index) => dispatch(setActive({ activeContent: index }));
-
-  const onHandleHoverColumn = (e, index) => {
-    return setActiveSubContent(index);
-  };
-
-  const onSetActiveRow = (mainIndex, index, idx) => {
-    setRowIndex(idx);
-    setColumnIndex(index);
-    dispatch(setActiveRow(idx, index));
-    dispatch(setActivateRow(mainIndex, idx, index));
-  };
-
-  const onHandleUnset = () => {
-    setStructClient({ top: null, bottom: null });
-    dispatch(unsetHoverContent());
-  };
-
-  const unSetClient = () => {
-    setTimeout(() => {
-      setStructClient({ top: null, bottom: null });
-    }, 50);
-  };
-
-  const handleDragLeave = () => {
-    setTopClient(false);
-    setBottomClient(false);
-  };
-
   const onHandleDelete = (type, idx = null, index = null) => {
     dispatch(setSelected({ selected: false }));
     type === "inner"
@@ -142,40 +146,87 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   const onHandleCopy = (type, idx = null, index = null) =>
     type === "inner" ? dispatch(copyRowContent(0, idx, index)) : null;
 
+  const setDragOverProps = (contentIndex, columnIndex, rowIndex) =>
+    setDragPosition({ contentIndex, columnIndex, rowIndex });
+
   const dropContent = (item) => {
     if (structClient.top) {
-      dispatch(insertMainContent("above", component.hoverContent, item));
+      dispatch(insertMainContent("above", dragPosition.contentIndex, item));
     } else if (structClient.bottom) {
-      dispatch(insertMainContent("below", component.hoverContent, item));
+      dispatch(insertMainContent("below", dragPosition.contentIndex, item));
     } else return;
   };
 
   const dropItem = (item) => {
-    onSetActiveRow(component.hoverContent, rowIndex, columnIndex);
+    const { contentIndex, columnIndex, rowIndex } = dragPosition;
     if (
-      component.contents[activeMainContent].columns[columnIndex].rows[rowIndex]
+      component.contents[contentIndex].columns[columnIndex].rows[rowIndex]
         ?.component
     ) {
-      if (topClient)
-        dispatch(
-          insertItem("above", item, activeMainContent, rowIndex, columnIndex)
-        );
-      else if (bottomClient)
-        dispatch(
-          insertItem("below", item, activeMainContent, rowIndex, columnIndex)
-        );
-    } else {
       dispatch(
-        insertItem(null, item, activeMainContent, rowIndex, columnIndex)
+        insertItem(
+          (() => {
+            if (rowClient.top) return "above";
+            else if (rowClient.bottom) return "below";
+          })(),
+          item,
+          contentIndex,
+          rowIndex,
+          columnIndex
+        )
       );
+    } else {
+      dispatch(insertItem(null, item, contentIndex, rowIndex, columnIndex));
     }
-    setTimeout(() => {
-      setTopClient(false);
-      setBottomClient(false);
-    }, 150);
-    dispatch(setType({ type: item.icon }));
-    dispatch(setSelected({ selected: true }));
   };
+
+  const setHoverContent = (contentIndex, type) => {
+    if (type) setHoverElements((prevState) => ({ ...prevState, contentIndex }));
+    else
+      setHoverElements((prevState) => ({ ...prevState, contentIndex: null }));
+  };
+
+  const setHoverRowContent = (contentIndex, columnIndex, rowIndex, type) => {
+    if (type) setHoverElements({ contentIndex, columnIndex, rowIndex });
+    else
+      setHoverElements({
+        contentIndex: null,
+        columnIndex: null,
+        rowIndex: null,
+      });
+  };
+
+  const setActiveContent = (e, contentIndex) => {
+    if (e.target.id !== "block") {
+      dispatch(
+        setCurrentActiveBlock({
+          contentIndex,
+          columnIndex: null,
+          rowIndex: null,
+        })
+      );
+      setActiveElements((prevState) => ({ ...prevState, contentIndex }));
+      dispatch(changeSelection({ selection: OPTIONS[1] }));
+      dispatch(setType({ type: OPTIONS[1] }));
+      dispatch(setSelected({ selected: true }));
+    }
+  };
+
+  const setTextFormat = (text) =>
+    text[0].toUpperCase() + text.substring(1).toLowerCase();
+
+  const activateRow = (e, contentIndex, columnIndex, rowIndex, item) => {
+    if (e.target.id === "block") {
+      setActiveRowContent(contentIndex, columnIndex, rowIndex);
+      dispatch(setCurrentActiveBlock({ contentIndex, columnIndex, rowIndex }));
+      dispatch(setType({ type: OPTIONS[0] }));
+      dispatch(setType({ type: setTextFormat(item.content) }));
+      dispatch(setSelected({ selected: true }));
+    }
+  };
+
+  const setActiveRowContent = (contentIndex, columnIndex, rowIndex) =>
+    setActiveElements(() => ({ contentIndex, columnIndex, rowIndex }));
 
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -205,46 +256,44 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
         };
     }
 
-    dispatch(
-      updateContent(content.value, activeSubcontent, rowIndex, columnIndex)
-    );
+    // dispatch(
+    //   updateContent(content.value, activeSubcontent, rowIndex, columnIndex)
+    // );
   };
 
-  const setColumns = (column, index, mainContentIndex) => {
+  const getDropRef = (contentIndex, columnIndex, rowIndex) => {
+    if (
+      dragPosition.contentIndex === contentIndex &&
+      dragPosition.columnIndex === columnIndex &&
+      dragPosition.rowIndex === rowIndex
+    )
+      return dropRef;
+  };
+
+  const getStructRef = (contentIndex) => {
+    if (dragPosition.contentIndex === contentIndex) return dropStructure;
+  };
+
+  const setColumns = (column, contentIndex, index) => {
     return (
       <Fragment>
-        <div
-          id="sub"
-          style={{ padding: "0 10px" }}
-          onDragOver={(e) => onHandleHoverColumn(e, index, ref)}
-          ref={getDropRef(index)}
-        >
+        <div id="sub" style={{ padding: "0 10px" }}>
           {column.rows.map((row, idx) => {
             return (
               <Fragment key={idx}>
-                <div
-                  onDragOver={(e) => {
-                    if (rowIndex === idx) setDragOverProps(e, idx);
-                  }}
-                  onDragLeave={() => {
-                    setTopClient(false);
-                    setBottomClient(false);
-                  }}
-                  onMouseLeave={() => {
-                    setTopClient(false);
-                    setBottomClient(false);
-                  }}
-                >
-                  {topClient &&
-                    !!row.component &&
-                    rowIndex === idx &&
-                    columnIndex === index && (
+                <div ref={getDropRef(contentIndex, index, idx)}>
+                  {rowClient.top &&
+                    dragPosition.contentIndex === contentIndex &&
+                    dragPosition.columnIndex === index &&
+                    dragPosition.rowIndex === idx &&
+                    !!row.component && (
                       <div className="draft__contents--new">&nbsp;</div>
                     )}
-                  {setRows(row, index, idx, mainContentIndex)}
-                  {bottomClient &&
-                    rowIndex === idx &&
-                    columnIndex === index &&
+                  {setRows(row, index, idx, contentIndex)}
+                  {rowClient.bottom &&
+                    dragPosition.contentIndex === contentIndex &&
+                    dragPosition.columnIndex === index &&
+                    dragPosition.rowIndex === idx &&
                     !!row.component && (
                       <div className="draft__contents--new">&nbsp;</div>
                     )}
@@ -257,42 +306,63 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     );
   };
 
-  const setRows = (content, index, idx, mainContentIndex) => {
+  const setRows = (content, index, idx, contentIndex) => {
     return (
-      <div ref={activeSubcontent === idx ? ref : null}>
-        <div
-          className={`draft__contents ${
-            content.content ? "draft__contents--white" : null
-          } ${content.active ? "draft__contents--green" : null} ${
-            component.hoverContent === mainContentIndex &&
-            component.hoverSubcontent.rowIndex === idx &&
-            component.hoverSubcontent.columnIndex === index
-              ? "draft__contents--green"
-              : null
-          }`}
-          onMouseOver={() =>
-            dispatch(setHoverSubcontent({ rowIndex: idx, columnIndex: index }))
-          }
-          onDragOver={() => {
-            setRowIndex(idx);
-            setColumnIndex(index);
-          }}
-          onMouseLeave={() => dispatch(unsetHoverSubcontent())}
-          onClick={onSetActiveRow.bind(this, component.hoverContent, index, idx)}
-          style={{ background: index === activeSubcontent ? background : null }}
-        >
-          <div>
-            {component.hoverContent === mainContentIndex &&
-              component.hoverSubcontent.rowIndex === idx &&
-              component.hoverSubcontent.columnIndex === index && (
-                <SnapLeaflet
-                  _leaflet="inner"
-                  onHandleDelete={(type) => onHandleDelete(type, index, idx)}
-                  onHandleCopy={(type) => onHandleCopy(type, index, idx)}
-                />
-              )}
-            {setContent(content)}
-          </div>
+      <div
+        onMouseOver={setHoverRowContent.bind(
+          this,
+          contentIndex,
+          index,
+          idx,
+          true
+        )}
+        onMouseOut={setHoverRowContent.bind(
+          this,
+          contentIndex,
+          index,
+          idx,
+          false
+        )}
+        onClick={(e) => activateRow(e, contentIndex, index, idx, content)}
+        onDragOver={setDragOverProps.bind(this, contentIndex, index, idx)}
+        ref={ref}
+        id="block"
+        className={`draft__contents ${
+          content.content ? "draft__contents--white" : null
+        } ${
+          hoverElements.contentIndex === contentIndex &&
+          hoverElements.rowIndex === idx &&
+          hoverElements.columnIndex === index
+            ? "draft__contents--green"
+            : null
+        } ${
+          !!content.component &&
+          activeElements.contentIndex === contentIndex &&
+          activeElements.columnIndex === index &&
+          activeElements.rowIndex === idx
+            ? "draft__contents--active"
+            : null
+        }`}
+        style={{
+          background:
+            contentIndex === dragPosition.contentIndex &&
+            index === dragPosition.columnIndex &&
+            idx === dragPosition.rowIndex
+              ? background
+              : null,
+        }}
+      >
+        <div>
+          {hoverElements.contentIndex === contentIndex &&
+            hoverElements.rowIndex === idx &&
+            hoverElements.columnIndex === index ? (
+              <SnapLeaflet
+                _leaflet="inner"
+                onHandleDelete={(type) => onHandleDelete(type, index, idx)}
+                onHandleCopy={(type) => onHandleCopy(type, index, idx)}
+              />
+            ): null}
+          {setContent(content)}
         </div>
       </div>
     );
@@ -321,73 +391,90 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     }
   };
 
-  const setDragOverProps = (e, idx) => {
-    const mouseVal = mousePos;
-    //  delay to prevent the jumping effect
-    setTimeout(() => {
-      const dMouseVal = mouseVal === mousePos;
-      if (dMouseVal) {
-        if (mouseVal && hoverType === "block") {
-          setTopClient(false);
-          setBottomClient(true);
-        } else if (!mouseVal && hoverType === "block") {
-          setTopClient(true);
-          setBottomClient(false);
-        }
-      }
-    }, 150);
-    if (hoverType === "block") dispatch(setHoverContent({ index: idx }));
-  };
-
-  const setMainContentProps = (index) => {};
-
   return (
-    <section className="section-draft" onDragLeave={handleDragLeave}>
+    <section className="section-draft">
       <div>
-        {component.contents.map((content, idx) => (
-          <div key={idx} ref={dropStructure} onDrop={unSetClient}>
-            {structClient.top && (
-              <div className="draft__subBlockEvent--top">&nbsp;</div>
-            )}
+        {component.contents.map((content, idx) => {
+          return (
             <div
-              id="main"
-              onMouseOver={() => dispatch(setHoverContent({ index: idx }))}
-              onDragOver={() => {
-                setMainContentProps(idx);
-                dispatch(setHoverContent({ index: idx }));
-              }}
-              onMouseLeave={onHandleUnset}
               key={idx}
-              style={{ padding: `${structure.verticalPadding}px 50px` }}
-              className={`draft__blockEvent ${
-                component.hoverContent === idx
-                  ? "draft__blockEvent--hover"
-                  : null
-              } ${content.active ? "draft__blockEvent--active" : null}`}
-              onClick={() => onSetActive(idx)}
+              ref={getStructRef(idx)}
+              onMouseOver={() => {
+                setHoverContent(idx, true);
+                setRowClient({ top: null, bottom: null });
+              }}
+              id="main"
+              onMouseOut={setHoverContent.bind(this, idx, false)}
+              onClick={(e) => setActiveContent(e, idx)}
             >
-              {component.hoverContent === idx && (
-                <SnapLeaflet onHandleDelete={(type) => onHandleDelete(type)} />
+              {structClient.top && dragPosition.contentIndex === idx && (
+                <div className="draft__subBlockEvent--top">&nbsp;</div>
               )}
-              <div className={`draft__subBlockEvent`}>
-                <table style={{ width: "100%" }} ref={refStruct}>
-                  <tbody id="main">
-                    <tr>
-                      {content.columns.map((content, index) => (
-                        <th width={`${content.width}%`} key={index}>
-                          {setColumns(content, index, idx)}
-                        </th>
-                      ))}
-                    </tr>
-                  </tbody>
-                </table>
+              <div
+                key={idx}
+                style={{
+                  padding: `${content.verticalPadding}px 50px`,
+                  background: `${content.background}`,
+                }}
+                className={`draft__blockEvent ${
+                  hoverElements.contentIndex === idx
+                    ? "draft__blockEvent--hover"
+                    : null
+                } ${
+                  activeElements.contentIndex === idx
+                    ? "draft__blockEvent--active"
+                    : null
+                }`}
+              >
+                {hoverElements.contentIndex === idx && (
+                  <SnapLeaflet
+                    onHandleDelete={(type) => onHandleDelete(type)}
+                  />
+                )}
+                <div className={`draft__subBlockEvent`}>
+                  <table
+                    style={{
+                      width: "100%",
+                      borderTop: content.borderTop,
+                      borderBottom: content.borderBottom,
+                      borderRight: content.borderRight,
+                      borderLeft: content.borderLeft,
+                    }}
+                    ref={refStruct}
+                  >
+                    <tbody>
+                      <tr>
+                        {content.columns.map((content, index) => (
+                          <th
+                            width={`${content.width}%`}
+                            style={{
+                              background: content.background,
+                              borderTop: content.borderTop,
+                              borderBottom: content.borderBottom,
+                              borderLeft: content.borderLeft,
+                              borderRight: content.borderRight,
+                              borderRadius: content.borderRadius,
+                              paddingTop: content.marginTop,
+                              paddingBottom: content.marginBottom,
+                              paddingRight: content.marginRight,
+                              paddingLeft: content.marginLeft,
+                            }}
+                            key={index}
+                          >
+                            {setColumns(content, idx, index)}
+                          </th>
+                        ))}
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
+              {structClient.bottom && dragPosition.contentIndex === idx && (
+                <div className="draft__subBlockEvent--bottom">&nbsp;</div>
+              )}
             </div>
-            {structClient.bottom && (
-              <div className="draft__subBlockEvent--bottom">&nbsp;</div>
-            )}
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

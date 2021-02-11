@@ -1,4 +1,19 @@
 import {
+  changeColumnBackground,
+  changeColumnBorderBottom,
+  changeColumnBorderLeft,
+  changeColumnBorderRight,
+  changeColumnBorderTop,
+  changeColumnRadius,
+  changeMarginBottom,
+  changeMarginLeft,
+  changeMarginRight,
+  changeMarginTop,
+  changeStructBorderBottom,
+  changeStructBorderLeft,
+  changeStructBorderRight,
+  changeStructBorderTop,
+  changeStructureBackground,
   setBackground,
   setBorderTop,
   setHeight,
@@ -26,9 +41,28 @@ export const funcMap = {
   mobile: (block) => showMobile({ block }),
   desktop: (block) => showDestkop({ block }),
   linkInput: (value, prop, block) => setURL(value, block, prop),
+  structBackground: (background) => changeStructureBackground({ background }),
+  "struct-border-top": (value, index) => changeStructBorderTop({ value, index }),
+  "struct-border-bottom": (value, index) => changeStructBorderBottom({ value, index }),
+  "struct-border-right": (value, index) => changeStructBorderRight({ value, index }),
+  "struct-border-left": (value, index) => changeStructBorderLeft({ value, index }),
+  columnBackground: (background, index) => changeColumnBackground({ background, index }),
+  columnRadius: (radius, index) => changeColumnRadius({ radius, index }),
+  "column-margin-top": (value, index) => changeMarginTop({ value, index }),
+  "column-margin-bottom": (value, index) => changeMarginBottom({ value, index }),
+  "column-margin-left": (value, index) => changeMarginLeft({ value, index }),
+  "column-margin-right": (value, index) => changeMarginRight({ value, index }),
+  "column-border-top": (value, index) => changeColumnBorderTop({ value, index }),
+  "column-border-bottom": (value, index) => changeColumnBorderBottom({ value, index }),
+  "column-border-right": (value, index) => changeColumnBorderRight({ value, index }),
+  "column-border-left": (value, index) => changeColumnBorderLeft({ value, index }),
 };
 
 export const getDefaultLeafValue = () => ({
   type: "default",
   content: null,
 });
+
+export const textCapitalize = (text) => text[0].toUpperCase() + text.substring(1).toLowerCase(); 
+
+export const camelCase = (text) => text.split("-").map((b, idx) => (idx > 0 ? textCapitalize(b) : b)).join("")
