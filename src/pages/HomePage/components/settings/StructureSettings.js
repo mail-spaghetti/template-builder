@@ -30,6 +30,14 @@ const StructureSettings = ({
   const selectedColumn = structure.selectedColumn;
   const contentIndex = component.currentActiveBlock.contentIndex;
   const activeContent = component.contents[contentIndex];
+
+  const onColumnExistence = () => {
+    if (activeContent.columns[selectedColumn - 1].rows.length > 1) return true;
+    else if (activeContent.columns[selectedColumn - 1].rows[0].content === null)
+      return false;
+    return true;
+  };
+
   const onHandleSettingsExit = () => dispatch(setSelected({ selected: false }));
 
   const onHandleColumnChange = (column) => dispatch(setSelectedColumn(column));
@@ -214,92 +222,106 @@ const StructureSettings = ({
             ))}
           </div>
         </div>
-        <div className="row u-margin-top-small u-margin-bottom-none">
-          <div className="col-1-of-2">
-            <Text content="Background Color" />
-            <div className="u-margin-top-light">
-              <Paper
-                onHandleColor={(val) =>
-                  onHandleProperties(val, "columnBackground", selectedColumn)
-                }
-                properties={{
-                  color: activeContent.columns[selectedColumn - 1].background,
-                  text: activeContent.columns[selectedColumn - 1].background,
-                }}
-              />
+        {onColumnExistence() ? (
+          <div>
+            <div className="row u-margin-top-small u-margin-bottom-none">
+              <div className="col-1-of-2">
+                <Text content="Background Color" />
+                <div className="u-margin-top-light">
+                  <Paper
+                    onHandleColor={(val) =>
+                      onHandleProperties(
+                        val,
+                        "columnBackground",
+                        selectedColumn
+                      )
+                    }
+                    properties={{
+                      color:
+                        activeContent.columns[selectedColumn - 1].background,
+                      text:
+                        activeContent.columns[selectedColumn - 1].background,
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="col-1-of-2">
+                <div>
+                  <Text content="Border Radius" />
+                </div>
+                <div className="u-margin-top-light">
+                  <Knob
+                    onHandleClick={(val) =>
+                      onHandleProperties(val, "columnRadius", selectedColumn)
+                    }
+                    content={
+                      activeContent.columns[selectedColumn - 1].borderRadius
+                    }
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="col-1-of-2">
+            <HorizontalRule />
+            <MarginSet
+              {...activeContent.columns[selectedColumn - 1]}
+              onHandleMarginSet={(val, prop) =>
+                onHandleProperties(val, `column-margin-${prop}`, selectedColumn)
+              }
+            />
+            <div className="row u-margin-bottom-none u-margin-top-small">
+              <div className="col-1-of-3">&nbsp;</div>
+              <div className="col-2-of-3">
+                <div className="u-display-flex-between">
+                  <Text content="Independent borders" />
+                  <Slider />
+                </div>
+              </div>
+            </div>
             <div>
-              <Text content="Border Radius" />
-            </div>
-            <div className="u-margin-top-light">
-              <Knob
-                onHandleClick={(val) =>
-                  onHandleProperties(val, "columnRadius", selectedColumn)
-                }
-                content={activeContent.columns[selectedColumn - 1].borderRadius}
-              />
+              {BORDER_TYPES.map((border, idx) => (
+                <div key={idx}>
+                  <Text
+                    className="u-margin-top-light"
+                    content={border
+                      .split("-")
+                      .map((b) => textCapitalize(b))
+                      .join(" ")}
+                  />
+                  <Paper
+                    onHandleColor={(val) =>
+                      onHandleBorder(
+                        val,
+                        "color",
+                        border.split("-")[border.split.length - 1]
+                      )
+                    }
+                    onHandleBorderChange={(val) =>
+                      onHandleBorder(
+                        val,
+                        "type",
+                        border.split("-")[border.split.length - 1]
+                      )
+                    }
+                    properties={{
+                      color: activeContent.columns[selectedColumn - 1][
+                        camelCase(border)
+                      ].split(" ")[2],
+                      text: activeContent.columns[selectedColumn - 1][
+                        camelCase(border)
+                      ].split(" ")[2],
+                      border:
+                        activeContent.columns[selectedColumn - 1][
+                          camelCase(border)
+                        ],
+                    }}
+                  />
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-        <HorizontalRule />
-        <MarginSet
-          {...activeContent.columns[selectedColumn - 1]}
-          onHandleMarginSet={(val, prop) =>
-            onHandleProperties(val, `column-margin-${prop}`, selectedColumn)
-          }
-        />
-        <div className="row u-margin-bottom-none u-margin-top-small">
-          <div className="col-1-of-3">&nbsp;</div>
-          <div className="col-2-of-3">
-            <div className="u-display-flex-between">
-              <Text content="Independent borders" />
-              <Slider />
-            </div>
-          </div>
-        </div>
-        <div>
-          {BORDER_TYPES.map((border, idx) => (
-            <div key={idx}>
-              <Text
-                className="u-margin-top-light"
-                content={border
-                  .split("-")
-                  .map((b) => textCapitalize(b))
-                  .join(" ")}
-              />
-              <Paper
-                onHandleColor={(val) =>
-                  onHandleBorder(
-                    val,
-                    "color",
-                    border.split("-")[border.split.length - 1]
-                  )
-                }
-                onHandleBorderChange={(val) =>
-                  onHandleBorder(
-                    val,
-                    "type",
-                    border.split("-")[border.split.length - 1]
-                  )
-                }
-                properties={{
-                  color: activeContent.columns[selectedColumn - 1][
-                    camelCase(border)
-                  ].split(" ")[2],
-                  text: activeContent.columns[selectedColumn - 1][
-                    camelCase(border)
-                  ].split(" ")[2],
-                  border:
-                    activeContent.columns[selectedColumn - 1][
-                      camelCase(border)
-                    ],
-                }}
-              />
-            </div>
-          ))}
-        </div>
+        ) : (
+          <Text content="No Contect Block was added for given column." />
+        )}
       </div>
     </div>
   );
