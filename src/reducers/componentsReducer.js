@@ -118,7 +118,7 @@ const componentsReducer = (
       var width = 100 / (columns.length + 1);
       columns = [
         ...columns.map((column) => ({ ...column, width })),
-        { ...INITIAL_DRAFT_COLUMN[0], width },
+        { ...JSON.parse(JSON.stringify(INITIAL_DRAFT_COLUMN[0])), width },
       ];
       existingContents[activeContentIndex].columns = columns;
       return { ...state, contents: existingContents };
