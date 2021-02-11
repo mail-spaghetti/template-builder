@@ -64,7 +64,7 @@ const StructureSettings = ({
       `border${textCapitalize(prop)}`
     ].split(" ");
     if (type === "color") border.splice(2, 1, val);
-    else if (type === "type") borderArr.splice(1, 1, val);
+    else if (type === "type") border.splice(1, 1, val);
     dispatch(
       funcMap[`column-border-${prop}`](border.join(" "), selectedColumn)
     );
@@ -277,6 +277,13 @@ const StructureSettings = ({
                     border.split("-")[border.split.length - 1]
                   )
                 }
+                onHandleBorderChange={(val) =>
+                  onHandleBorder(
+                    val,
+                    "type",
+                    border.split("-")[border.split.length - 1]
+                  )
+                }
                 properties={{
                   color: activeContent.columns[selectedColumn - 1][
                     camelCase(border)
@@ -285,11 +292,8 @@ const StructureSettings = ({
                     camelCase(border)
                   ].split(" ")[2],
                   border:
-                    structure[
-                      border
-                        .split("-")
-                        .map((b, idx) => (idx > 0 ? textCapitalize(b) : b))
-                        .join("")
+                    activeContent.columns[selectedColumn - 1][
+                      camelCase(border)
                     ],
                 }}
               />
