@@ -270,7 +270,7 @@ export const changeColumnRadius = ({ radius, index }) => ({
 });
 
 export const changeColumnBorderTop = ({ value, index }) => ({
-  type: "SET_STRUCTURE_BORDER_TOP",
+  type: "SET_COLUMN_BORDER_TOP",
   payload: {
     value,
     index,
@@ -278,7 +278,7 @@ export const changeColumnBorderTop = ({ value, index }) => ({
 });
 
 export const changeColumnBorderBottom = ({ value, index }) => ({
-  type: "SET_STRUCTURE_BORDER_BOTTOM",
+  type: "SET_COLUMN_BORDER_BOTTOM",
   payload: {
     value,
     index,
@@ -286,7 +286,7 @@ export const changeColumnBorderBottom = ({ value, index }) => ({
 });
 
 export const changeColumnBorderRight = ({ value, index }) => ({
-  type: "SET_STRUCTURE_BORDER_RIGHT",
+  type: "SET_COLUMN_BORDER_RIGHT",
   payload: {
     value,
     index,
@@ -294,7 +294,7 @@ export const changeColumnBorderRight = ({ value, index }) => ({
 });
 
 export const changeColumnBorderLeft = ({ value, index }) => ({
-  type: "SET_STRUCTURE_BORDER_LEFT",
+  type: "SET_COLUMN_BORDER_LEFT",
   payload: {
     value,
     index,

@@ -18,7 +18,7 @@ import MarginSet from "../../../../common/components/organisms/MarginSet";
 import LeftArrow from "../../../../utils/icons/LeftArrow";
 
 import { BORDER_TYPES, COLUMN_TYPES, IMAGE_WARNING } from "../../data";
-import { funcMap, textCapitalize } from "../../data/helper";
+import { camelCase, funcMap, textCapitalize } from "../../data/helper";
 
 const StructureSettings = ({
   type,
@@ -58,6 +58,17 @@ const StructureSettings = ({
 
   const onHandleProperties = (value, prop, index = 0) =>
     dispatch(funcMap[prop](value, index));
+
+  const onHandleBorder = (val, type, prop) => {
+    let border = activeContent.columns[selectedColumn - 1][
+      `border${textCapitalize(prop)}`
+    ].split(" ");
+    if (type === "color") border.splice(2, 1, val);
+    else if (type === "type") borderArr.splice(1, 1, val);
+    dispatch(
+      funcMap[`column-border-${prop}`](border.join(" "), selectedColumn)
+    );
+  };
 
   return (
     <div className="settings">
@@ -163,26 +174,9 @@ const StructureSettings = ({
                     onHandleProperties(val, "struct-" + border, 1)
                   }
                   properties={{
-                    color: activeContent[
-                      border
-                        .split("-")
-                        .map((b, idx) => (idx > 0 ? textCapitalize(b) : b))
-                        .join("")
-                    ].split(" ")[2],
-
-                    text: activeContent[
-                      border
-                        .split("-")
-                        .map((b, idx) => (idx > 0 ? textCapitalize(b) : b))
-                        .join("")
-                    ].split(" ")[2],
-                    border:
-                      activeContent[
-                        border
-                          .split("-")
-                          .map((b, idx) => (idx > 0 ? textCapitalize(b) : b))
-                          .join("")
-                      ],
+                    color: activeContent[camelCase(border)].split(" ")[2],
+                    text: activeContent[camelCase(border)].split(" ")[2],
+                    border: activeContent[camelCase(border)],
                   }}
                 />
               </div>
@@ -276,9 +270,20 @@ const StructureSettings = ({
                   .join(" ")}
               />
               <Paper
+                onHandleColor={(val) =>
+                  onHandleBorder(
+                    val,
+                    "color",
+                    border.split("-")[border.split.length - 1]
+                  )
+                }
                 properties={{
-                  color: structure.backgroundColor,
-                  text: structure.backgroundColor,
+                  color: activeContent.columns[selectedColumn - 1][
+                    camelCase(border)
+                  ].split(" ")[2],
+                  text: activeContent.columns[selectedColumn - 1][
+                    camelCase(border)
+                  ].split(" ")[2],
                   border:
                     structure[
                       border

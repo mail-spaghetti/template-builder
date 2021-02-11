@@ -334,6 +334,26 @@ const componentsReducer = (
         payload.index - 1
       ].marginRight += payload.value;
       return { ...state, contents: existingContents };
+    case "SET_COLUMN_BORDER_TOP":
+      existingContents[activeContentIndex].columns[
+        payload.index - 1
+      ].borderTop = payload.value;
+      return { ...state, contents: existingContents };
+    case "SET_COLUMN_BORDER_BOTTOM":
+      existingContents[activeContentIndex].columns[
+        payload.index - 1
+      ].borderBottom = payload.value;
+      return { ...state, contents: existingContents };
+    case "SET_COLUMN_BORDER_LEFT":
+      existingContents[activeContentIndex].columns[
+        payload.index - 1
+      ].borderLeft = payload.value;
+      return { ...state, contents: existingContents };
+    case "SET_COLUMN_BORDER_RIGHT":
+      existingContents[activeContentIndex].columns[
+        payload.index - 1
+      ].borderRight = payload.value;
+      return { ...state, contents: existingContents };
     default:
       return state;
   }

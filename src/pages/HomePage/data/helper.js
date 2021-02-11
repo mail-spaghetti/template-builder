@@ -52,10 +52,10 @@ export const funcMap = {
   "column-margin-bottom": (value, index) => changeMarginBottom({ value, index }),
   "column-margin-left": (value, index) => changeMarginLeft({ value, index }),
   "column-margin-right": (value, index) => changeMarginRight({ value, index }),
-  "column-border-top": (value) => changeColumnBorderTop({ value }),
-  "column-border-bottom": (value) => changeColumnBorderBottom({ value }),
-  "column-border-right": (value) => changeColumnBorderRight({ value }),
-  "column-border-left": (value) => changeColumnBorderLeft({ value }),
+  "column-border-top": (value, index) => changeColumnBorderTop({ value, index }),
+  "column-border-bottom": (value, index) => changeColumnBorderBottom({ value, index }),
+  "column-border-right": (value, index) => changeColumnBorderRight({ value, index }),
+  "column-border-left": (value, index) => changeColumnBorderLeft({ value, index }),
 };
 
 export const getDefaultLeafValue = () => ({
@@ -64,3 +64,5 @@ export const getDefaultLeafValue = () => ({
 });
 
 export const textCapitalize = (text) => text[0].toUpperCase() + text.substring(1).toLowerCase(); 
+
+export const camelCase = (text) => text.split("-").map((b, idx) => (idx > 0 ? textCapitalize(b) : b)).join("")

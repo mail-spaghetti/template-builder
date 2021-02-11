@@ -21,7 +21,6 @@ const DividerSettings = ({ type, component, dispatch }) => {
   ].value.properties;
   const onHandleBorder = (val, type, prop) => {
     let borderArr = borderTop.split(" ");
-    console.log(borderArr, prop);
     if (type === "color") borderArr.splice(2, 1, val);
     else if (type === "type") borderArr.splice(1, 1, val);
     dispatch(funcMap[prop](borderArr.join(" ")));

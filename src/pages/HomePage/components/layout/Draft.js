@@ -450,6 +450,10 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
                             style={{
                               overflow: "hidden",
                               background: content.background,
+                              borderTop: content.borderTop,
+                              borderBottom: content.borderBottom,
+                              borderLeft: content.borderLeft,
+                              borderRight: content.borderRight,
                               borderRadius: content.borderRadius,
                               paddingTop: content.marginTop,
                               paddingBottom: content.marginBottom,
