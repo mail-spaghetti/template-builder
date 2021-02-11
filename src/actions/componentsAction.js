@@ -1,67 +1,12 @@
-export const setActiveContent = ({ activeContent = 1 }) => ({
-  type: "SET_ACTIVE_CONTENT",
-  activeContent,
-});
-
-export const setInactiveContent = () => ({
-  type: "SET_INACTIVE_CONTENT",
-});
-
-export const setHoverContent = ({ index }) => ({
-  type: "SET_HOVER_CONTENT",
-  payload: index,
-});
-
-export const setHoverSubcontent = ({ rowIndex, columnIndex }) => ({
-  type: "SET_HOVER_SUBCONTENT",
-  payload: {
-    rowIndex,
-    columnIndex,
-  },
-});
-
-export const unsetHoverContent = () => ({
-  type: "UNSET_HOVER_CONTENT",
-});
-
-export const unsetHoverSubcontent = () => ({
-  type: "UNSET_HOVER_SUBCONTENT",
-});
-
-export const setActive = ({ activeContent = 1 }) => (dispatch) => {
-  dispatch(setInactiveContent());
-  dispatch(setActiveContent({ activeContent }));
-};
-
-export const setActiveSubContent = ({ activeSubcontent = 1 }) => ({
-  type: "SET_ACTIVE_SUBCONTENT",
-  activeSubcontent,
-});
-
-export const setActiveRow = (row, column) => ({
-  type: "SET_ROW",
-  payload: {
-    row,
-    column,
-  },
-});
-
-export const setActivateRow = (index, row, column) => (dispatch) => {
-  dispatch(setRowsInactive());
-  dispatch(setRowActive(index, column, row));
-};
-
-export const setRowsInactive = () => ({
-  type: "SET_ROWS_INACTIVE",
-});
-
-export const setRowActive = (index, column, row) => ({
-  type: "SET_ACTIVE_ROW",
-  payload: {
-    index,
-    column,
-    row,
-  },
+export const setCurrentActiveBlock = ({
+  contentIndex,
+  columnIndex,
+  rowIndex,
+}) => ({
+  type: "SET_CURRENT_ACTIVE_BLOCK",
+  contentIndex,
+  columnIndex,
+  rowIndex,
 });
 
 export const addContent = (content) => {
@@ -104,7 +49,6 @@ export const updateContent = (content, index, row, column) => ({
 export const insertItem = (position, content, index, row, column) => (
   dispatch
 ) => {
-  dispatch(setRowsInactive());
   switch (position) {
     case "above":
       dispatch(insertContentAbove(content, index, row, column));
@@ -239,4 +183,120 @@ export const setURL = (value, block, prop) => ({
   payload: value,
   block,
   prop,
+});
+
+export const changeStructurePadding = ({ value = 1 }) => ({
+  type: "SET_STRUCTURE_PADDING",
+  payload: value,
+});
+
+export const changeStructureBackground = ({ background }) => ({
+  type: "SET_STRUCTURE_BACKGROUND",
+  payload: background,
+});
+
+export const changeStructBorderTop = ({ value, index }) => ({
+  type: "SET_STRUCTURE_BORDER_TOP",
+  payload: {
+    value,
+    index,
+  },
+});
+
+export const changeStructBorderBottom = ({ value, index }) => ({
+  type: "SET_STRUCTURE_BORDER_BOTTOM",
+  payload: {
+    value,
+    index,
+  },
+});
+
+export const changeStructBorderRight = ({ value, index }) => ({
+  type: "SET_STRUCTURE_BORDER_RIGHT",
+  payload: {
+    value,
+    index,
+  },
+});
+
+export const changeStructBorderLeft = ({ value, index }) => ({
+  type: "SET_STRUCTURE_BORDER_LEFT",
+  payload: {
+    value,
+    index,
+  },
+});
+
+export const changeMarginTop = ({ value, index }) => ({
+  type: "SET_COLUMN_MARGIN_TOP",
+  payload: {
+    value,
+    index,
+  },
+});
+
+export const changeMarginBottom = ({ value, index }) => ({
+  type: "SET_COLUMN_MARGIN_BOTTOM",
+  payload: {
+    value,
+    index,
+  },
+});
+
+export const changeMarginLeft = ({ value, index }) => ({
+  type: "SET_COLUMN_MARGIN_LEFT",
+  payload: {
+    value,
+    index,
+  },
+});
+
+export const changeMarginRight = ({ value, index }) => ({
+  type: "SET_COLUMN_MARGIN_RIGHT",
+  payload: {
+    value,
+    index,
+  },
+});
+
+export const changeColumnBackground = ({ background, index }) => ({
+  type: "SET_COLUMN_BACKGROUND",
+  payload: { index, background },
+});
+
+export const changeColumnRadius = ({ radius, index }) => ({
+  type: "SET_COLUMN_RADIUS",
+  payload: { radius, index },
+});
+
+export const changeColumnBorderTop = ({ value, index }) => ({
+  type: "SET_COLUMN_BORDER_TOP",
+  payload: {
+    value,
+    index,
+  },
+});
+
+export const changeColumnBorderBottom = ({ value, index }) => ({
+  type: "SET_COLUMN_BORDER_BOTTOM",
+  payload: {
+    value,
+    index,
+  },
+});
+
+export const changeColumnBorderRight = ({ value, index }) => ({
+  type: "SET_COLUMN_BORDER_RIGHT",
+  payload: {
+    value,
+    index,
+  },
+});
+
+export const changeColumnBorderLeft = ({ value, index }) => ({
+  type: "SET_COLUMN_BORDER_LEFT",
+  payload: {
+    value,
+    index,
+  },
 });

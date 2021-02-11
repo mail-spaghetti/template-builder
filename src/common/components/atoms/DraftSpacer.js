@@ -5,7 +5,7 @@ const DraftSpacer = ({ content }) => {
     height: content.properties.height,
     background: content.properties.background,
   };
-  return <div style={inlineStyle}>&nbsp;</div>;
+  return <div id="block" style={inlineStyle}>&nbsp;</div>;
 };
 
 export default DraftSpacer;

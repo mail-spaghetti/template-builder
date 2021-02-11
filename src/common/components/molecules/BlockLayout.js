@@ -1,15 +1,15 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 const BlockLayout = (_ref, onHandleChange, content) => {
   return (
-    <div>
+    <Fragment>
       {
-        <div>
+        <div id="block">
           {require(`../atoms/${_ref}.js`).default({ onHandleChange, content })}
         </div>
       }
-    </div>
-  )
-}
+    </Fragment>
+  );
+};
 
-export default BlockLayout
+export default BlockLayout;

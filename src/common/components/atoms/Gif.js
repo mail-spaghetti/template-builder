@@ -11,6 +11,7 @@ const Gif = ({ onHandleChange, content }) => {
   };
   return (
     <div
+      id="block"
       className={`${!content.content ? "draft__gif" : null}`}
       onDragOver={(e) => e.preventDefault()}
       onDrop={(e) => onHandleChange(e, "GIF")}

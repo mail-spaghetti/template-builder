@@ -15,14 +15,18 @@
     }
 
     &--white {
-      background: $color-white;
+      background: transparent;
       border: 1px solid transparent;
+    }
+
+    &--active {
+      border: 1px solid $color-green;
+      outline: 0.5rem solid lighten($color-green, 60%);
+      outline-offset: -0.6rem;
     }
 
     &--green {
       border: 1px solid $color-green;
-      outline: 0.5rem solid rgba($color-green, 0.4);
-      outline-offset: -0.5rem;
       position: relative;
     }
 
@@ -83,12 +87,13 @@
     border: 1px solid transparent;
     &--active {
       border: 1px solid #d54d42;
-      outline: 0.5rem solid lighten(#d54d42, 20%);
-      outline-offset: -0.5rem;
+      outline: 0.5rem solid lighten(#d54d42, 40%);
+      outline-offset: -0.6rem;
     }
 
     &--hover {
-      border: 1px solid #d54d42;
+      border: 1px solid #d54d42!important;
+      z-index: 1;
     }
   }
 

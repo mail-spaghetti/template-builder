@@ -11,18 +11,14 @@ import MarginSet from "../../../../common/components/organisms/MarginSet";
 import { funcMap } from "../../data/helper";
 
 const GifSettings = ({ type, component, dispatch }) => {
+  const { contentIndex, columnIndex, rowIndex } = component.currentActiveBlock;
   const { gif: gifSettings } = component;
-  const {
-      mobile,
-      desktop,
-      ...marginSettings
-    } = component?.contents[0]?.columns[component.activeRow.columnIndex]?.rows[
-      component.activeRow.rowIndex
-    ].value.properties,
+  const { mobile, desktop, ...marginSettings } = component?.contents[
+      contentIndex
+    ]?.columns[columnIndex]?.rows[rowIndex].value.properties,
     gifURL =
-      component?.contents[0]?.columns[component.activeRow.columnIndex]?.rows[
-        component.activeRow.rowIndex
-      ].value.content,
+      component?.contents[contentIndex]?.columns[columnIndex]?.rows[rowIndex]
+        .value.content,
     block = type.toLowerCase();
 
   const onHandleMarginSet = (value, position) =>

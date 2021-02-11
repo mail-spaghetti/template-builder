@@ -17,7 +17,6 @@ const Structure = ({ dispatch, selected, type }) => {
         {row.map((struct, idx) => (
           <div
             className="a-col-1-of-2"
-            onClick={onHandleStructSelection}
             key={`${index}-${idx}`}
           >
             <Structs struct={struct} />
@@ -27,11 +26,7 @@ const Structure = ({ dispatch, selected, type }) => {
     ));
     return structs;
   };
-
-  const onHandleStructSelection = () => {
-    dispatch(setSelected({ selected: true }));
-    dispatch(setType({ type: "Structure" }));
-  };
+  
   return (
     <Fragment>
       <div>

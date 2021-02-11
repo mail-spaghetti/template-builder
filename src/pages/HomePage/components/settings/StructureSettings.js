@@ -1,8 +1,8 @@
 import React from "react";
+import { changeStructurePadding, modifyColumns } from "../../../../actions/componentsAction";
 
 import { setSelected } from "../../../../actions/optionsAction";
 import {
-  changePadding,
   modifyColumnStructure,
   setIndependentBorder,
   setMobileStack,
@@ -14,25 +14,46 @@ import Text from "../../../../common/components/atoms/Text";
 import Paper from "../../../../common/components/molecules/Paper";
 import Slider from "../../../../common/components/molecules/Slider";
 import Knob from "../../../../common/components/organisms/Knob";
+import MarginSet from "../../../../common/components/organisms/MarginSet";
 import LeftArrow from "../../../../utils/icons/LeftArrow";
 
 import { BORDER_TYPES, COLUMN_TYPES, IMAGE_WARNING } from "../../data";
+import { camelCase, funcMap, textCapitalize } from "../../data/helper";
 
-const StructureSettings = ({ type, structure, settings, dispatch }) => {
+const StructureSettings = ({
+  type,
+  component,
+  structure,
+  settings,
+  dispatch,
+}) => {
+  const selectedColumn = structure.selectedColumn;
+  const contentIndex = component.currentActiveBlock.contentIndex;
+  const activeContent = component.contents[contentIndex];
+
+  const onColumnExistence = () => {
+    if (activeContent.columns[selectedColumn - 1].rows.length > 1) return true;
+    else if (activeContent.columns[selectedColumn - 1].rows[0].content === null)
+      return false;
+    return true;
+  };
+
   const onHandleSettingsExit = () => dispatch(setSelected({ selected: false }));
 
   const onHandleColumnChange = (column) => dispatch(setSelectedColumn(column));
 
   const onChangeColumn = (status) => {
-    if (structure.columns > 1 && structure.columns < 4)
-      dispatch(modifyColumnStructure(status));
-    else if (structure.columns === 4 && status === -1)
-      dispatch(modifyColumnStructure(status));
-    else if (structure.columns === 1 && status === 1)
-      dispatch(modifyColumnStructure(status));
+    let columnLength = activeContent.columns.length;
+    if (columnLength > 1 && columnLength < 4)
+      dispatch(modifyColumns(status));
+    else if (columnLength === 4 && status === -1)
+      dispatch(modifyColumns(status));
+    else if (columnLength === 1 && status === 1)
+      dispatch(modifyColumns(status));
   };
 
-  const onChangeVerticalPadding = (status) => dispatch(changePadding(status));
+  const onChangeVerticalPadding = (status) =>
+    dispatch(changeStructurePadding({ value: status }));
 
   const onSliderChange = (type) => {
     switch (type) {
@@ -42,6 +63,20 @@ const StructureSettings = ({ type, structure, settings, dispatch }) => {
       case "STACK":
         dispatch(setMobileStack());
     }
+  };
+
+  const onHandleProperties = (value, prop, index = 0) =>
+    dispatch(funcMap[prop](value, index));
+
+  const onHandleBorder = (val, type, prop) => {
+    let border = activeContent.columns[selectedColumn - 1][
+      `border${textCapitalize(prop)}`
+    ].split(" ");
+    if (type === "color") border.splice(2, 1, val);
+    else if (type === "type") border.splice(1, 1, val);
+    dispatch(
+      funcMap[`column-border-${prop}`](border.join(" "), selectedColumn)
+    );
   };
 
   return (
@@ -61,7 +96,10 @@ const StructureSettings = ({ type, structure, settings, dispatch }) => {
         <div>
           <Text content="Columns" />
           <div className="u-margin-top-light">
-            <Knob onHandleClick={onChangeColumn} content={structure.columns} />
+            <Knob
+              onHandleClick={onChangeColumn}
+              content={activeContent.columns.length}
+            />
           </div>
         </div>
         <div className="u-margin-top-small">
@@ -73,7 +111,7 @@ const StructureSettings = ({ type, structure, settings, dispatch }) => {
               <div className="u-margin-top-light">
                 <Knob
                   onHandleClick={onChangeVerticalPadding}
-                  content={`${structure.verticalPadding}px`}
+                  content={`${activeContent.verticalPadding}px`}
                 />
               </div>
             </div>
@@ -83,9 +121,12 @@ const StructureSettings = ({ type, structure, settings, dispatch }) => {
               </div>
               <div className="u-margin-top-light">
                 <Paper
+                  onHandleColor={(val) =>
+                    onHandleProperties(val, "structBackground", selectedColumn)
+                  }
                   properties={{
-                    color: structure.backgroundColor,
-                    text: structure.backgroundColor,
+                    color: activeContent.background,
+                    text: activeContent.background,
                   }}
                 />
               </div>
@@ -124,34 +165,32 @@ const StructureSettings = ({ type, structure, settings, dispatch }) => {
           </div>
         </div>
         <div>
-          {BORDER_TYPES.map((border, idx) => (
-            <div key={idx}>
-              <Text
-                className="u-margin-top-light"
-                content={border
-                  .split("-")
-                  .map((b) => b[0].toUpperCase() + b.substring(1))
-                  .join(" ")}
-              />
-              <Paper
-                properties={{
-                  color: structure.backgroundColor,
-                  text: structure.backgroundColor,
-                  border:
-                    structure[
-                      border
-                        .split("-")
-                        .map((b, idx) => {
-                          return idx > 0
-                            ? b[0].toUpperCase() + b.substring(1)
-                            : b;
-                        })
-                        .join("")
-                    ],
-                }}
-              />
-            </div>
-          ))}
+          {BORDER_TYPES.map((border, idx) => {
+            return (
+              <div key={idx}>
+                <Text
+                  className="u-margin-top-light"
+                  content={border
+                    .split("-")
+                    .map((b) => textCapitalize(b))
+                    .join(" ")}
+                />
+                <Paper
+                  onHandleColor={(val) =>
+                    onHandleProperties(val, "struct-" + border, 2)
+                  }
+                  onHandleBorderChange={(val) =>
+                    onHandleProperties(val, "struct-" + border, 1)
+                  }
+                  properties={{
+                    color: activeContent[camelCase(border)].split(" ")[2],
+                    text: activeContent[camelCase(border)].split(" ")[2],
+                    border: activeContent[camelCase(border)],
+                  }}
+                />
+              </div>
+            );
+          })}
         </div>
         <HorizontalRule />
         <div>
@@ -165,14 +204,15 @@ const StructureSettings = ({ type, structure, settings, dispatch }) => {
           />
         </div>
         <HorizontalRule />
+        {/* Looping through active columns */}
         <div>
           <Text className="settings__heading" content="Column's properties" />
           <div className="settings__types u-margin-top-small">
-            {COLUMN_TYPES.map((type, idx) => (
+            {activeContent.columns.map((type, idx) => (
               <span key={idx}>
                 <Button
                   onHandleClick={() => onHandleColumnChange(idx + 1)}
-                  text={type}
+                  text={`Column ${idx + 1}`}
                   variant={`${
                     structure.selectedColumn === idx + 1
                       ? "tertiary"
@@ -183,109 +223,106 @@ const StructureSettings = ({ type, structure, settings, dispatch }) => {
             ))}
           </div>
         </div>
-        <div className="row u-margin-top-small u-margin-bottom-none">
-          <div className="col-1-of-2">
+        {onColumnExistence() ? (
+          <div>
+            <div className="row u-margin-top-small u-margin-bottom-none">
+              <div className="col-1-of-2">
+                <Text content="Background Color" />
+                <div className="u-margin-top-light">
+                  <Paper
+                    onHandleColor={(val) =>
+                      onHandleProperties(
+                        val,
+                        "columnBackground",
+                        selectedColumn
+                      )
+                    }
+                    properties={{
+                      color:
+                        activeContent.columns[selectedColumn - 1].background,
+                      text:
+                        activeContent.columns[selectedColumn - 1].background,
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="col-1-of-2">
+                <div>
+                  <Text content="Border Radius" />
+                </div>
+                <div className="u-margin-top-light">
+                  <Knob
+                    onHandleClick={(val) =>
+                      onHandleProperties(val, "columnRadius", selectedColumn)
+                    }
+                    content={
+                      activeContent.columns[selectedColumn - 1].borderRadius
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+            <HorizontalRule />
+            <MarginSet
+              {...activeContent.columns[selectedColumn - 1]}
+              onHandleMarginSet={(val, prop) =>
+                onHandleProperties(val, `column-margin-${prop}`, selectedColumn)
+              }
+            />
+            <div className="row u-margin-bottom-none u-margin-top-small">
+              <div className="col-1-of-3">&nbsp;</div>
+              <div className="col-2-of-3">
+                <div className="u-display-flex-between">
+                  <Text content="Independent borders" />
+                  <Slider />
+                </div>
+              </div>
+            </div>
             <div>
-              <Text content="Background Color" />
-            </div>
-            <div className="u-margin-top-light">
-              <Paper
-                properties={{
-                  color: structure.backgroundColor,
-                  text: structure.backgroundColor,
-                }}
-              />
-            </div>
-          </div>
-          <div className="col-1-of-2">
-            <div>
-              <Text content="Border Radius" />
-            </div>
-            <div className="u-margin-top-light">
-              <Knob />
-            </div>
-          </div>
-        </div>
-        <HorizontalRule />
-        <div className="row u-margin-bottom-none">
-          <div className="col-1-of-2">
-            <div>
-              <Text content="Margin Top" />
-            </div>
-            <div className="u-margin-top-light">
-              <Knob />
-            </div>
-          </div>
-          <div className="col-1-of-2">
-            <div>
-              <Text content="Margin Bottom" />
-            </div>
-            <div className="u-margin-top-light">
-              <Knob />
-            </div>
-          </div>
-        </div>
-        <div className="row u-margin-bottom-none u-margin-top-light">
-          <div className="col-1-of-2">
-            <div>
-              <Text content="Margin Top" />
-            </div>
-            <div className="u-margin-top-light">
-              <Knob />
+              {BORDER_TYPES.map((border, idx) => (
+                <div key={idx}>
+                  <Text
+                    className="u-margin-top-light"
+                    content={border
+                      .split("-")
+                      .map((b) => textCapitalize(b))
+                      .join(" ")}
+                  />
+                  <Paper
+                    onHandleColor={(val) =>
+                      onHandleBorder(
+                        val,
+                        "color",
+                        border.split("-")[border.split.length - 1]
+                      )
+                    }
+                    onHandleBorderChange={(val) =>
+                      onHandleBorder(
+                        val,
+                        "type",
+                        border.split("-")[border.split.length - 1]
+                      )
+                    }
+                    properties={{
+                      color: activeContent.columns[selectedColumn - 1][
+                        camelCase(border)
+                      ].split(" ")[2],
+                      text: activeContent.columns[selectedColumn - 1][
+                        camelCase(border)
+                      ].split(" ")[2],
+                      border:
+                        activeContent.columns[selectedColumn - 1][
+                          camelCase(border)
+                        ],
+                    }}
+                  />
+                </div>
+              ))}
             </div>
           </div>
-          <div className="col-1-of-2">
-            <div>
-              <Text content="Margin Bottom" />
-            </div>
-            <div className="u-margin-top-light">
-              <Knob />
-            </div>
-          </div>
-        </div>
-        <div className="row u-margin-bottom-none u-margin-top-light">
-          <div className="col-1-of-3">&nbsp;</div>
-          <div className="col-2-of-3">
-            <div className="u-display-flex-between">
-              <span>
-                <Text content="Independent borders" />
-              </span>
-              <span>
-                <Slider />
-              </span>
-            </div>
-          </div>
-        </div>
-        <div>
-          {BORDER_TYPES.map((border, idx) => (
-            <div key={idx}>
-              <Text
-                className="u-margin-top-light"
-                content={border
-                  .split("-")
-                  .map((b) => b[0].toUpperCase() + b.substring(1))
-                  .join(" ")}
-              />
-              <Paper
-                properties={{
-                  color: structure.backgroundColor,
-                  text: structure.backgroundColor,
-                  border:
-                    structure[
-                      border
-                        .split("-")
-                        .map((b, idx) => {
-                          return idx > 0
-                            ? b[0].toUpperCase() + b.substring(1)
-                            : b;
-                        })
-                        .join("")
-                    ],
-                }}
-              />
-            </div>
-          ))}
-        </div>
+        ) : (
+          <Text content="No Contect Block was added for given column." />
+        )}
       </div>
     </div>
   );
