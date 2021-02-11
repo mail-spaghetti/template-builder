@@ -1,5 +1,6 @@
 import {
   COMPONENT_INITIAL_STATE,
+  INITIAL_DRAFT_COLUMN,
   INITIAL_DRAFT_COLUMN_STYLING,
   INITIAL_DRAFT_CONTENT,
   INITIAL_DRAFT_ROW,
@@ -113,27 +114,21 @@ const componentsReducer = (
       });
       return { ...state, contents: existingContents };
     case "INCREMENT_COLUMNS":
-      existingContents = existingContents.map((content) => {
-        if (content.active)
-          content.columns = [
-            ...content.columns,
-            {
-              rows: [
-                {
-                  active: false,
-                  content: null,
-                },
-              ],
-            },
-          ];
-        return content;
-      });
+      var columns = existingContents[activeContentIndex].columns.slice();
+      var width = 100 / (columns.length + 1);
+      columns = [
+        ...columns.map((column) => ({ ...column, width })),
+        { ...INITIAL_DRAFT_COLUMN[0], width },
+      ];
+      existingContents[activeContentIndex].columns = columns;
       return { ...state, contents: existingContents };
     case "DECREMENT_COLUMNS":
-      existingContents.map((content) => {
-        if (content.active) content.columns.pop();
-        return content;
-      });
+      var columns = existingContents[activeContentIndex].columns.slice();
+      var width = 100 / (columns.length - 1);
+      columns = columns.map((column) => ({ ...column, width }));
+      columns.pop();
+      existingContents[activeContentIndex].columns = columns;
+      return { ...state, contents: existingContents };
     case "INSERT_CONTENT_ABOVE":
       var existingColumn =
         existingContents[payload.index].columns[payload.column];

@@ -1,5 +1,5 @@
 import React from "react";
-import { changeStructurePadding } from "../../../../actions/componentsAction";
+import { changeStructurePadding, modifyColumns } from "../../../../actions/componentsAction";
 
 import { setSelected } from "../../../../actions/optionsAction";
 import {
@@ -43,12 +43,13 @@ const StructureSettings = ({
   const onHandleColumnChange = (column) => dispatch(setSelectedColumn(column));
 
   const onChangeColumn = (status) => {
-    if (structure.columns > 1 && structure.columns < 4)
-      dispatch(modifyColumnStructure(status));
-    else if (structure.columns === 4 && status === -1)
-      dispatch(modifyColumnStructure(status));
-    else if (structure.columns === 1 && status === 1)
-      dispatch(modifyColumnStructure(status));
+    let columnLength = activeContent.columns.length;
+    if (columnLength > 1 && columnLength < 4)
+      dispatch(modifyColumns(status));
+    else if (columnLength === 4 && status === -1)
+      dispatch(modifyColumns(status));
+    else if (columnLength === 1 && status === 1)
+      dispatch(modifyColumns(status));
   };
 
   const onChangeVerticalPadding = (status) =>

@@ -85,7 +85,6 @@
     display: inline-block;
     width: 100%;
     border: 1px solid transparent;
-    z-index: 100;
     &--active {
       border: 1px solid #d54d42;
       outline: 0.5rem solid lighten(#d54d42, 40%);

@@ -355,13 +355,13 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
         <div>
           {hoverElements.contentIndex === contentIndex &&
             hoverElements.rowIndex === idx &&
-            hoverElements.columnIndex === index && (
+            hoverElements.columnIndex === index ? (
               <SnapLeaflet
                 _leaflet="inner"
                 onHandleDelete={(type) => onHandleDelete(type, index, idx)}
                 onHandleCopy={(type) => onHandleCopy(type, index, idx)}
               />
-            )}
+            ): null}
           {setContent(content)}
         </div>
       </div>
@@ -448,7 +448,6 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
                           <th
                             width={`${content.width}%`}
                             style={{
-                              overflow: "hidden",
                               background: content.background,
                               borderTop: content.borderTop,
                               borderBottom: content.borderBottom,
