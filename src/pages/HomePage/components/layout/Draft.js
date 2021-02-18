@@ -237,27 +237,16 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     });
 
   const onHandleChange = async (type, contentIndex, index, idx, e) => {
-    const value = e.target.innerHTML;
-    let content = {};
+    let value = null;
     switch (type) {
-      case "GIF":
-        content = {
-          type: "GIF",
-          component: "Gif",
-          value: await toBase64(e.dataTransfer.files[0]),
-        };
+      case "IMAGE":
+        value = await toBase64(e.dataTransfer.files[0]);
         break;
-      default:
-        content = {
-          type: "Text",
-          component: "DraftText",
-          value: e.target.innerHTML,
-        };
+      case "TEXT":
+        value = e.target.innerHTML;
+        break;
     }
-    console.log('here');
-    dispatch(
-      updateContent(contentIndex, index, idx, value)
-    );
+    dispatch(updateContent(contentIndex, index, idx, value));
   };
 
   const getDropRef = (contentIndex, columnIndex, rowIndex) => {
@@ -353,14 +342,14 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
       >
         <div>
           {hoverElements.contentIndex === contentIndex &&
-            hoverElements.rowIndex === idx &&
-            hoverElements.columnIndex === index ? (
-              <SnapLeaflet
-                _leaflet="inner"
-                onHandleDelete={(type) => onHandleDelete(type, index, idx)}
-                onHandleCopy={(type) => onHandleCopy(type, index, idx)}
-              />
-            ): null}
+          hoverElements.rowIndex === idx &&
+          hoverElements.columnIndex === index ? (
+            <SnapLeaflet
+              _leaflet="inner"
+              onHandleDelete={(type) => onHandleDelete(type, index, idx)}
+              onHandleCopy={(type) => onHandleCopy(type, index, idx)}
+            />
+          ) : null}
           {setContent(content, contentIndex, index, idx)}
         </div>
       </div>
@@ -382,7 +371,13 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
           <Fragment>
             {blocklayout.default(
               content.component,
-              onHandleChange.bind(this, content.content, contentIndex, index, idx),
+              onHandleChange.bind(
+                this,
+                content.content,
+                contentIndex,
+                index,
+                idx
+              ),
               content.value
             )}
           </Fragment>
