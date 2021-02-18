@@ -175,9 +175,11 @@ const componentsReducer = (
       });
       return { ...state, contents: existingContents };
     case "UPDATE_CONTENT":
+      // console.log(payload.index, payload.column, payload.row);
+      console.log(existingContents[payload.index].columns[payload.column])
       var existingRow =
-        existingContents[payload.index].columns[payload.column].rows[
-          payload.row
+        existingContents[payload.index].columns[payload.row].rows[
+          payload.column
         ];
       existingRow.value.content = payload.content;
       return { ...state, contents: existingContents.slice() };

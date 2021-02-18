@@ -236,9 +236,8 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
       reader.onerror = (error) => reject(error);
     });
 
-  const onHandleChange = async (e, type) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const onHandleChange = async (type, contentIndex, index, idx, e) => {
+    const value = e.target.innerHTML;
     let content = {};
     switch (type) {
       case "GIF":
@@ -255,10 +254,10 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
           value: e.target.innerHTML,
         };
     }
-
-    // dispatch(
-    //   updateContent(content.value, activeSubcontent, rowIndex, columnIndex)
-    // );
+    console.log('here');
+    dispatch(
+      updateContent(contentIndex, index, idx, value)
+    );
   };
 
   const getDropRef = (contentIndex, columnIndex, rowIndex) => {
@@ -362,13 +361,13 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
                 onHandleCopy={(type) => onHandleCopy(type, index, idx)}
               />
             ): null}
-          {setContent(content)}
+          {setContent(content, contentIndex, index, idx)}
         </div>
       </div>
     );
   };
 
-  const setContent = (content) => {
+  const setContent = (content, contentIndex, index, idx) => {
     const blocklayout = require("../../../../common/components/molecules/BlockLayout");
     switch (content.content) {
       case null:
@@ -383,7 +382,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
           <Fragment>
             {blocklayout.default(
               content.component,
-              onHandleChange,
+              onHandleChange.bind(this, content.content, contentIndex, index, idx),
               content.value
             )}
           </Fragment>

@@ -36,7 +36,7 @@ export const insertContent = (content, index, row, column) => ({
   },
 });
 
-export const updateContent = (content, index, row, column) => ({
+export const updateContent = (index, row, column, content) => ({
   type: "UPDATE_CONTENT",
   payload: {
     content,
