@@ -245,8 +245,11 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
       case "TEXT":
         value = e.target.innerHTML;
         break;
+      case "BUTTON":
+        value= e.target.innerHTML;
+        break;
     }
-    dispatch(updateContent(contentIndex, index, idx, value));
+    dispatch(updateContent(value));
   };
 
   const getDropRef = (contentIndex, columnIndex, rowIndex) => {

@@ -50,7 +50,7 @@ const GifSettings = ({ type, component, dispatch }) => {
       />
       <HorizontalRule />
       <Text content="Align" className="settings__heading" />
-      <Align />
+      <Align onHandleAlignClick={onHandleMarginSet} />
       <HorizontalRule />
       <Text content="Gif Properites" className="settings__heading" />
       <Paper

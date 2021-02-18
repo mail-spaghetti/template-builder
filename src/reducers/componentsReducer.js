@@ -18,6 +18,7 @@ const defaultProperties = {
     desktop: true,
   },
   IMAGE: {
+    align: "center",
     marginTop: 15,
     marginBottom: 15,
     marginLeft: 15,
@@ -26,6 +27,7 @@ const defaultProperties = {
     desktop: true,
   },
   GIF: {
+    align: "center",
     marginTop: 15,
     marginBottom: 15,
     marginLeft: 15,
@@ -176,8 +178,8 @@ const componentsReducer = (
       return { ...state, contents: existingContents };
     case "UPDATE_CONTENT":
       var existingRow =
-        existingContents[payload.index].columns[payload.row].rows[
-          payload.column
+        existingContents[activeContentIndex].columns[activeColumnIndex].rows[
+          activeRowIndex
         ];
       existingRow.value.content = payload.content;
       return { ...state, contents: existingContents.slice() };
@@ -235,6 +237,13 @@ const componentsReducer = (
         ];
       existingRow.value.properties.marginLeft += payload;
       return { ...state, contents: existingContents };
+    case "SET_TEXT_ALIGN":
+      var existingRow =
+        existingContents[activeContentIndex].columns[activeColumnIndex].rows[
+          activeRowIndex
+        ];
+      existingRow.value.properties.align = payload;
+      return { ...state, contents: existingContents };
     case "SET_HEIGHT":
       var existingRow =
         existingContents[activeContentIndex].columns[activeColumnIndex].rows[
@@ -256,12 +265,26 @@ const componentsReducer = (
         ];
       existingRow.value.properties.background = payload;
       return { ...state, contents: existingContents };
+    case "SET_COLOR":
+      var existingRow =
+        existingContents[activeContentIndex].columns[activeColumnIndex].rows[
+          activeRowIndex
+        ];
+      existingRow.value.properties.color = payload;
+      return { ...state, contents: existingContents };
+    case "SET_RADIUS":
+      var existingRow =
+        existingContents[activeContentIndex].columns[activeColumnIndex].rows[
+          activeRowIndex
+        ];
+      existingRow.value.properties.borderRadius += payload;
+      return { ...state, contents: existingContents };
     case "SET_URL":
       var existingRow =
         existingContents[activeContentIndex].columns[activeColumnIndex].rows[
           activeRowIndex
         ];
-      existingRow.value.content = payload;
+      existingRow.value.properties.link = payload;
       return { ...state, contents: existingContents };
     case "SET_STRUCTURE_PADDING":
       existingContents[activeContentIndex].verticalPadding += payload;

@@ -5,9 +5,10 @@ import Plus from "../../../utils/icons/Plus";
 import Text from "../atoms/Text";
 
 const Knob = ({ className, content = 0, onHandleClick }) => {
-  const intervalRef = useRef(null)
+  const intervalRef = useRef(null);
   const timeDifferential = (state, count) => {
-    if (state) intervalRef.current = setInterval(() => onHandleClick(count), 100);
+    if (state)
+      intervalRef.current = setInterval(() => onHandleClick(count), 100);
     else clearInterval(intervalRef.current);
   };
 
@@ -22,8 +23,8 @@ const Knob = ({ className, content = 0, onHandleClick }) => {
         className="knob__icon knob__icon--left knob__icon--minus"
         onMouseDown={(e) => handleMouseEvent(e, true, -1)}
         onMouseUp={(e) => handleMouseEvent(e, false)}
-        onClick={()=>onHandleClick(-1)}
-        onMouseLeave={()=>clearInterval(intervalRef.current)}
+        onClick={() => onHandleClick(-1)}
+        onMouseLeave={() => clearInterval(intervalRef.current)}
       >
         <Minus />
       </div>
@@ -34,8 +35,8 @@ const Knob = ({ className, content = 0, onHandleClick }) => {
         className="knob__icon knob__icon--right knob__icon--plus"
         onMouseDown={(e) => handleMouseEvent(e, true, 1)}
         onMouseUp={(e) => handleMouseEvent(e, false)}
-        onClick={()=>onHandleClick(1)}
-        onMouseLeave={()=>clearInterval(intervalRef.current)}
+        onClick={() => onHandleClick(1)}
+        onMouseLeave={() => clearInterval(intervalRef.current)}
       >
         <Plus />
       </div>

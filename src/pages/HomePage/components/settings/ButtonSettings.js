@@ -10,22 +10,27 @@ import DisplaySlider from "../../../../common/components/organisms/DisplaySlider
 import Knob from "../../../../common/components/organisms/Knob";
 import MarginSet from "../../../../common/components/organisms/MarginSet";
 
-
-
 import { funcMap } from "../../data/helper";
 
 const ButtonSettings = ({ type, component, dispatch }) => {
+  const { contentIndex, columnIndex, rowIndex } = component.currentActiveBlock;
   const { button: buttonSettingValues } = component,
     block = type.toLowerCase();
-
+  const {
+    background,
+    color,
+    borderRadius,
+    link,
+    ...marginSettings
+  } = component?.contents[contentIndex]?.columns[columnIndex]?.rows[
+    rowIndex
+  ].value.properties;
   const onHandleMarginSet = (value, position) =>
-    dispatch(funcMap[position](value, block));
+    dispatch(funcMap[position](value));
 
   const onHandleSliderChange = (position) => dispatch(funcMap[position](block));
 
-  const onHandleInputChange = (e, prop) =>
-    dispatch(funcMap["linkInput"](e.target.value, prop, block));
-
+  const onHandleProperties = (val, prop) => dispatch(funcMap[prop](val));
   return (
     <div className="settings__scroll u-padding-light">
       <Button
@@ -36,15 +41,20 @@ const ButtonSettings = ({ type, component, dispatch }) => {
       <HorizontalRule />
       <Text content="Link" className="settings__heading" />
       <Paper
-        properties={buttonSettingValues.buttonURL}
-        onHandleInputChange={(e) => onHandleInputChange(e, "buttonURL")}
+        properties={{
+          link: {
+            icon: "Link",
+            input: link,
+          },
+        }}
+        onHandleInputChange={(val) => onHandleMarginSet(val, "linkInput")}
         className="u-padding-none"
       />
       <HorizontalRule />
       <Text content="Align" className="settings__heading" />
       <div className="row u-margin-bottom-none">
         <div className="col-2-of-3">
-          <Align />
+          <Align onHandleAlignClick={onHandleMarginSet} />
         </div>
         <div className="col-1-of-3 u-display-flex-between u-translate-y-1">
           <Text content="Full Width" />
@@ -58,9 +68,10 @@ const ButtonSettings = ({ type, component, dispatch }) => {
           <Text content="Button color" />
           <Paper
             className="u-margin-top-light"
+            onHandleColor={(val) => onHandleProperties(val, "background")}
             properties={{
-              color: "#D54D42",
-              text: "#D54D42",
+              color: background,
+              text: background,
             }}
           />
         </div>
@@ -69,25 +80,27 @@ const ButtonSettings = ({ type, component, dispatch }) => {
           <Paper
             className="u-margin-top-light"
             properties={{
-              color: "#FFFFFF",
-              text: "#FFFFFF",
+              color,
+              text: color,
             }}
+            onHandleColor={(val) => onHandleProperties(val, "color")}
           />
         </div>
       </div>
       <div className="row u-margin-bottom-none">
         <div className="col-1-of-2">
           <Text content="Border Radius" />
-          <Knob className="u-margin-top-light" />
+          <Knob
+            className="u-margin-top-light"
+            content={borderRadius}
+            onHandleClick={(val) => onHandleMarginSet(val, "radius")}
+          />
         </div>
         <div className="col-1-of-2">&nbsp;</div>
       </div>
       <HorizontalRule />
       <Text content="Margin" className="settings__heading" />
-      <MarginSet
-        {...buttonSettingValues}
-        onHandleMarginSet={onHandleMarginSet}
-      />
+      <MarginSet {...marginSettings} onHandleMarginSet={onHandleMarginSet} />
       <HorizontalRule />
       <DisplaySlider
         {...buttonSettingValues}

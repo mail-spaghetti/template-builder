@@ -8,6 +8,7 @@ const Gif = ({ onHandleChange, content }) => {
     marginRight: content?.properties.marginRight,
     marginBottom: content?.properties.marginBottom,
     marginLeft: content?.properties.marginLeft,
+    textAlign: content?.properties.align,
   };
   return (
     <div
