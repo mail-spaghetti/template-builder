@@ -136,15 +136,17 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     }),
   });
 
-  const onHandleDelete = (type, idx = null, index = null) => {
+  const onHandleDelete = (type, contentIndex, idx, index) => {
     dispatch(setSelected({ selected: false }));
     type === "inner"
-      ? dispatch(deleteColumnContent(0, index, idx))
+      ? dispatch(deleteColumnContent(contentIndex, index, idx))
       : dispatch(deleteContent(0));
   };
 
-  const onHandleCopy = (type, idx = null, index = null) =>
-    type === "inner" ? dispatch(copyRowContent(0, idx, index)) : null;
+  const onHandleCopy = (type, contentIndex, index, idx = null) =>
+    type === "inner"
+      ? dispatch(copyRowContent(contentIndex, index, idx))
+      : null;
 
   const setDragOverProps = (contentIndex, columnIndex, rowIndex) =>
     setDragPosition({ contentIndex, columnIndex, rowIndex });
@@ -219,6 +221,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     if (e.target.id === "block") {
       setActiveRowContent(contentIndex, columnIndex, rowIndex);
       dispatch(setCurrentActiveBlock({ contentIndex, columnIndex, rowIndex }));
+      dispatch(changeSelection({ selection: OPTIONS[0] }));
       dispatch(setType({ type: OPTIONS[0] }));
       dispatch(setType({ type: setTextFormat(item.content) }));
       dispatch(setSelected({ selected: true }));
@@ -246,7 +249,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
         value = e.target.innerHTML;
         break;
       case "BUTTON":
-        value= e.target.innerHTML;
+        value = e.target.innerHTML;
         break;
     }
     dispatch(updateContent(value));
@@ -261,9 +264,8 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
       return dropRef;
   };
 
-  const getStructRef = (contentIndex) => {
-    if (dragPosition.contentIndex === contentIndex) return dropStructure;
-  };
+  const getStructRef = (contentIndex) =>
+    dragPosition.contentIndex === contentIndex ? dropStructure : null;
 
   const setColumns = (column, contentIndex, index) => {
     return (
@@ -323,7 +325,8 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
         } ${
           hoverElements.contentIndex === contentIndex &&
           hoverElements.rowIndex === idx &&
-          hoverElements.columnIndex === index
+          hoverElements.columnIndex === index &&
+          content.content
             ? "draft__contents--green"
             : null
         } ${
@@ -346,11 +349,16 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
         <div>
           {activeElements.contentIndex === contentIndex &&
           activeElements.rowIndex === idx &&
-          activeElements.columnIndex === index ? (
+          activeElements.columnIndex === index &&
+          content.content ? (
             <SnapLeaflet
               _leaflet="inner"
-              onHandleDelete={(type) => onHandleDelete(type, index, idx)}
-              onHandleCopy={(type) => onHandleCopy(type, index, idx)}
+              onHandleDelete={(type) =>
+                onHandleDelete(type, contentIndex, index, idx)
+              }
+              onHandleCopy={(type) =>
+                onHandleCopy(type, contentIndex, index, idx)
+              }
             />
           ) : null}
           {setContent(content, contentIndex, index, idx)}

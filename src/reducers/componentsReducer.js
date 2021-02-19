@@ -70,6 +70,7 @@ const componentsReducer = (
   { type, payload, contentIndex, columnIndex, rowIndex }
 ) => {
   let existingContents = state.contents.slice();
+  const copyObj = (obj) => JSON.parse(JSON.stringify(obj));
   const {
     contentIndex: activeContentIndex,
     columnIndex: activeColumnIndex,
@@ -140,9 +141,7 @@ const componentsReducer = (
         component: payload.content.component,
         value: {
           content: payload.content.value,
-          properties: JSON.parse(
-            JSON.stringify(defaultProperties[payload.content.text])
-          ),
+          properties: copyObj(defaultProperties[payload.content.text]),
         },
       });
       return { ...state, contents: existingContents };
@@ -155,9 +154,7 @@ const componentsReducer = (
         component: payload.content.component,
         value: {
           content: payload.content.value,
-          properties: JSON.parse(
-            JSON.stringify(defaultProperties[payload.content.text])
-          ),
+          properties: copyObj(defaultProperties[payload.content.text]),
         },
       };
       return { ...state, contents: existingContents };
@@ -170,9 +167,7 @@ const componentsReducer = (
         component: payload.content.component,
         value: {
           content: payload.content.value,
-          properties: JSON.parse(
-            JSON.stringify(defaultProperties[payload.content.text])
-          ),
+          properties: copyObj(defaultProperties[payload.content.text]),
         },
       });
       return { ...state, contents: existingContents };
@@ -201,13 +196,11 @@ const componentsReducer = (
       existingColumn.rows.splice(
         payload.row + 1,
         0,
-        existingColumn.rows[payload.row]
+        copyObj(existingColumn.rows[payload.row])
       );
       return { ...state, contents: existingContents };
     case "DELETE_CONTENT":
-      existingContents[payload] = JSON.parse(
-        JSON.stringify(INITIAL_DRAFT_CONTENT)
-      );
+      existingContents[payload] = copyObj(INITIAL_DRAFT_CONTENT);
       return { ...state, contents: existingContents };
     case "SET_MARGIN_TOP":
       var existingRow =
