@@ -1,4 +1,5 @@
 import {
+  alignContent,
   changeColumnBackground,
   changeColumnBorderBottom,
   changeColumnBorderLeft,
@@ -16,6 +17,7 @@ import {
   changeStructureBackground,
   setBackground,
   setBorderTop,
+  setColor,
   setHeight,
   setMarginBottom,
   setMarginHorizontal,
@@ -23,9 +25,11 @@ import {
   setMarginRight,
   setMarginTop,
   setMarginVertical,
+  setRadius,
   setURL,
   showDestkop,
   showMobile,
+  updateContent,
 } from "../../../actions/componentsAction";
 
 export const funcMap = {
@@ -35,12 +39,16 @@ export const funcMap = {
   left: (value, block) => setMarginLeft(value, block),
   vertical: (value) => setMarginVertical(value),
   horizontal: (value) => setMarginHorizontal(value),
+  align: (value) => alignContent(value),
   height: (value) => setHeight(value),
   background: (value) => setBackground(value),
+  color: (value) => setColor(value),
+  radius: (value) => setRadius(value),
   borderTop: (value) => setBorderTop(value),
   mobile: (block) => showMobile({ block }),
   desktop: (block) => showDestkop({ block }),
-  linkInput: (value, prop, block) => setURL(value, block, prop),
+  linkInput: (value) => setURL(value),
+  update: (value) => updateContent(value),
   structBackground: (background) => changeStructureBackground({ background }),
   "struct-border-top": (value, index) => changeStructBorderTop({ value, index }),
   "struct-border-bottom": (value, index) => changeStructBorderBottom({ value, index }),

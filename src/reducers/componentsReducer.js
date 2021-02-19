@@ -18,6 +18,7 @@ const defaultProperties = {
     desktop: true,
   },
   IMAGE: {
+    align: "center",
     marginTop: 15,
     marginBottom: 15,
     marginLeft: 15,
@@ -26,6 +27,7 @@ const defaultProperties = {
     desktop: true,
   },
   GIF: {
+    align: "center",
     marginTop: 15,
     marginBottom: 15,
     marginLeft: 15,
@@ -68,6 +70,7 @@ const componentsReducer = (
   { type, payload, contentIndex, columnIndex, rowIndex }
 ) => {
   let existingContents = state.contents.slice();
+  const copyObj = (obj) => JSON.parse(JSON.stringify(obj));
   const {
     contentIndex: activeContentIndex,
     columnIndex: activeColumnIndex,
@@ -138,9 +141,7 @@ const componentsReducer = (
         component: payload.content.component,
         value: {
           content: payload.content.value,
-          properties: JSON.parse(
-            JSON.stringify(defaultProperties[payload.content.text])
-          ),
+          properties: copyObj(defaultProperties[payload.content.text]),
         },
       });
       return { ...state, contents: existingContents };
@@ -153,9 +154,7 @@ const componentsReducer = (
         component: payload.content.component,
         value: {
           content: payload.content.value,
-          properties: JSON.parse(
-            JSON.stringify(defaultProperties[payload.content.text])
-          ),
+          properties: copyObj(defaultProperties[payload.content.text]),
         },
       };
       return { ...state, contents: existingContents };
@@ -168,16 +167,15 @@ const componentsReducer = (
         component: payload.content.component,
         value: {
           content: payload.content.value,
-          properties: JSON.parse(
-            JSON.stringify(defaultProperties[payload.content.text])
-          ),
+          properties: copyObj(defaultProperties[payload.content.text]),
         },
       });
       return { ...state, contents: existingContents };
     case "UPDATE_CONTENT":
+      console.log(activeContentIndex, activeColumnIndex, activeRowIndex);
       var existingRow =
-        existingContents[payload.index].columns[payload.column].rows[
-          payload.row
+        existingContents[activeContentIndex].columns[activeColumnIndex].rows[
+          activeRowIndex
         ];
       existingRow.value.content = payload.content;
       return { ...state, contents: existingContents.slice() };
@@ -199,13 +197,15 @@ const componentsReducer = (
       existingColumn.rows.splice(
         payload.row + 1,
         0,
-        existingColumn.rows[payload.row]
+        copyObj(existingColumn.rows[payload.row])
       );
       return { ...state, contents: existingContents };
     case "DELETE_CONTENT":
-      existingContents[payload] = JSON.parse(
-        JSON.stringify(INITIAL_DRAFT_CONTENT)
-      );
+      const length = state.contents.length;
+      if (length > 1) existingContents.splice(payload, 1);
+      else if (length === 1) {
+        existingContents[activeContentIndex] = copyObj(INITIAL_DRAFT_CONTENT);
+      }
       return { ...state, contents: existingContents };
     case "SET_MARGIN_TOP":
       var existingRow =
@@ -235,6 +235,13 @@ const componentsReducer = (
         ];
       existingRow.value.properties.marginLeft += payload;
       return { ...state, contents: existingContents };
+    case "SET_TEXT_ALIGN":
+      var existingRow =
+        existingContents[activeContentIndex].columns[activeColumnIndex].rows[
+          activeRowIndex
+        ];
+      existingRow.value.properties.align = payload;
+      return { ...state, contents: existingContents };
     case "SET_HEIGHT":
       var existingRow =
         existingContents[activeContentIndex].columns[activeColumnIndex].rows[
@@ -256,12 +263,26 @@ const componentsReducer = (
         ];
       existingRow.value.properties.background = payload;
       return { ...state, contents: existingContents };
+    case "SET_COLOR":
+      var existingRow =
+        existingContents[activeContentIndex].columns[activeColumnIndex].rows[
+          activeRowIndex
+        ];
+      existingRow.value.properties.color = payload;
+      return { ...state, contents: existingContents };
+    case "SET_RADIUS":
+      var existingRow =
+        existingContents[activeContentIndex].columns[activeColumnIndex].rows[
+          activeRowIndex
+        ];
+      existingRow.value.properties.borderRadius += payload;
+      return { ...state, contents: existingContents };
     case "SET_URL":
       var existingRow =
         existingContents[activeContentIndex].columns[activeColumnIndex].rows[
           activeRowIndex
         ];
-      existingRow.value.content = payload;
+      existingRow.value.properties.link = payload;
       return { ...state, contents: existingContents };
     case "SET_STRUCTURE_PADDING":
       existingContents[activeContentIndex].verticalPadding += payload;

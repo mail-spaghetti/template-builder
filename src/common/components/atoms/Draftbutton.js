@@ -2,7 +2,7 @@ import React from "react";
 
 const DraftButton = ({ content = "Choose Image", onHandleChange }) => {
   const inlineStyle = {
-    display: content?.properties.fullWidth ? 'block': 'inline-block',
+    display: content?.properties.fullWidth ? "block" : "inline-block",
     marginTop: content?.properties.marginTop,
     marginRight: content?.properties.marginRight,
     marginBottom: content?.properties.marginBottom,
@@ -10,22 +10,25 @@ const DraftButton = ({ content = "Choose Image", onHandleChange }) => {
     color: content?.properties.color,
     background: content?.properties.background,
     borderRadius: content?.properties.borderRadius,
+    textAlign: content?.properties.align,
   };
 
   const link = content?.properties.link;
   return (
-    <a
-      contentEditable="true"
-      id="block"
-      suppressContentEditableWarning={true}
-      onClick={onHandleChange}
-      href={link}
-      target="_blank"
-      style={inlineStyle}
-      className="btn btn--draft"
-    >
-      {content.content}
-    </a>
+    <div style={{ textAlign: inlineStyle.textAlign }}>
+      <a
+        contentEditable="true"
+        id="block"
+        suppressContentEditableWarning={true}
+        href={link}
+        target="_blank"
+        style={{ ...inlineStyle, textAlign: "center" }}
+        className="btn btn--draft"
+        onBlur={onHandleChange}
+      >
+        {content.content || "Choose Image"}
+      </a>
+    </div>
   );
 };
 

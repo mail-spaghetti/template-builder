@@ -1,6 +1,5 @@
 import React from "react";
 import { useDrag } from "react-dnd";
-import { setSelected, setType } from "../../../../actions/optionsAction";
 
 import Card from "../../../../common/components/molecules/Cards";
 import { ITEMS } from "../../data";
@@ -16,22 +15,8 @@ const Block = ({ block, dispatch }) => {
     }),
   });
 
-  const setBlockSettings = () => {
-    dispatch(
-      setType({
-        type:
-          block.text[0].toUpperCase() + block.text.substring(1).toLowerCase(),
-      })
-    );
-    dispatch(setSelected({ selected: true }));
-  };
   return (
-    <span
-      ref={dragRef}
-      style={{ opacity }}
-      onClick={setBlockSettings}
-      className="card__blockWrapper"
-    >
+    <span ref={dragRef} style={{ opacity }} className="card__blockWrapper">
       <Card {...block} />
     </span>
   );

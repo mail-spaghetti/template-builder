@@ -36,13 +36,10 @@ export const insertContent = (content, index, row, column) => ({
   },
 });
 
-export const updateContent = (content, index, row, column) => ({
+export const updateContent = (content) => ({
   type: "UPDATE_CONTENT",
   payload: {
     content,
-    index,
-    column,
-    row,
   },
 });
 
@@ -153,6 +150,11 @@ export const setMarginLeft = (value = 1) => ({
   payload: value,
 });
 
+export const alignContent = (value) => ({
+  type: "SET_TEXT_ALIGN",
+  payload: value,
+});
+
 export const setHeight = (value = 1) => ({
   type: "SET_HEIGHT",
   payload: value,
@@ -160,6 +162,16 @@ export const setHeight = (value = 1) => ({
 
 export const setBackground = (value) => ({
   type: "SET_BACKGROUND",
+  payload: value,
+});
+
+export const setColor = (value) => ({
+  type: "SET_COLOR",
+  payload: value,
+});
+
+export const setRadius = (value) => ({
+  type: "SET_RADIUS",
   payload: value,
 });
 
@@ -178,11 +190,9 @@ export const showMobile = ({ block }) => ({
   block,
 });
 
-export const setURL = (value, block, prop) => ({
+export const setURL = (value) => ({
   type: "SET_URL",
   payload: value,
-  block,
-  prop,
 });
 
 export const changeStructurePadding = ({ value = 1 }) => ({
