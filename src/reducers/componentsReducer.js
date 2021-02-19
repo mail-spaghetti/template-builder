@@ -172,7 +172,7 @@ const componentsReducer = (
       });
       return { ...state, contents: existingContents };
     case "UPDATE_CONTENT":
-      console.log(activeContentIndex, activeColumnIndex, activeRowIndex)
+      console.log(activeContentIndex, activeColumnIndex, activeRowIndex);
       var existingRow =
         existingContents[activeContentIndex].columns[activeColumnIndex].rows[
           activeRowIndex
@@ -201,7 +201,11 @@ const componentsReducer = (
       );
       return { ...state, contents: existingContents };
     case "DELETE_CONTENT":
-      existingContents[payload] = copyObj(INITIAL_DRAFT_CONTENT);
+      const length = state.contents.length;
+      if (length > 1) existingContents.splice(payload, 1);
+      else if (length === 1) {
+        existingContents[activeContentIndex] = copyObj(INITIAL_DRAFT_CONTENT);
+      }
       return { ...state, contents: existingContents };
     case "SET_MARGIN_TOP":
       var existingRow =

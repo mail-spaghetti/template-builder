@@ -136,11 +136,18 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     }),
   });
 
+  const setDeleteContent = (index) => {
+    setTimeout(() => {
+      dispatch(setSelected({ selected: false }));
+      dispatch(deleteContent(index))
+    }, 150);
+  };
+
   const onHandleDelete = (type, contentIndex, idx, index) => {
     dispatch(setSelected({ selected: false }));
     type === "inner"
       ? dispatch(deleteColumnContent(contentIndex, index, idx))
-      : dispatch(deleteContent(0));
+      : setDeleteContent(contentIndex); //dispatch(deleteContent(contentIndex));
   };
 
   const onHandleCopy = (type, contentIndex, index, idx = null) =>
