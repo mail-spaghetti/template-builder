@@ -344,9 +344,9 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
         }}
       >
         <div>
-          {hoverElements.contentIndex === contentIndex &&
-          hoverElements.rowIndex === idx &&
-          hoverElements.columnIndex === index ? (
+          {activeElements.contentIndex === contentIndex &&
+          activeElements.rowIndex === idx &&
+          activeElements.columnIndex === index ? (
             <SnapLeaflet
               _leaflet="inner"
               onHandleDelete={(type) => onHandleDelete(type, index, idx)}
@@ -423,7 +423,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
                     : null
                 }`}
               >
-                {hoverElements.contentIndex === idx && (
+                {activeElements.contentIndex === idx && (
                   <SnapLeaflet
                     onHandleDelete={(type) => onHandleDelete(type)}
                   />
