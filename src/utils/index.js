@@ -182,11 +182,14 @@ export const COMPONENT_INITIAL_STATE = {
 export const ALIGN_ICONS = [
   {
     name: "LeftAlign",
+    link: "left",
   },
   {
     name: "CenterAlign",
+    link: "center",
   },
   {
     name: "RightAlign",
+    link: "right",
   },
 ];

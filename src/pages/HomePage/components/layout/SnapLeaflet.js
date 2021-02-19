@@ -36,7 +36,7 @@ const SnapLeaflet = ({ _leaflet = "outer", onHandleDelete, onHandleCopy }) => (
         _leaflet === "outer" ? "u-background-red" : "u-background-green"
       }`}
     >
-      <span onClick={() => onHandleCopy(_leaflet)}>
+      <span onClick={onHandleCopy.bind(this, _leaflet)}>
         <Copy />
       </span>
     </div>

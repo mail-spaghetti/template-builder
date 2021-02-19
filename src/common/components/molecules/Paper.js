@@ -45,7 +45,7 @@ const Paper = ({
               <Input
                 value={properties[value].input}
                 placeholder="https://"
-                onInputChange={onHandleInputChange}
+                onInputChange={(e) => onHandleInputChange(e.target.value)}
               />
             </div>
           </div>
