@@ -172,6 +172,7 @@ const componentsReducer = (
       });
       return { ...state, contents: existingContents };
     case "UPDATE_CONTENT":
+      console.log(activeContentIndex, activeColumnIndex, activeRowIndex)
       var existingRow =
         existingContents[activeContentIndex].columns[activeColumnIndex].rows[
           activeRowIndex

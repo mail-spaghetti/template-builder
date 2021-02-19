@@ -21,6 +21,7 @@ const ButtonSettings = ({ type, component, dispatch }) => {
     color,
     borderRadius,
     link,
+    align,
     ...marginSettings
   } = component?.contents[contentIndex]?.columns[columnIndex]?.rows[
     rowIndex
@@ -54,7 +55,7 @@ const ButtonSettings = ({ type, component, dispatch }) => {
       <Text content="Align" className="settings__heading" />
       <div className="row u-margin-bottom-none">
         <div className="col-2-of-3">
-          <Align onHandleAlignClick={onHandleMarginSet} />
+          <Align type={align} onHandleAlignClick={onHandleMarginSet} />
         </div>
         <div className="col-1-of-3 u-display-flex-between u-translate-y-1">
           <Text content="Full Width" />

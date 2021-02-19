@@ -51,7 +51,7 @@ const ImageSettings = ({ type, component, dispatch }) => {
       />
       <HorizontalRule />
       <Text content="Align" className="settings__heading" />
-      <Align onHandleAlignClick={onHandleMarginSet} />
+      <Align type={align} onHandleAlignClick={onHandleMarginSet} />
       <HorizontalRule />
       <Text content="Margin" className="settings__heading" />
       <MarginSet {...marginSettings} onHandleMarginSet={onHandleMarginSet} />

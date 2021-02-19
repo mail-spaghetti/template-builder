@@ -180,6 +180,13 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
     } else {
       dispatch(insertItem(null, item, contentIndex, rowIndex, columnIndex));
     }
+    activateRow(
+      { target: { id: "block" } },
+      contentIndex,
+      columnIndex,
+      rowIndex,
+      { content: item.text }
+    );
   };
 
   const setHoverContent = (contentIndex, type) => {
@@ -434,6 +441,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
                 {activeElements.contentIndex === idx && (
                   <SnapLeaflet
                     onHandleDelete={(type) => onHandleDelete(type)}
+                    onHandleCopy={onHandleCopy}
                   />
                 )}
                 <div className={`draft__subBlockEvent`}>

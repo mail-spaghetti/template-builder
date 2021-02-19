@@ -13,7 +13,7 @@ import { funcMap } from "../../data/helper";
 const GifSettings = ({ type, component, dispatch }) => {
   const { contentIndex, columnIndex, rowIndex } = component.currentActiveBlock;
   const { gif: gifSettings } = component;
-  const { mobile, desktop, ...marginSettings } = component?.contents[
+  const { mobile, desktop, align, ...marginSettings } = component?.contents[
       contentIndex
     ]?.columns[columnIndex]?.rows[rowIndex].value.properties,
     gifURL =
@@ -50,7 +50,7 @@ const GifSettings = ({ type, component, dispatch }) => {
       />
       <HorizontalRule />
       <Text content="Align" className="settings__heading" />
-      <Align onHandleAlignClick={onHandleMarginSet} />
+      <Align type={align} onHandleAlignClick={onHandleMarginSet} />
       <HorizontalRule />
       <Text content="Gif Properites" className="settings__heading" />
       <Paper

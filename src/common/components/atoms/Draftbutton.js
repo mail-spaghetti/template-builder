@@ -22,7 +22,7 @@ const DraftButton = ({ content = "Choose Image", onHandleChange }) => {
         suppressContentEditableWarning={true}
         href={link}
         target="_blank"
-        style={inlineStyle}
+        style={{ ...inlineStyle, textAlign: "center" }}
         className="btn btn--draft"
         onBlur={onHandleChange}
       >
