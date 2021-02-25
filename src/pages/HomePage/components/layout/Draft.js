@@ -50,45 +50,22 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
 
   const ref = useRef(null);
   const refStruct = useRef(null);
+
   const [{ isOver, background }, dropRef] = useDrop({
     accept: ITEMS.BLOCK,
     drop: (item, monitor) => {
       dropItem(item.content);
       setRowClient(() => ({ top: null, bottom: null }));
-      setTimeout(() => {
-        setRowClient(() => ({ top: null, bottom: null }));
-        setDragPosition(() => ({
-          contentIndex: null,
-          columnIndex: null,
-          rowIndex: null,
-        }));
-      }, 200);
     },
     hover: (item, monitor) => {
       if (!ref.current) return;
       const hoveredRect = ref.current.getBoundingClientRect();
       const hoveredMiddle = (hoveredRect.bottom - hoveredRect.top) / 2;
       const mouseYPosition = monitor.getClientOffset().y - hoveredRect.top;
-      if (rowClient.top || rowClient.bottom) {
-        setTimeout(() => {
-          if (
-            rowClient.bottom &&
-            mouseYPosition <= hoveredRect.height &&
-            mouseYPosition > hoveredMiddle
-          )
-            setRowClient({ top: true, bottom: null });
-          else if (
-            rowClient.top &&
-            mouseYPosition >= 0 - 88 &&
-            mouseYPosition < hoveredMiddle
-          )
-            setRowClient({ top: null, bottom: true });
-        }, 150);
-      } else {
-        if (mouseYPosition >= hoveredMiddle)
-          setRowClient(() => ({ top: null, bottom: true }));
-        else setRowClient(() => ({ top: true, bottom: null }));
-      }
+      if (mouseYPosition <= hoveredMiddle)
+        setRowClient({ top: true, bottom: null });
+      else if (mouseYPosition > hoveredMiddle)
+        setRowClient({ top: null, bottom: true });
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
@@ -108,27 +85,10 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
       const hoveredRect = refStruct.current.getBoundingClientRect();
       const hoveredMiddle = (hoveredRect.bottom - hoveredRect.top) / 2;
       const mouseYPosition = monitor.getClientOffset().y - hoveredRect.top;
-      if (structClient.top || structClient.bottom) {
-        setTimeout(() => {
-          if (
-            structClient.bottom &&
-            mouseYPosition <=
-              hoveredRect.height - structure.verticalPadding + 25 &&
-            mouseYPosition > hoveredMiddle
-          )
-            setStructClient({ top: true, bottom: null });
-          else if (
-            structClient.top &&
-            mouseYPosition >= 0 - structure.verticalPadding &&
-            mouseYPosition < hoveredMiddle
-          )
-            setStructClient({ top: null, bottom: true });
-        }, 150);
-      } else {
-        if (mouseYPosition >= hoveredMiddle)
-          setStructClient(() => ({ top: null, bottom: true }));
-        else setStructClient(() => ({ top: true, bottom: null }));
-      }
+      if (mouseYPosition <= hoveredMiddle)
+        setStructClient({ top: true, bottom: null });
+      else if (mouseYPosition > hoveredMiddle)
+        setStructClient({ top: null, bottom: true });
     },
     collect: (monitor) => ({
       isOverStruct: monitor.isOver(),
@@ -139,7 +99,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
   const setDeleteContent = (index) => {
     setTimeout(() => {
       dispatch(setSelected({ selected: false }));
-      dispatch(deleteContent(index))
+      dispatch(deleteContent(index));
     }, 150);
   };
 
@@ -278,8 +238,20 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
       return dropRef;
   };
 
+  const getSecondaryDropRef = (contentIndex, columnIndex, rowIndex) => {
+    if (
+      dragPosition.contentIndex === contentIndex &&
+      dragPosition.columnIndex === columnIndex &&
+      dragPosition.rowIndex === rowIndex
+    )
+      return ref;
+  };
+
   const getStructRef = (contentIndex) =>
     dragPosition.contentIndex === contentIndex ? dropStructure : null;
+
+  const getSecondaryStructRef = (contentIndex) =>
+    dragPosition.contentIndex === contentIndex ? refStruct : null;
 
   const setColumns = (column, contentIndex, index) => {
     return (
@@ -287,8 +259,8 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
         <div id="sub" style={{ padding: "0 10px" }}>
           {column.rows.map((row, idx) => {
             return (
-              <Fragment key={idx}>
-                <div ref={getDropRef(contentIndex, index, idx)}>
+              <div key={idx} ref={getDropRef(contentIndex, index, idx)}>
+                <div ref={getSecondaryDropRef(contentIndex, index, idx)}>
                   {rowClient.top &&
                     dragPosition.contentIndex === contentIndex &&
                     dragPosition.columnIndex === index &&
@@ -305,7 +277,7 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
                       <div className="draft__contents--new">&nbsp;</div>
                     )}
                 </div>
-              </Fragment>
+              </div>
             );
           })}
         </div>
@@ -332,7 +304,6 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
         )}
         onClick={(e) => activateRow(e, contentIndex, index, idx, content)}
         onDragOver={setDragOverProps.bind(this, contentIndex, index, idx)}
-        ref={ref}
         id="block"
         className={`draft__contents ${
           content.content ? "draft__contents--white" : null
@@ -426,72 +397,73 @@ const Layout = ({ height, component, structure, blockType, dispatch }) => {
               onMouseOut={setHoverContent.bind(this, idx, false)}
               onClick={(e) => setActiveContent(e, idx)}
             >
-              {structClient.top && dragPosition.contentIndex === idx && (
-                <div className="draft__subBlockEvent--top">&nbsp;</div>
-              )}
-              <div
-                key={idx}
-                style={{
-                  padding: `${content.verticalPadding}px 50px`,
-                  background: `${content.background}`,
-                }}
-                className={`draft__blockEvent ${
-                  hoverElements.contentIndex === idx
-                    ? "draft__blockEvent--hover"
-                    : null
-                } ${
-                  activeElements.contentIndex === idx
-                    ? "draft__blockEvent--active"
-                    : null
-                }`}
-              >
-                {activeElements.contentIndex === idx && (
-                  <SnapLeaflet
-                    onHandleDelete={(type) => onHandleDelete(type)}
-                    onHandleCopy={onHandleCopy}
-                  />
+              <div ref={getSecondaryStructRef(idx)}>
+                {structClient.top && dragPosition.contentIndex === idx && (
+                  <div className="draft__subBlockEvent--top">&nbsp;</div>
                 )}
-                <div className={`draft__subBlockEvent`}>
-                  <table
-                    style={{
-                      width: "100%",
-                      borderTop: content.borderTop,
-                      borderBottom: content.borderBottom,
-                      borderRight: content.borderRight,
-                      borderLeft: content.borderLeft,
-                    }}
-                    ref={refStruct}
-                  >
-                    <tbody>
-                      <tr>
-                        {content.columns.map((content, index) => (
-                          <th
-                            width={`${content.width}%`}
-                            style={{
-                              background: content.background,
-                              borderTop: content.borderTop,
-                              borderBottom: content.borderBottom,
-                              borderLeft: content.borderLeft,
-                              borderRight: content.borderRight,
-                              borderRadius: content.borderRadius,
-                              paddingTop: content.marginTop,
-                              paddingBottom: content.marginBottom,
-                              paddingRight: content.marginRight,
-                              paddingLeft: content.marginLeft,
-                            }}
-                            key={index}
-                          >
-                            {setColumns(content, idx, index)}
-                          </th>
-                        ))}
-                      </tr>
-                    </tbody>
-                  </table>
+                <div
+                  key={idx}
+                  style={{
+                    padding: `${content.verticalPadding}px 50px`,
+                    background: `${content.background}`,
+                  }}
+                  className={`draft__blockEvent ${
+                    hoverElements.contentIndex === idx
+                      ? "draft__blockEvent--hover"
+                      : null
+                  } ${
+                    activeElements.contentIndex === idx
+                      ? "draft__blockEvent--active"
+                      : null
+                  }`}
+                >
+                  {activeElements.contentIndex === idx && (
+                    <SnapLeaflet
+                      onHandleDelete={(type) => onHandleDelete(type)}
+                      onHandleCopy={onHandleCopy}
+                    />
+                  )}
+                  <div className={`draft__subBlockEvent`}>
+                    <table
+                      style={{
+                        width: "100%",
+                        borderTop: content.borderTop,
+                        borderBottom: content.borderBottom,
+                        borderRight: content.borderRight,
+                        borderLeft: content.borderLeft,
+                      }}
+                    >
+                      <tbody>
+                        <tr>
+                          {content.columns.map((content, index) => (
+                            <th
+                              width={`${content.width}%`}
+                              style={{
+                                background: content.background,
+                                borderTop: content.borderTop,
+                                borderBottom: content.borderBottom,
+                                borderLeft: content.borderLeft,
+                                borderRight: content.borderRight,
+                                borderRadius: content.borderRadius,
+                                paddingTop: content.marginTop,
+                                paddingBottom: content.marginBottom,
+                                paddingRight: content.marginRight,
+                                paddingLeft: content.marginLeft,
+                              }}
+                              key={index}
+                            >
+                              {setColumns(content, idx, index)}
+                            </th>
+                          ))}
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
+                {structClient.bottom && dragPosition.contentIndex === idx && (
+                  <div className="draft__subBlockEvent--bottom">&nbsp;</div>
+                )}
               </div>
-              {structClient.bottom && dragPosition.contentIndex === idx && (
-                <div className="draft__subBlockEvent--bottom">&nbsp;</div>
-              )}
             </div>
           );
         })}
