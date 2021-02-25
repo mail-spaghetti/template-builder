@@ -72,7 +72,7 @@ const Paper = ({
       case "border":
         return (
           <Fragment key={index}>
-            {properties[value].split(" ").map((property, idx) => {
+            {properties[value]?.split(" ").map((property, idx) => {
               if (idx === 0)
                 return (
                   <Text key={idx} className="paper__text" content={property} />
