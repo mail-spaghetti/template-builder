@@ -40,13 +40,13 @@ const defaultProperties = {
     marginBottom: 5,
     marginLeft: 0,
     marginRight: 0,
-    borderTop: "1px solid #ffffff",
+    borderTop: "1px solid #A59999",
     mobile: false,
     desktop: true,
   },
   SPACER: {
     height: 45,
-    background: "#ffffff",
+    background: "#A59999",
   },
   BUTTON: {
     marginTop: 5,
@@ -172,7 +172,6 @@ const componentsReducer = (
       });
       return { ...state, contents: existingContents };
     case "UPDATE_CONTENT":
-      console.log(activeContentIndex, activeColumnIndex, activeRowIndex);
       var existingRow =
         existingContents[activeContentIndex].columns[activeColumnIndex].rows[
           activeRowIndex

@@ -154,7 +154,7 @@ export const COMPONENT_INITIAL_STATE = {
     desktop: false,
   },
   divider: {
-    style: "1px solid #D7D7D7",
+    style: "1px solid #A59999",
     background: null,
     verticalMargin: "15",
     horizontalMargin: "0",
